@@ -3,6 +3,7 @@
 :docinfo: shared
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
 :source-highlighter: highlightjs
+:highlightjs-theme: none
 :customcss: ../../css/default.css
 :revealjs_theme: black
 :revealjs_width: 1400
@@ -14,19 +15,32 @@
 
 == Statements
 
-* A statement is a complete Python instruction
+A *statement* is a complete Python instruction
 
-* Two kinds of statements
-** Simple
-** Compound
+[.notes]
+--
+Start by asking students: "What do you think makes up a Python program?" Guide them toward the idea that programs are made of instructions.
 
-=== Simple statements are individual instructions
+A statement is the fundamental building block of Python programs. Every line of code that does something is a statement. We'll see there are two main types: simple and compound.
+--
+
+=== Two Kinds of Statements
+
+*Simple* — one instruction
+
+*Compound* — contains other statements
+
+[.notes]
+--
+Simple statements are single-line instructions that do one thing. Compound statements are more complex structures that contain other statements inside them.
+
+Think of it like sentences vs. paragraphs. A simple statement is a sentence. A compound statement is a paragraph that contains multiple sentences working together.
+--
+
+=== Simple Statements
 
 [source,python]
 x = 0
-
-[source,python]
-continue
 
 [source,python]
 return True
@@ -34,240 +48,310 @@ return True
 [source,python]
 print("Hello")
 
-=== Compound statements contain other statements
+[.notes]
+--
+Walk through each example:
+
+1. `x = 0` — This is an assignment statement. It creates a variable x and gives it the value 0.
+
+2. `return True` — This returns a value from a function. We'll cover functions later.
+
+3. `print("Hello")` — This calls the print function to display text.
+
+Each of these is complete on its own line. They don't need anything else to work.
+
+You can also mention `continue` as another simple statement example.
+--
+
+=== Compound Statements
 
 [source,python]
+----
 for word in wordlist:
     print(word)
     first_letter = word[0]
+----
 
 [source,python]
+----
 if score >= 5:
     print("You win!")
 else:
     print("Better luck next time.")
+----
 
-=== Anatomy of a compound statement
+[.notes]
+--
+Compound statements contain other statements inside them. Notice the colon at the end of the first line and the indentation of the lines that follow.
+
+For the `for` loop: This iterates through a list of words. The two indented lines are the "body" of the loop—they run for each word.
+
+For the `if` statement: This checks a condition and runs different code depending on whether it's true or false.
+
+Key observation: The body is always indented. This is how Python knows which statements belong inside the compound statement.
+--
+
+=== Anatomy of a Compound Statement
 
 image::anatomy_of_complex_statement.png[ComplexStatement]
 
-=== Summary
+[.notes]
+--
+Point to each part of the diagram as you explain:
 
-A statement is a complete Python instruction
+CLAUSE: A complete unit within a compound statement. An if/elif/else has multiple clauses.
 
-* Simple vs. compound statements
-* Elements of a compound statement
-** Clause
-** Header
-** Body
-*** The body of a compound statement is always indented relative to the header
+HEADER: The first line of a clause. It always ends with a colon. Contains keywords like `if`, `for`, `while`, `def`, etc.
+
+BODY: The indented code that belongs to a clause. Can contain simple statements, other compound statements, or both.
+
+Critical rule: The body MUST be indented relative to the header. Python uses indentation to determine structure, unlike languages that use braces.
+
+Common student mistake: Forgetting the colon at the end of the header. Python will give a syntax error.
+--
+
+=== Statements: Summary
+
+* A statement is a complete Python instruction
+* *Simple statements* — individual instructions
+* *Compound statements* — contain other statements
+* Bodies are always indented
+
+[.notes]
+--
+Quick recap before moving on. Ask students to give you an example of each type.
+
+Transition: "Now let's look at what goes inside statements—expressions."
+--
 
 == Expressions
 
-[.nosubbullet]
-* An expression is a chunk of code that evaluates to a value
-* Expressions appear in many Python statements
-** Anywhere Python calls for a value, you can provide an expression
-* Any expression that is a complete line of code is also a statement
+An *expression* is code that evaluates to a value
 
-=== Common types of expressions
-
-[.nosubbullet]
+[.notes]
 --
-* Literal value (`5`, `"hi"`, `True`)
-** evaluates to the value
-* Variable
-** evaluates to the value of the variable
-* Function call (`abs(-4)`, `round(10.6)`)
-** evaluates to the result of the function call
+Key distinction: Statements DO something. Expressions PRODUCE something (a value).
+
+Anywhere Python expects a value, you can put an expression. This is incredibly powerful—it means you can nest expressions inside other expressions.
+
+Important: Any expression that stands alone on a line is also a statement (called an "expression statement").
 --
 
-=== Operators allow you to make more complex expressions
+=== Common Expression Types
 
-[.columns]
-=== !
-// Operators
+*Literals* — `5`, `"hi"`, `True`
 
-[.column,role="nobullet"]
-* `+` addition
-* `-` subtraction
-* `*` multiplication
-* `/` floating-point division
-* `//` floor division
-* `%` modulo operation
-* `**` exponentiation
+*Variables* — evaluate to their current value
 
-[.column,role="nobullet"]
-* `==` equality
-* `!=` inequality
-* `>` greater than
-* `<` less than
-* `>=` greater than or equal
-* `\<=` less than or equal
+*Function calls* — `abs(-4)`, `round(10.6)`
 
-[.column,role="nobullet"]
-* `not` logical negation
-* `and` logical conjunction
-* `or` logical disjunction
-* `in` membership
-* `is` identity
+[.notes]
+--
+LITERALS: These are values written directly in your code. The number 5 is an expression that evaluates to... 5. The string "hi" evaluates to the string "hi".
 
-[.columns]
-=== Division operators
+VARIABLES: When Python sees a variable name, it looks up the value and uses that. So if x equals 10, the expression `x` evaluates to 10.
 
-[.column.nosubbullet.nobullet]
-* `/` performs "regular" (floating-point) division
-** `5 / 4` evaluates to `1.25`
-** _Floating-point math can be imprecise_
-* `//` performs floor division (rounds down to the nearest integer)
-** `5 // 4` evaluates to `1`
-** `-5 // 4` evaluates to `-2`
+FUNCTION CALLS: These run a function and evaluate to whatever the function returns. `abs(-4)` evaluates to 4. `round(10.6)` evaluates to 11.
 
-[.column.nosubbullet.nobullet]
-* `%` gives you the remainder after division
-** `5 % 4` evaluates to `1`
-** `-5 % 4` evaluates to `3`
-** _Can be used to test parity (even/odd):_ +
-`x % 2` _is_ `0` _if_ `x` _is even,_ `1` _otherwise_
+You can combine these with operators to make more complex expressions.
+--
+
+=== Operators
+
+[cols="1,1,1", frame=none, grid=none]
+|===
+| *Arithmetic*
+| *Comparison*
+| *Logical*
+
+| `+` `-` `*`
+| `==` `!=`
+| `not`
+
+| `/` `//` `%`
+| `>` `<`
+| `and`
+
+| `**`
+| `>=` `\<=`
+| `or`
+|===
+
+Also: `in` (membership), `is` (identity)
+
+[.notes]
+--
+ARITHMETIC: Standard math operators. Note there are THREE division operators—we'll cover those next.
+
+COMPARISON: These compare values and return True or False. Double equals for equality (single equals is assignment!).
+
+LOGICAL: For combining boolean values. `not` flips True/False. `and` requires both to be true. `or` requires at least one to be true.
+
+MEMBERSHIP: `in` checks if something is inside a collection. Very useful for strings and lists.
+
+IDENTITY: `is` checks if two things are the exact same object in memory. Different from `==` which checks if values are equal.
+--
+
+=== Division Operators
+
+`/` — floating-point division → `5 / 4` is `1.25`
+
+`//` — floor division → `5 // 4` is `1`
+
+`%` — modulo (remainder) → `5 % 4` is `1`
+
+[.notes]
+--
+This trips up students constantly. Take time here.
+
+FLOATING-POINT DIVISION (`/`): Always gives you a decimal result, even if it divides evenly. `4 / 2` gives `2.0`, not `2`.
+
+FLOOR DIVISION (`//`): Rounds DOWN to the nearest integer. For positive numbers, it's like truncating. But `-5 // 4` is `-2`, not `-1`! It rounds toward negative infinity.
+
+MODULO (`%`): Gives the remainder. Super useful for:
+- Testing if a number is even: `x % 2 == 0`
+- Wrapping around (like clock arithmetic)
+- Extracting digits from numbers
+
+Common student confusion: They use `/` when they want `//`, then wonder why they're getting floats.
+
+Mention: Floating-point math can be imprecise due to how computers store decimals. `0.1 + 0.2` is not exactly `0.3`.
+--
 
 === Parentheses
 
-* Parentheses are used for grouping, like in algebra
-* You can put parentheses around any expression
-* A parenthesized expression can contain line breaks
-+
+Used for grouping, just like algebra
+
 [source,python]
---
+----
 (  3 * x**3
  + 4 * x**2
  - 2 * x
  + 1)
---
-
-=== Summary
-
-An expression is a chunk of code that evaluates to a value
-
-* Simple expressions include literal values, variables, and function calls
-* You can use operators to make more complex expressions
-** Mind the differences between division operators (`/`, `//`, `%`)
-* Parentheses in expressions are used for grouping (as in algebra)
-
-== Variables
-
-[.nosubbullet]
-* Variables in Python are labels attached to values
-** Multiple labels can be attached to the same value
-* Variable names can consist of letters, numbers, and underscores
-** Variable names can't start with numbers
-** Can't use keywords (`if`, `return`, `def`, etc.) as variable names
-** Shouldn't use function names (`print`, `list`, `round`, etc.) as variable names
-** By convention, avoid capital letters in variable names
-
-=== Variable assignment
-
-[slot]#variable# `=` [slot]#expression#
-
-[source,python]
---
-name = "Gina"
---
-
-[source,python]
---
-area = width * height
---
-
-[source,python]
---
-nearest_int = round(5.3)
---
-
-Variable assignment statements are not expressions
-
-=== Augmented assignment
-
-[frame=none,grid=none,noheader,cols="a,a"]
-|===
-|
-[.rightborder]
---
-Common task:
-
-* Take a variable
-* Do some operation on the value of the variable
-* Assign the result of the operation to the variable
---
-|
-[.rightborder]
---
-Python gives us a set of augmented assignment operators to simplify this process:
-
-[frame=none,grid=none,noheader,cols="1,1,1,1"]
-!===
-! `+=`
-! `-=`
-! `*=`
-! `**=`
-
-! `/=`
-! `//=`
-! `%=`
-!
-
-!===
---
-
-|
-[.rightborder]
---
-Example:
-
-[source,python]
 ----
-x = x + 1
-----
---
-|
-[.rightborder]
---
-Example:
-
-[source,python]
-----
-x += 1
-----
---
-|===
 
 [.notes]
 --
-A common programming task is to perform an operation on a value stored in a variable and redefine the variable to the result of the operation (for example, add one to `x`). Python gives us a set of operators to make this task a little easier.
+Parentheses work exactly like in math class—they force certain operations to happen first.
+
+BONUS: A parenthesized expression can span multiple lines! This is really useful for long calculations or conditions. No backslashes needed.
+
+This is cleaner than using backslashes for line continuation.
+
+Operator precedence exists (PEMDAS-like), but when in doubt, use parentheses to make your intent clear.
 --
 
-=== Summary
+=== Expressions: Summary
 
-Variables in Python are labels attached to values
+* Expressions evaluate to values
+* Types: literals, variables, function calls
+* Operators combine expressions
+* Division: `/` vs `//` vs `%`
+* Parentheses for grouping
 
-* Variable assignment is usually done with `=`
-* Variables can be updated with augmented assignment operators (e.g., `+=`)
-
-[.columns]
-== Conditional statements
-
-[.column.nobullet.nosubbullet]
-* `if` clause is mandatory, comes first
-** `if` [slot]#condition#`:` +
-``    ``[slot]#body#
-* Zero or more `elif` clauses
-** `elif` [slot]#condition#`:` +
-``    ``[slot]#body#
-* Zero or one `else` clause
-** `else:` +
-``    ``[slot]#body#
-
-[.column]
+[.notes]
 --
+Transition: "Now that we know about expressions, let's talk about storing values in variables."
+--
+
+== Variables
+
+Variables are *labels* attached to values
+
+[.notes]
+--
+Important mental model: Variables in Python are NOT boxes that hold values. They're labels or name tags attached to values.
+
+This means multiple variables can point to the same value. If you do `a = [1,2,3]` and then `b = a`, both variables point to the SAME list. Changing the list through `a` affects what you see through `b`.
+
+This is different from languages like C where variables are memory locations.
+--
+
+=== Variable Naming Rules
+
+* Letters, numbers, underscores only
+* Cannot start with a number
+* Cannot use keywords (`if`, `return`, `def`)
+* Avoid function names (`print`, `list`, `round`)
+* Convention: use lowercase
+
+[.notes]
+--
+CANNOT START WITH NUMBER: `2fast` is invalid, but `fast2` is fine.
+
+KEYWORDS: Python reserves certain words. You'll get a syntax error if you try to use them as variable names.
+
+FUNCTION NAMES: You CAN use these, but you'll break the function! If you do `print = 5`, you can no longer use the print function. Very common beginner mistake.
+
+CONVENTION: Python uses `snake_case` for variables (lowercase with underscores). `CamelCase` is reserved for class names. Following conventions makes your code readable to other Python programmers.
+
+Good names: `user_age`, `total_score`, `first_name`
+Bad names: `x`, `data`, `temp` (unless truly temporary)
+--
+
+=== Variable Assignment
+
+[source,python]
+name = "Gina"
+
+[source,python]
+area = width * height
+
+[source,python]
+nearest_int = round(5.3)
+
+[.notes]
+--
+The pattern: variable = expression
+
+Python evaluates the RIGHT side first, then attaches the label to that value.
+
+Example 1: Creates a string "Gina" and labels it `name`.
+
+Example 2: Multiplies width by height, then labels the result `area`. Note: width and height must already exist!
+
+Example 3: Calls round(5.3), which returns 5, then labels that 5 as `nearest_int`.
+
+IMPORTANT: Assignment statements are NOT expressions. You cannot do `print(x = 5)` like in some other languages. (Python 3.8+ has the walrus operator `:=` for this, but that's advanced.)
+--
+
+=== Augmented Assignment
+
+Instead of: `x = x + 1`
+
+Write: `x += 1`
+
+Available: `+=` `-=` `*=` `/=` `//=` `%=` `**=`
+
+[.notes]
+--
+This is syntactic sugar for a very common pattern: update a variable based on its current value.
+
+`x += 1` means "take the current value of x, add 1, and store it back in x."
+
+All the arithmetic operators have augmented versions. You'll use `+=` most often.
+
+Common use cases:
+- Counting: `count += 1`
+- Accumulating sums: `total += price`
+- Building strings: `message += " more text"`
+
+Note: These are still statements, not expressions.
+--
+
+=== Variables: Summary
+
+* Variables are labels attached to values
+* Assignment: `variable = expression`
+* Augmented assignment: `+=`, `-=`, etc.
+
+[.notes]
+--
+Transition: "Now let's look at how to make decisions in our code."
+--
+
+== Conditional Statements
+
 [source,python]
 ----
 if temp <= 0:
@@ -277,556 +361,547 @@ elif temp <= 100:
 else:
     water_state = "steam"
 ----
-{empty} +
 
-* At most one clause gets executed
-* Conditions in a conditional statement are expressions
+[.notes]
+--
+Conditional statements let your program make decisions.
+
+Walk through the example: We're determining the state of water based on temperature (in Celsius).
+
+- If temp is 0 or below → ice
+- Otherwise, if temp is 100 or below → water
+- Otherwise → steam
+
+Only ONE of these three branches will execute. Once a condition is true, Python runs that branch and skips the rest.
 --
 
+=== Structure
 
-[.columns]
-=== `elif` vs. `if`
+* `if` — required, comes first
+* `elif` — zero or more
+* `else` — zero or one, comes last
 
-[.column.leftalign]
+Only *one* branch executes!
+
+[.notes]
 --
-Compare:
+IF: Always required. Must have at least one `if`.
+
+ELIF: "Else if" — only checked if previous conditions were false. You can have as many as you need, or none at all.
+
+ELSE: Catches everything that didn't match above. No condition needed—it's the default. Optional.
+
+Critical point: At most ONE branch executes. As soon as Python finds a true condition, it runs that branch and skips checking the rest. This is why order matters!
+--
+
+=== `elif` vs `if`
+
 [source,python]
+----
+# Using elif
 if temp <= 0:
     water_state = "ice"
 elif temp <= 100:
     water_state = "water"
-else:
-    water_state = "steam"
+----
 
 [source,python]
+----
+# Using if
 if temp <= 0:
     water_state = "ice"
 if temp <= 100:
     water_state = "water"
-else:
-    water_state = "steam"
---
+----
 
-[.column.fragment]
---
-What if the value of `temp` is
-
-[%step]
-* 120?
-* 15?
-* -10?
---
-
-=== Boolean contexts
-
-* Conditions are _Boolean contexts_: Python converts the result of these expressions to `True` or `False`
-* Most values are "truthy". The following are "falsy":
-** `0` and `0.0`
-** Empty collections (e.g., empty string, empty list, empty dictionary)
-** `None`
+What happens when temp is -10?
 
 [.notes]
 --
-truthy: a value considered True in a Boolean context
+This is a CRITICAL distinction that confuses students.
+
+WITH ELIF: If temp is -10, the first condition is true, so water_state becomes "ice". The elif is SKIPPED because we already found a match. Final answer: "ice"
+
+WITH SEPARATE IFS: If temp is -10, the first if is true, so water_state becomes "ice". But then Python checks the SECOND if independently. Is -10 <= 100? Yes! So water_state gets overwritten to "water". Final answer: "water" — WRONG!
+
+Rule: Use `elif` when conditions are mutually exclusive and you only want one to run. Use separate `if` statements when you want to check each condition independently.
+
+Test the students: What happens with temp = 15? With temp = 120?
 --
 
-=== Example: non-Boolean value in a Boolean context
-[source,python]
+=== Boolean Contexts
+
+Conditions are *Boolean contexts*
+
+Most values are "truthy"
+
+Falsy values: `0`, `0.0`, empty collections, `None`
+
+[.notes]
 --
-answer = input("What is your favorite color? ")
-if answer:
+When Python needs a True/False answer, it converts values automatically.
+
+TRUTHY: Most things. Any non-zero number, any non-empty string, any non-empty list, etc.
+
+FALSY (memorize these):
+- Zero (integer 0 or float 0.0)
+- Empty string ""
+- Empty list []
+- Empty dictionary {}
+- None
+- False (obviously)
+
+This is useful! Instead of `if len(my_list) > 0:` you can just write `if my_list:`
+
+Example:
+```python
+answer = input("Enter something: ")
+if answer:    # True if they typed anything
     print("You entered:", answer)
 else:
     print("You didn't enter anything")
+```
 --
 
-=== Conditional expressions
+=== Conditional Expressions
 
-[slot]#expression1# `if` [slot]#condition# `else` [slot]#expression2#
-
-[source, python]
---
+[source,python]
 status = "minor" if age < 18 else "adult"
---
-
-[source, python]
---
-print("¡Hola!" if lang="es" else "Hello!")
---
-
-[.fragment]
---
-{empty} +
-
-Note that [slot]#expression2# can be another conditional expression:
-
-[source, python]
-----
-water_state = ("ice"   if temp <=   0 else
-               "water" if temp <= 100 else
-               "steam")
-----
---
 
 [.notes]
 --
-A conditional expression evaluates to one of two values depending on whether a condition is satisfied.
+This is Python's ternary operator—a one-liner for simple if/else.
 
-Python starts by evaluating [slot]#condition#. If it is truthy, the entire conditional expression evaluates to the result of [slot]#expression1#; otherwise, the entire conditional expression evaluates to the result of [slot]#expression2#.
+Pattern: `value_if_true if condition else value_if_false`
 
-Conditional expressions can be chained; there always has to be a final "else" part.
+Read it as: "status equals 'minor' IF age is less than 18, ELSE 'adult'"
+
+The else part is REQUIRED (unlike in conditional statements).
+
+Use these for simple cases. If your logic is complex, use a regular if/else statement—readability matters more than brevity.
+
+You can chain them: 
+```python
+water_state = "ice" if temp <= 0 else "water" if temp <= 100 else "steam"
+```
+But this gets hard to read quickly.
 --
 
-=== Conditional statements vs. conditional expressions
+=== Conditionals: Summary
 
-[frame=none,grid=cols,cols="a,a",noheader]
-|===
-| Conditional statements execute code if certain conditions are met; `elif` and `else` clauses are optional
-| Conditional expressions evaluate to one of two values depending on a condition; `else` component is required
-
-|
-[source, python]
---
-if today == user_birthday:
-    print("Happy birthday!")
-else:
-    print("Have a nice day!")
---
-|
-[source, python]
---
-print("Happy birthday!"
-      if today == user_birthday
-      else "Have a nice day!")
---
-|===
-
-=== Summary
-
-* Conditional statements execute code conditionally
-* Conditional expressions evaluate to one of two values depending on a condition
+* Conditional *statements* execute code
+* Conditional *expressions* produce values
 * Conditions are Boolean contexts
+* Use `elif` for mutually exclusive conditions
 
+[.notes]
+--
+Transition: "What if we want to repeat code multiple times? That's where loops come in."
+--
 
 == Loops
 
-Loops let us repeat instructions. Two kinds:
+Loops let us repeat instructions
 
-* `for` loops: number of iterations is known in advance
-* `while` loops: number of iterations is not known in advance
+*for* — iterations known in advance
+
+*while* — iterations not known in advance
 
 [.notes]
 --
-Both kinds of loops are compound statements.
+Both types are compound statements with headers and bodies.
+
+FOR loops: Use when you know how many times to iterate, or when you're iterating over a collection.
+
+WHILE loops: Use when you need to repeat until some condition changes, and you don't know in advance when that will be.
 --
 
-[.columns]
-=== `for` loops
-
-[.column]
---
-`for` [slot]#varname# `in` [slot]#iterable#: +
-``    ``[slot]#body#
+=== `for` Loops
 
 [source,python]
 ----
-print("The first ten"
-      " triangular numbers:")
-t = 0
 for i in range(1, 11):
     t += i
     print(t)
 ----
+
+[.notes]
+--
+Pattern: `for variable in iterable:`
+
+ITERABLE: Something you can iterate over—a list, string, range, file, etc.
+
+ITERATION VARIABLE: Created by the for loop. Takes on each value from the iterable in turn. In this example, i will be 1, then 2, then 3... up to 10.
+
+Note: `range(1, 11)` gives you 1 through 10. The end value is exclusive! This trips up students.
+
+The body runs once for each item. Here we're calculating triangular numbers (1, 3, 6, 10, 15...).
+
+Common uses:
+- `for item in my_list:` — process each item
+- `for char in my_string:` — process each character
+- `for i in range(n):` — repeat n times
 --
 
-[.column]
---
-[%step]
-* [slot]#iterable# is a sequence (such as a string or a list) or sequence-like object (such as a `range` object).
-* [slot]#varname# is called the _iteration variable_. It is created and populated by the `for` loop.
-* There will be one iteration of the loop for every item in [slot]#iterable#.
---
+=== `while` Loops
 
-[.columns]
-=== `while` loops
-
-[.column]
---
-`while` [slot]#condition#: +
-``    ``[slot]#body#
-
-[source, python]
+[source,python]
 ----
 n = 1
 while n < 1000:
     n *= 3
-print("The first power of 3 greater"
-      " than 1000 is", n)
+print(n)
 ----
---
-
-[.column]
---
-[%step]
-* [slot]#condition# is an expression.
-* The loop iterates as long as [slot]#condition# evaluates to `True` (or another truthy value).
---
-
-=== Altering flow of control in a loop
-
-[%step]
-* `continue` ends the current iteration of a loop. The loop moves on to the next iteration, if there is one; otherwise it terminates.
-* `break` causes a loop to terminate. Control passes to the code after the loop.
-* `return` terminates both a loop and the function it is in. Control passes to the statement that called the function.
 
 [.notes]
 --
-We'll take a look at these in a second, but first, I want to introduce an important Python idiom related to while loops: while True.
+Pattern: `while condition:`
+
+The loop keeps running AS LONG AS the condition is true. When it becomes false, the loop ends.
+
+DANGER: If the condition never becomes false, you have an infinite loop! Always make sure something in the body can change the condition.
+
+This example finds the first power of 3 greater than 1000. We start at 1 and keep multiplying by 3 until we exceed 1000.
+
+Trace through: n=1, n=3, n=9, n=27, n=81, n=243, n=729, n=2187 (stops here because 2187 >= 1000).
+
+Use while when:
+- Waiting for user to enter valid input
+- Reading until end of file
+- Searching for something
+- Any situation where you don't know the count beforehand
 --
 
 === `while True:`
 
-* Ensures the body of a loop executes at least once
-* Loop should contain `break` or `return` so that it is not infinite
+Guarantees at least one iteration
 
 [source,python]
---
-def get_selection():
-    """ Ask the user to select 'a' or 'b'. Return their selection. """
-    while True:
-        response = input("Choose 'a' or 'b': ")
-        if response in ['a', 'b']:
-            return response
-        # if we didn't return, the user made an invalid choice
-        print("Sorry, that's not one of the choices.")
---
+----
+while True:
+    response = input("Choose 'a' or 'b': ")
+    if response in ['a', 'b']:
+        return response
+    print("Invalid choice.")
+----
 
 [.notes]
 --
-We said earlier that the header of a while loop contains a condition, which is an expression in a Boolean context. As long as that expression evaluates to True or some other truthy value, the loop continues to iterate. Well, the ultimate truthy expression is the value True. But, I hear you asking, wouldn't that create an infinite loop? And it definitely could. To make it work, you need some other way to end the loop, such as `break` or `return.`
+`while True` creates an intentionally infinite loop. You MUST have a `break` or `return` inside to exit!
 
-So why would you want to do this? Well, it's very common to want the body of a loop to execute at least once and possibly more times. In the code on this slide, we want to ask the user at least once to make a choice, and we want to keep asking until they make a valid choice. `while True` works well for this situation.
+Why use it? When you want the body to run AT LEAST ONCE before checking a condition.
+
+This pattern is called a "do-while" in other languages. Python doesn't have do-while, so we use `while True` with a break/return.
+
+Perfect for input validation: Ask for input, check if it's valid, return if yes, otherwise show error and ask again.
+
+Common mistake: Forgetting the exit condition and creating an actual infinite loop. Always have a clear path out!
 --
 
-[.columns]
-=== Example with `continue` and `break`
+=== Loop Control
 
-[.column]
+*continue* — skip to next iteration
+
+*break* — exit the loop entirely
+
+*return* — exit loop and function
+
+[.notes]
 --
-Imagine we need to extract some information from a file. Here are the rules we will follow to get the information we need:
+CONTINUE: Stops the current iteration and jumps back to the top of the loop. For `for` loops, moves to the next item. For `while` loops, re-checks the condition.
 
-* Ignore lines that start with `#`
-* Stop reading the file if we encounter a line consisting of four hyphens
-* Make a list containing the text of other lines in the file
+BREAK: Immediately exits the loop. Code continues after the loop.
+
+RETURN: Exits both the loop AND the function it's in. Only works inside functions.
+
+Use cases:
+- Continue: Skip items that don't meet criteria
+- Break: Found what you're looking for, no need to keep searching
+- Return: Ready to give back a result
 --
 
-[.column]
+=== Loop Control Example
+
 [source,python]
 ----
 data = list()
-f = open('somefile.txt')
 for line in f:
     line = line.strip()
     if line[0] == "#":
-        continue
+        continue       # skip comments
     if line == "----":
-        break
+        break          # stop at separator
     data.append(line)
-f.close()
 ----
 
 [.notes]
 --
-Imagine we need to read in text from a file in a particular format. We should ignore lines that start with #, as well as all lines after a line consisting of four hyphens. We should store the remaining lines in a list. The code at right uses `continue` when it encounters the # sign to move on to the next line, and `break` when it encounters four hyphens because at that point we don't care about the rest of the file.
+Walk through this file-reading example:
+
+We're processing a file with specific rules:
+1. Lines starting with # are comments—skip them
+2. A line of "----" means stop reading
+3. Everything else gets added to our list
+
+CONTINUE: When we hit a comment line, we don't want to add it to data. `continue` skips the rest of the loop body and moves to the next line.
+
+BREAK: When we hit the separator, we're done. `break` exits the loop entirely—we don't care about lines after this.
+
+Without continue/break, we'd need nested if statements and flag variables. This is cleaner.
 --
 
-=== Summary
+=== Loops: Summary
 
-Loops let us repeat instructions
+* `for` — known number of iterations
+* `while` — repeat until condition is false
+* `while True` — at least one iteration
+* Control: `continue`, `break`, `return`
 
-* `for` loops iterate a definite number of times
-* `while` loops iterate until a condition is false/falsy
-** `while True` guarantees at least one iteration
-* The flow of control in a loop can be altered using
-** `continue`
-** `break`
-** `return` (only if the loop is in a function)
+[.notes]
+--
+Transition: "Now let's package our code into reusable units—functions."
+--
 
-[.columns]
 == Functions
 
-[.column]
---
-* Reusable sequences of instructions packaged as a unit
-* Can take input values (arguments)
-* Can return a value
---
+Reusable instruction sequences
 
-[.column]
---
-Some built-in functions you should know:
-
-[frame=none,grid=none,cols="a,a,a",noheader]
-|===
-|
-[.nobullet]
-* `print`
-* `abs`
-|
-[.nobullet]
-* `round`
-* `float`
-|
-[.nobullet]
-* `int`
-* `str`
-|===
---
-
-=== Calling functions
-
-[.nosubbullet]
-* All function calls include the function name followed by parentheses
-* Many functions take arguments; these go inside the parentheses
-** Arguments can be expressions
-* Function calls are expressions; they evaluate to the return value of the function
-
-Examples:
-
-[source,python]
-----
-print()              # function call with no arguments
-----
-
-[source,python]
-----
-x = abs(-10)         # function call with one argument
-----
-
-[source,python]
-----
-n = round(14.723, 2) # function call with two arguments
-----
-
-=== Two kinds of arguments
-
-[source,python]
-----
-print("Hello", "world!", sep="::", end="\n--\n")
-----
-
-[.nosubbullet]
-* `"Hello"` and `"world!"` are _positional arguments_
-* `sep="::"` and `end="\n--\n"` are _keyword arguments_
-** Keyword arguments always have a keyword, an equal sign, and a value/expression
-* Positional arguments always precede keyword arguments
-* The order of positional arguments is important
-* The order of keyword arguments isn't important
+* Take input (arguments)
+* Return output (return value)
 
 [.notes]
 --
-Positional arguments: Python determines which arguments they are by their position in the argument list
+Functions are the fundamental unit of code organization. They let you:
+- Write code once, use it many times
+- Break complex problems into smaller pieces
+- Test pieces independently
+- Make code readable by giving names to operations
 
-Keyword arguments: the name (`sep`) tells Python which argument it is
+Think of a function like a machine: you put things in (arguments), something happens inside, and you get something out (return value).
 --
 
-=== Defining functions
+=== Built-in Functions
 
-Breaking a program into small functions is a Really Good Idea
+`print()` — display output
 
-* Functions help you break down a problem into discrete steps
-* Functions make a program easier to
-** Read
-** Test and debug
-** Reuse
+`abs()` — absolute value
 
-[.columns]
-=== Defining functions
+`round()` — round a number
 
-[.column]
+`int()`, `float()`, `str()` — type conversion
+
+[.notes]
 --
-`def` [slot]#function#`(`[slot]#parameters#`):` +
-``    ```"""` [slot]#docstring# `"""` +
-``    ``[slot]#body#
+Python comes with many built-in functions. These are always available.
+
+PRINT: Display to console. Returns None.
+
+ABS: Absolute value. `abs(-5)` returns `5`.
+
+ROUND: Round to nearest integer (or specified decimals). `round(3.7)` returns `4`. `round(3.14159, 2)` returns `3.14`.
+
+TYPE CONVERSIONS:
+- `int("42")` returns `42`
+- `float("3.14")` returns `3.14`
+- `str(42)` returns `"42"`
+
+These will raise errors if the conversion isn't possible: `int("hello")` raises ValueError.
+--
+
+=== Calling Functions
+
+[source,python]
+print()              # no arguments
+
+[source,python]
+x = abs(-10)         # one argument
+
+[source,python]
+n = round(14.723, 2) # two arguments
+
+[.notes]
+--
+Every function call has parentheses, even if there are no arguments.
+
+The value inside the parentheses (the argument) can be any expression. So `abs(-10)` works, but so does `abs(x)` or `abs(y - z)`.
+
+Function calls ARE expressions—they evaluate to the return value. That's why we can assign `abs(-10)` to `x`.
+
+If a function doesn't explicitly return something, it returns `None`.
+--
+
+=== Positional vs Keyword Arguments
+
+[source,python]
+print("Hello", "world!", sep="::", end="\n")
+
+*Positional:* `"Hello"`, `"world!"`
+
+*Keyword:* `sep="::"`, `end="\n"`
+
+[.notes]
+--
+POSITIONAL: Matched to parameters by position (first argument to first parameter, etc.). Order matters!
+
+KEYWORD: Matched by name. Order doesn't matter among keyword arguments.
+
+Rules:
+1. Positional arguments must come BEFORE keyword arguments
+2. You can't have positional arguments after keyword arguments
+
+This print call outputs: `Hello::world!` followed by a newline and dashes.
+
+Use keyword arguments for optional parameters or when the meaning isn't obvious from position.
+--
+
+=== Why Write Functions?
+
+* Break problems into discrete steps
+* Make code easier to read
+* Make code easier to test
+* Enable code reuse
+
+[.notes]
+--
+Functions are not just about avoiding repetition (though that's important).
+
+PROBLEM DECOMPOSITION: Complex problems become manageable when broken into small functions.
+
+READABILITY: `calculate_tax(income)` is clearer than 20 lines of tax calculation inline.
+
+TESTING: You can test small functions in isolation. If each function works, the whole program is more likely to work.
+
+REUSE: Write once, use many times. Even use in other projects.
+
+Rule of thumb: If you're copying and pasting code, you probably need a function.
+--
+
+=== Defining Functions
 
 [source,python]
 ----
 def dist(x1, y1, x2, y2):
-    """ Calculate the Euclidean distance
-    between coordinates (x1, y1) and
-    (x2, y2). """
-    return ((x1 - x2)**2 +
-            (y1 - y2)**2)**0.5
+    """ Calculate Euclidean distance
+    between (x1, y1) and (x2, y2). """
+    return ((x1-x2)**2 + (y1-y2)**2)**0.5
 ----
 
-[%step,role="nosubbullet"]
-* [slot]#function# is the name of the function.
-// ** It can consist of letters, numbers and underscores. It cannot start with a number. By convention, it should not contain capital letters.
+[.notes]
+--
+Pattern: `def function_name(parameters):`
+
+DEF: Keyword that starts a function definition.
+
+FUNCTION NAME: Same rules as variable names. Should describe what the function does.
+
+PARAMETERS: Variables that receive the arguments. Separated by commas if multiple.
+
+DOCSTRING: A string right after the header that describes the function. Triple quotes for multi-line. This is documentation!
+
+BODY: The code that runs when the function is called.
+
+RETURN: Specifies what value the function evaluates to. If you don't return anything (or just `return` with no value), the function returns `None`.
 --
 
-[.column]
---
-[%step,role="nosubbullet"]
-* [slot]#parameters# (optional) are variables that get their values when the function is called.
-* A [slot]#docstring# (optional) describes what the function does and how to use it.
-* The [slot]#body# contains the instructions that constitute the function. It usually contains a `return` statement.
---
+=== Variable Scope
+
+*Global* — defined outside functions, accessible everywhere
+
+*Local* — defined inside functions, only accessible there
+
+*Local variables are preferred!*
 
 [.notes]
 --
-If there are multiple parameters, they are separated by commas.
+SCOPE: Where a variable can be accessed.
 
-Although it's possible to write a function without a docstring, it's a really good idea to write docstrings for all but the simplest functions.
+GLOBAL VARIABLES: Defined at the top level of your script. Can be read anywhere. But modifying them from inside a function requires the `global` keyword.
+
+Problems with globals:
+- Functions aren't self-contained
+- Hard to track what's changing the variable
+- Leads to subtle bugs
+
+LOCAL VARIABLES: Defined inside a function (including parameters). Created when function runs, destroyed when function ends.
+
+Benefits of locals:
+- Function is self-contained
+- No outside interference
+- Easier to test and debug
+
+Best practice: Pass values IN through parameters, get values OUT through return. Avoid globals.
 --
 
-// Provide nuts and bolts as well as rationale
+=== Required vs Optional Parameters
 
-=== Variable scope
-
-Two kinds of variables (for now):
-
-
-[frame=none,grid=none,noheader,cols="a,a"]
-|===
-|
-[.rightborder]
---
-* Global variables
-** Usually defined outside of any function
-** Can be accessed anywhere in a program
-** [thumbsdown]#Functions that use global variables are not self-contained#
-** [thumbsdown]#Can lead to bugs that are hard to track down#
---
-|
---
-* Local variables
-** Defined within a function (includes parameters)
-** [thumbsup]#Can only be accessed within the function where they are defined#
-** [thumbsup]#Less risk of weird bugs#
-
-*Local variables are a Really Good Thing*
---
-
-|===
-
-
-[.notes]
---
-Variables defined within a function, including parameters, come into existence when the function is called and cease to exist when the function ends.
---
-
-=== Two kinds of parameters
-
-[%step,role="nosubbullet"]
-* Required parameters are just variable names. The function won't work unless an argument is provided for each required parameter.
-* Optional parameters look like keyword arguments: [slot]#parameter#`=`[slot]#default_value#. If the user omits an optional parameter, the function will still work and the parameter's value will be the default value.
-[%step]
-** Optional parameters always follow required parameters.
-** Avoid mutable values as default values.
-
-[source,python,role="fragment"]
+[source,python]
 ----
 def get_pace(dist, time, dist_unit="mile", time_unit="minute"):
-    """ Calculate a pace given a distance and time. """
+    """ Calculate pace given distance and time. """
     print(time/dist, time_unit + "s per", dist_unit)
 ----
 
 [.notes]
 --
-Required parameters make sense when there is no obvious default value.
+REQUIRED: Just a name. Must be provided when calling. Here: `dist` and `time`.
 
-Optional parameters make sense when there is a sensible default.
+OPTIONAL: Have a default value using `=`. Can be omitted when calling. Here: `dist_unit` and `time_unit`.
+
+Rules:
+- Required parameters must come BEFORE optional parameters
+- Avoid mutable defaults like lists or dictionaries (they're shared between calls!)
+
+Calling this function:
+- `get_pace(3, 54)` — uses defaults: "minutes per mile"
+- `get_pace(6, 0.9, time_unit="hour")` — override one default
+- `get_pace(16, 0.8, dist_unit="km", time_unit="hour")` — override both
 --
 
-// Required and optional
+=== `return` vs `print()`
 
-=== Calling functions with optional parameters
+*return* — defines the function's output value
 
-[source,python,role="fragment"]
-----
-def get_pace(dist, time, dist_unit="mile", time_unit="minute"):
-    """ Calculate a pace given a distance and time. """
-    print(time/dist, time_unit + "s per", dist_unit)
-----
-
-[.fragment]
---
-[source,python]
-----
-get_pace(3, 54)
-----
-
-[.output]
-----
-18.0 minutes per mile
-----
---
-
-[.fragment]
---
-[source,python]
-----
-get_pace(6, 0.9, time_unit="hour")
-----
-
-[.output]
-----
-0.15 hours per mile
-----
---
-
-[.fragment]
---
-[source,python]
-----
-get_pace(16, 0.8, dist_unit="kilometer", time_unit="hour")
-----
-
-[.output]
-----
-0.05 hours per kilometer
-----
---
-
-[.fragment]
---
-[source,python]
-----
-get_pace(16, 0.8, time_unit="hour", dist_unit="kilometer")
-----
-
-[.output]
-----
-0.05 hours per kilometer
-----
---
-
-=== `return` vs. `print()`
-
-[frame=none,grid=cols,cols="a,a",noheader]
-|===
-| `return` defines what your function will evaluate to when it is called
-| `print()` writes information to the console (or to a file or file-like object)
-
-| `return` communicates information to another part of a program
-| `print()` (usually) communicates information to the user
-
-| ``return``ed values are easy to test
-| ``print()``ed values are harder to test
-
-| Most functions should use `return` rather than `print()`
-| If it's important to show the user the result of a function, call the function, then `print()` the return value
-|===
+*print()* — displays text to the user
 
 [.notes]
 --
-Beginning students often confuse `return` and `print`, but they do very different things.
+Students confuse these constantly!
+
+RETURN:
+- Sends a value back to the calling code
+- The function call expression equals this value
+- You can use the returned value in further calculations
+- Nothing visible happens on screen
+
+PRINT:
+- Displays text on the console
+- Returns None
+- The displayed text cannot be used by your program
+- Only for human eyes
+
+Example:
+```python
+def add(a, b):
+    return a + b  # Good: result can be used
+
+result = add(3, 4)  # result is 7
+```
+
+vs.
+
+```python
+def add(a, b):
+    print(a + b)  # Bad: just displays, can't use result
+
+result = add(3, 4)  # result is None!
+```
+
+Rule: Functions should RETURN results. Print them separately if needed.
 --
 
-[.slide-in.none-out]
-=== Can you make sense of this?
+=== Can You Read This?
 
-[source,python,role="fragment"]
+[source,python]
 ----
 def f(n):
     if not isinstance(n, int):
@@ -845,238 +920,159 @@ def f(n):
 
 [.notes]
 --
-A while back, a former student of mine joined a computer science professor's research group. The first task he was given was to read and understand code written by a former member of the research group. Although the code was in Python, it was not well written. The variables and functions had terse names that didn't make their purpose clear; the algorithms were long and complicated; the comments were few and far between.
+Show this slide briefly, then ask: "What does this function do?"
 
-I want you to get a sesne of what this experience was like. Take a look at this code and see if you can figure out what it does, how you should call it, and what it will give you back.
+Give students 30 seconds to think about it.
+
+Problems:
+- Cryptic function name `f`
+- Cryptic variable name `fs`
+- No docstring
+- No comments
+- Algorithm is not obvious
+
+This is REAL code that a student had to decipher at a research job. Don't write code like this!
+
+Now show the next slide with the improved version...
 --
 
-[.none-in.slide-out]
-=== Can you make sense of this?
+=== Much Better!
 
-[source,python,role="bigcode"]
+[source,python]
 ----
 def factorize(n):
     """Find all prime factors of n.
-
+    
     Args:
-        n (int): number to factorize. Must be greater than 1.
+        n (int): number to factorize. Must be > 1.
     
     Returns:
-        list of int: a list of all prime factors of n. The product of
-        these numbers will be equal to n. Factors will be ordered from
-        smallest to largest.
-
-    Raises:
-        TypeError: value of n is not an integer.
-        ValueError: n is less than 2.
+        list of int: prime factors, smallest to largest.
     """
-    if not isinstance(n, int):
-        raise TypeError("n must be an integer")
-    if n < 2:
-        raise ValueError("n must be at least 2")
-    
+    # ... same algorithm with clear variable names
     factors = []
-    for i in range(2, int(n**0.5)+1):
-        while n % i == 0:
-            factors.append(i)
-            n //= i
-    # if n is not 1, it is also a prime factor
-    if n != 1:
-        factors.append(n)
+    # ... rest of code with comments
     return factors
 ----
 
-[.columns]
+[.notes]
+--
+Same algorithm, but now:
+- Descriptive function name: `factorize`
+- Descriptive variable name: `factors` instead of `fs`
+- Comprehensive docstring explaining:
+  - What the function does
+  - What arguments it takes
+  - What it returns
+  - What exceptions it might raise
+
+Comments explain non-obvious parts of the algorithm.
+
+Good code is READ more often than it's WRITTEN. Invest in readability!
+--
+
 === Docstrings
 
-[.column]
---
-* Purpose of function
-* Purpose of arguments and expected data types
-* Meaning and data type of return value
-* Exceptions the function might raise
-* Side effects the function might have
---
-
-[.column]
---
-[script,python]
-----
-"""Find all prime factors of n.
-
-Args:
-    n (int): number to factorize. Must
-        be greater than 1.
-
-Returns:
-    list of int: a list of all prime
-        factors of n. The product of
-        these numbers will be equal to
-        n. Factors will be ordered from
-        smallest to largest.
-
-Raises:
-    TypeError: value of n is not an
-        integer.
-    ValueError: n is less than 2.
-"""
-----
---
+* Purpose of the function
+* Arguments and their types
+* Return value and type
+* Exceptions that might be raised
 
 [.notes]
 --
-Docstrings are strings. They need to be the first statement in a function in order to be recognized as docstrings.
+A docstring is a string literal as the first statement in a function. Python recognizes it as documentation.
 
-Docstrings don't provide any information on the inner workings of a function, only the elements of the function that concern the "outside world".
+What to include:
+1. One-line summary of what the function does
+2. Blank line, then more detail if needed
+3. Args section: each parameter, its type, what it means
+4. Returns section: type and meaning of return value
+5. Raises section: exceptions and when they're raised
+
+Style: This is "Google style" docstrings. There are other styles (NumPy, Sphinx). Pick one and be consistent.
+
+Tools like `help()` and documentation generators use docstrings. So do IDEs for autocomplete hints.
+
+Minimum: Every function should have at least a one-line docstring saying what it does.
 --
 
-=== Summary
+=== Functions: Summary
 
-Functions are reusable sequences of instructions packaged as a unit
+* Functions package reusable code
+* Arguments: positional and keyword
+* Parameters: required and optional
+* Variables have scope (prefer local)
+* Use `return`, not `print()`
+* Write docstrings!
 
-* Arguments are values passed to functions as input
-** Positional arguments
-** Keyword arguments
-* Parameters are variables defined in a function header whose values correspond to the arguments
-** Required parameters
-** Optional parameters
-* Variables have scope
-* Docstrings communicate how to use a function
+[.notes]
+--
+Transition: "What happens when something goes wrong? Let's talk about exceptions."
+--
 
 == Exceptions
 
-When something goes wrong in a Python program, an exception is raised. Common exceptions include
-
-* `IndexError`: the specified index (e.g., of a list) is out of range
-* `KeyError`: the specified key (in a dictionary) is undefined
-* `NameError`: the specified name (of a variable, function, etc.) is undefined
-* `ValueError`: the specified value is incompatible with the requested operation or function (e.g., `int("hello")`)
-* `ZeroDivisionError`: the code tried to divide by zero
-
-[.slide-in.none-out]
-=== Stack traces
-
-image::call_stack01.svg[CallStack01]
-
+When something goes wrong, an exception is raised
 
 [.notes]
 --
-When Python runs a program, it keeps track of all the variables and resources the program is using. Since each function can have its own variables and resources, Python has to keep track of this information
+Exceptions are Python's way of signaling errors. When Python can't do what you asked, it raises an exception.
+
+Without handling, exceptions crash your program. But you can catch them and handle them gracefully.
+
+Different types of exceptions indicate different problems.
 --
 
-[.none]
-=== Stack traces
+=== Common Exceptions
 
-image::call_stack02.svg[CallStack02]
+*IndexError* — index out of range
 
-[.none]
-=== Stack traces
+*KeyError* — dictionary key doesn't exist
 
-image::call_stack03.svg[CallStack03]
+*NameError* — variable/function not defined
 
-[.none]
-=== Stack traces
+*ValueError* — wrong value for operation
 
-image::call_stack04.svg[CallStack04]
+*ZeroDivisionError* — divided by zero
 
-[.none]
-=== Stack traces
+[.notes]
+--
+INDEXERROR: `my_list[100]` when list only has 5 items.
 
-image::call_stack05.svg[CallStack05]
+KEYERROR: `my_dict["missing"]` when key doesn't exist.
 
-[.none]
-=== Stack traces
+NAMEERROR: Using a variable before defining it, or typo in variable name.
 
-image::call_stack06.svg[CallStack06]
+VALUEERROR: `int("hello")` — "hello" isn't a valid integer.
 
-[.none]
-=== Stack traces
+ZERODIVISIONERROR: Exactly what it sounds like.
 
-image::call_stack07.svg[CallStack07]
+When you see these, the error message tells you the line number where it happened. Read the message carefully!
+--
 
-[.none]
-=== Stack traces
+=== Stack Traces
 
-image::call_stack08.svg[CallStack08]
+image::call_stack01.svg[CallStack01]
 
-[.none]
-=== Stack traces
+[.notes]
+--
+When an exception occurs, Python shows you a "stack trace" (also called traceback).
 
-image::call_stack09.svg[CallStack09]
+The stack trace shows:
+- Where the error actually occurred (bottom of the trace)
+- How you got there (the chain of function calls)
 
-[.none]
-=== Stack traces
+Reading a stack trace:
+1. Start at the BOTTOM — that's where the actual error is
+2. Read the error type and message
+3. Look at the line of code shown
+4. If it's in your code, that's where to start debugging
+5. If it's in library code, trace back UP to find your code that caused it
 
-image::call_stack10.svg[CallStack10]
+The "stack" is the call stack — the chain of function calls that are currently active.
+--
 
-[.none]
-=== Stack traces
-
-image::call_stack11.svg[CallStack11]
-
-[.none]
-=== Stack traces
-
-image::call_stack12.svg[CallStack12]
-
-[.none]
-=== Stack traces
-
-image::call_stack13.svg[CallStack13]
-
-[.none]
-=== Stack traces
-
-image::call_stack14.svg[CallStack14]
-
-[.none]
-=== Stack traces
-
-image::call_stack15.svg[CallStack15]
-
-[.none]
-=== Stack traces
-
-image::call_stack16.svg[CallStack16]
-
-[.none]
-=== Stack traces
-
-image::call_stack17.svg[CallStack17]
-
-[.none]
-=== Stack traces
-
-image::call_stack18.svg[CallStack18]
-
-[.none]
-=== Stack traces
-
-image::call_stack19.svg[CallStack19]
-
-[.none]
-=== Stack traces
-
-image::call_stack20.svg[CallStack20]
-
-[.none]
-=== Stack traces
-
-image::call_stack21.svg[CallStack21]
-
-[.none]
-=== Stack traces
-
-image::call_stack22.svg[CallStack22]
-
-[.none]
-=== Stack traces
-
-image::call_stack23.svg[CallStack23]
-
-=== Raising exceptions
-
-Your code can raise exceptions using a `raise` statement:
+=== Raising Exceptions
 
 [source,python]
 ----
@@ -1085,84 +1081,99 @@ if response not in ['a', 'b', 'c']:
 ----
 
 [.notes]
-A `raise` statement consists of the keyword `raise` and an exception. It's a good idea to include an error message that explains why the exception got raised.
-
-[.columns]
-=== Handling exceptions
-
-[.column.nobullet.nosubbullet]
 --
-* `try` clause is mandatory, comes first
-** `try:` +
-``    ``[slot]#body#
-* Zero or more `except` clauses
-** `except:` +
-``    ``[slot]#body#
-*** Handles any exception; not recommended
-** `except` [slot]#exception#`:` +
-``    ``[slot]#body#
-** `except` [slot]#exception# `as` [slot]#varname#`:` +
-``    ``[slot]#body#
+Your code can raise exceptions too! Use this when the caller has done something wrong.
+
+Pattern: `raise ExceptionType("descriptive message")`
+
+Common exceptions to raise:
+- ValueError: Argument has wrong value
+- TypeError: Argument has wrong type
+- RuntimeError: Something went wrong during execution
+
+Always include a helpful error message. Future you will thank present you.
+
+This is better than returning error codes or None — it forces the issue to be dealt with.
 --
 
-[.column.nobullet.nosubbullet]
---
-* Optional `else` clause
-** `else:` +
-``    ``[slot]#body#
-*** Applies when no exception is encountered
-* Optional `finally` clause
-** `finally:` +
-``    ``[slot]#body#
-*** Applies whether or not an exception was encountered
-* A `try` statement needs a `finally` clause or at least one `except` clause
---
+=== Handling Exceptions
+
+[source,python]
+----
+try:
+    number = int(response)
+except ValueError:
+    print("Not a valid integer")
+else:
+    return number
+----
 
 [.notes]
 --
-If you anticipate that part of your code may raise an exception, you can enclose that code in a `try` statement
+Use try/except to handle exceptions gracefully.
+
+TRY: Code that might raise an exception.
+
+EXCEPT: What to do if that specific exception occurs. You can have multiple except blocks for different exceptions.
+
+ELSE (optional): Runs if NO exception occurred. Cleaner than putting code in the try block.
+
+FINALLY (not shown): Runs whether or not an exception occurred. Good for cleanup like closing files.
+
+Be specific about which exceptions you catch. Bare `except:` catches everything, including Ctrl+C, which makes your program hard to stop!
 --
 
-=== Exception handling example: input validation
-
-
+=== Exception Handling Example
 
 [source,python]
 ----
 def get_int():
-    """ Ask the user for an integer.
-    Repeat until the user enters a valid integer. """
+    """ Ask for an integer until valid. """
     while True:
         response = input("Enter an integer: ")
         try:
             number = int(response)
         except ValueError:
-            print("The value you entered is not an integer; please try again")
+            print("Invalid; try again")
         else:
             return number
 ----
 
-=== Summary
+[.notes]
+--
+This combines several concepts:
+- `while True` for input validation
+- `try/except` for handling invalid input
+- `else` to return only on success
 
-An exception is raised when something goes wrong in a Python program
+The flow:
+1. Ask for input
+2. Try to convert to int
+3. If ValueError, print message, loop back
+4. If no error, return the number (exits loop and function)
 
-* Exceptions propagate up the call stack
-* A stack trace gives you useful information for debugging
-* The `raise` statement allows your code to raise its own exceptions
-* Exceptions can be handled using `try` statements
+This is a very common pattern for robust input handling.
 
-// == Test
+Note: We don't catch all exceptions—just ValueError. If something else goes wrong (like the user hits Ctrl+C), it should propagate up.
+--
 
-// [frame=none,grid=none,cols="a,a"]
-// |===
-// |
-// --
-// This is some text
-// --
-// |
-// --
-// This is some more text
-// --
-// |===
+=== Exceptions: Summary
 
-// This is not in the table.
+* Exceptions signal errors
+* Stack traces help you debug
+* `raise` to signal errors from your code
+* `try/except` to handle errors gracefully
+
+[.notes]
+--
+Final summary for the section.
+
+Key takeaways:
+1. Read error messages carefully — they tell you what went wrong and where
+2. Stack traces read from bottom to top
+3. Raise exceptions for caller errors
+4. Handle exceptions you know how to recover from
+5. Let unexpected exceptions propagate
+
+That covers Python fundamentals! Questions?
+--

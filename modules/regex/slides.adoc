@@ -3,6 +3,7 @@
 :docinfo: shared
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
 :source-highlighter: highlightjs
+:highlightjs-theme: none
 :customcss: ../../css/default.css
 :revealjs_theme: black
 :revealjs_width: 1400

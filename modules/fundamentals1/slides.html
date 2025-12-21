@@ -413,163 +413,313 @@ ul.byline {
 ul.byline li + li {
   margin-top: 0.25em;
 }
-</style><link rel="stylesheet" href="../../css/default.css"></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-image="images/1024px-In_the_corn_field.jpg"><h1>Into the weeds</h1><h2>Python fundamentals</h2></section><section><section id="_statements"><h2>Statements</h2><div class="slide-content"><div class="ulist"><ul><li><p>A statement is a complete Python instruction</p></li><li><p>Two kinds of statements</p><div class="ulist"><ul><li><p>Simple</p></li><li><p>Compound</p></li></ul></div></li></ul></div></div></section><section id="_simple_statements_are_individual_instructions"><h2>Simple statements are individual instructions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x = 0</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">continue</code></pre></div></div>
+</style><link rel="stylesheet" href="../../css/default.css"></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-image="images/1024px-In_the_corn_field.jpg"><h1>Into the weeds</h1><h2>Python fundamentals</h2></section><section><section id="_statements"><h2>Statements</h2><div class="slide-content"><div class="paragraph"><p>A <strong>statement</strong> is a complete Python instruction</p></div><aside class="notes"><div class="paragraph"><p>Start by asking students: "What do you think makes up a Python program?" Guide them toward the idea that programs are made of instructions.</p></div>
+<div class="paragraph"><p>A statement is the fundamental building block of Python programs. Every line of code that does something is a statement. We&#8217;ll see there are two main types: simple and compound.</p></div></aside></div></section><section id="_two_kinds_of_statements"><h2>Two Kinds of Statements</h2><div class="slide-content"><div class="paragraph"><p><strong>Simple</strong> — one instruction</p></div>
+<div class="paragraph"><p><strong>Compound</strong> — contains other statements</p></div>
+<aside class="notes"><div class="paragraph"><p>Simple statements are single-line instructions that do one thing. Compound statements are more complex structures that contain other statements inside them.</p></div>
+<div class="paragraph"><p>Think of it like sentences vs. paragraphs. A simple statement is a sentence. A compound statement is a paragraph that contains multiple sentences working together.</p></div></aside></div></section><section id="_simple_statements"><h2>Simple Statements</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x = 0</code></pre></div></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">return True</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("Hello")</code></pre></div></div></div></section><section id="_compound_statements_contain_other_statements"><h2>Compound statements contain other statements</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">for word in wordlist:
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("Hello")</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Walk through each example:</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p><code>x = 0</code> — This is an assignment statement. It creates a variable x and gives it the value 0.</p></li><li><p><code>return True</code> — This returns a value from a function. We&#8217;ll cover functions later.</p></li><li><p><code>print("Hello")</code> — This calls the print function to display text.</p></li></ol></div>
+<div class="paragraph"><p>Each of these is complete on its own line. They don&#8217;t need anything else to work.</p></div>
+<div class="paragraph"><p>You can also mention <code>continue</code> as another simple statement example.</p></div></aside></div></section><section id="_compound_statements"><h2>Compound Statements</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">for word in wordlist:
     print(word)
     first_letter = word[0]</code></pre></div></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if score &gt;= 5:
     print("You win!")
 else:
-    print("Better luck next time.")</code></pre></div></div></div></section><section id="_anatomy_of_a_compound_statement"><h2>Anatomy of a compound statement</h2><div class="slide-content"><div class="imageblock"><img src="images/anatomy_of_complex_statement.png" alt="ComplexStatement"></div></div></section><section id="_summary"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>A statement is a complete Python instruction</p></div>
-<div class="ulist"><ul><li><p>Simple vs. compound statements</p></li><li><p>Elements of a compound statement</p><div class="ulist"><ul><li><p>Clause</p></li><li><p>Header</p></li><li><p>Body</p><div class="ulist"><ul><li><p>The body of a compound statement is always indented relative to the header</p></li></ul></div></li></ul></div></li></ul></div></div></section></section>
-<section><section id="_expressions"><h2>Expressions</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li><p>An expression is a chunk of code that evaluates to a value</p></li><li><p>Expressions appear in many Python statements</p><div class="ulist"><ul><li><p>Anywhere Python calls for a value, you can provide an expression</p></li></ul></div></li><li><p>Any expression that is a complete line of code is also a statement</p></li></ul></div></div></section><section id="_common_types_of_expressions"><h2>Common types of expressions</h2><div class="slide-content"><div class="openblock nosubbullet"><div class="content"><div class="ulist"><ul><li><p>Literal value (<code>5</code>, <code>"hi"</code>, <code>True</code>)</p><div class="ulist"><ul><li><p>evaluates to the value</p></li></ul></div></li><li><p>Variable</p><div class="ulist"><ul><li><p>evaluates to the value of the variable</p></li></ul></div></li><li><p>Function call (<code>abs(-4)</code>, <code>round(10.6)</code>)</p><div class="ulist"><ul><li><p>evaluates to the result of the function call</p></li></ul></div></li></ul></div></div></div></div></section><section id="_operators_allow_you_to_make_more_complex_expressions"><h2>Operators allow you to make more complex expressions</h2></section><section class="columns"><div class="slide-content"><div class="ulist nobullet column"><ul><li><p><code>+</code> addition</p></li><li><p><code>-</code> subtraction</p></li><li><p><code>*</code> multiplication</p></li><li><p><code>/</code> floating-point division</p></li><li><p><code>//</code> floor division</p></li><li><p><code>%</code> modulo operation</p></li><li><p><code>**</code> exponentiation</p></li></ul></div>
-<div class="ulist nobullet column"><ul><li><p><code>==</code> equality</p></li><li><p><code>!=</code> inequality</p></li><li><p><code>&gt;</code> greater than</p></li><li><p><code>&lt;</code> less than</p></li><li><p><code>&gt;=</code> greater than or equal</p></li><li><p><code>&lt;=</code> less than or equal</p></li></ul></div>
-<div class="ulist nobullet column"><ul><li><p><code>not</code> logical negation</p></li><li><p><code>and</code> logical conjunction</p></li><li><p><code>or</code> logical disjunction</p></li><li><p><code>in</code> membership</p></li><li><p><code>is</code> identity</p></li></ul></div></div></section><section id="_division_operators" class="columns"><h2>Division operators</h2><div class="slide-content"><div class="ulist column nosubbullet nobullet"><ul><li><p><code>/</code> performs "regular" (floating-point) division</p><div class="ulist"><ul><li><p><code>5 / 4</code> evaluates to <code>1.25</code></p></li><li><p><em>Floating-point math can be imprecise</em></p></li></ul></div></li><li><p><code>//</code> performs floor division (rounds down to the nearest integer)</p><div class="ulist"><ul><li><p><code>5 // 4</code> evaluates to <code>1</code></p></li><li><p><code>-5 // 4</code> evaluates to <code>-2</code></p></li></ul></div></li></ul></div>
-<div class="ulist column nosubbullet nobullet"><ul><li><p><code>%</code> gives you the remainder after division</p><div class="ulist"><ul><li><p><code>5 % 4</code> evaluates to <code>1</code></p></li><li><p><code>-5 % 4</code> evaluates to <code>3</code></p></li><li><p><em>Can be used to test parity (even/odd):</em><br>
-<code>x % 2</code> <em>is</em> <code>0</code> <em>if</em> <code>x</code> <em>is even,</em> <code>1</code> <em>otherwise</em></p></li></ul></div></li></ul></div></div></section><section id="_parentheses"><h2>Parentheses</h2><div class="slide-content"><div class="ulist"><ul><li><p>Parentheses are used for grouping, like in algebra</p></li><li><p>You can put parentheses around any expression</p></li><li><p>A parenthesized expression can contain line breaks</p><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">(  3 * x**3
+    print("Better luck next time.")</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Compound statements contain other statements inside them. Notice the colon at the end of the first line and the indentation of the lines that follow.</p></div>
+<div class="paragraph"><p>For the <code>for</code> loop: This iterates through a list of words. The two indented lines are the "body" of the loop—they run for each word.</p></div>
+<div class="paragraph"><p>For the <code>if</code> statement: This checks a condition and runs different code depending on whether it&#8217;s true or false.</p></div>
+<div class="paragraph"><p>Key observation: The body is always indented. This is how Python knows which statements belong inside the compound statement.</p></div></aside></div></section><section id="_anatomy_of_a_compound_statement"><h2>Anatomy of a Compound Statement</h2><div class="slide-content"><div class="imageblock"><img src="images/anatomy_of_complex_statement.png" alt="ComplexStatement"></div>
+<aside class="notes"><div class="paragraph"><p>Point to each part of the diagram as you explain:</p></div>
+<div class="paragraph"><p>CLAUSE: A complete unit within a compound statement. An if/elif/else has multiple clauses.</p></div>
+<div class="paragraph"><p>HEADER: The first line of a clause. It always ends with a colon. Contains keywords like <code>if</code>, <code>for</code>, <code>while</code>, <code>def</code>, etc.</p></div>
+<div class="paragraph"><p>BODY: The indented code that belongs to a clause. Can contain simple statements, other compound statements, or both.</p></div>
+<div class="paragraph"><p>Critical rule: The body MUST be indented relative to the header. Python uses indentation to determine structure, unlike languages that use braces.</p></div>
+<div class="paragraph"><p>Common student mistake: Forgetting the colon at the end of the header. Python will give a syntax error.</p></div></aside></div></section><section id="_statements_summary"><h2>Statements: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>A statement is a complete Python instruction</p></li><li><p><strong>Simple statements</strong> — individual instructions</p></li><li><p><strong>Compound statements</strong> — contain other statements</p></li><li><p>Bodies are always indented</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Quick recap before moving on. Ask students to give you an example of each type.</p></div>
+<div class="paragraph"><p>Transition: "Now let&#8217;s look at what goes inside statements—expressions."</p></div></aside></div></section></section>
+<section><section id="_expressions"><h2>Expressions</h2><div class="slide-content"><div class="paragraph"><p>An <strong>expression</strong> is code that evaluates to a value</p></div><aside class="notes"><div class="paragraph"><p>Key distinction: Statements DO something. Expressions PRODUCE something (a value).</p></div>
+<div class="paragraph"><p>Anywhere Python expects a value, you can put an expression. This is incredibly powerful—it means you can nest expressions inside other expressions.</p></div>
+<div class="paragraph"><p>Important: Any expression that stands alone on a line is also a statement (called an "expression statement").</p></div></aside></div></section><section id="_common_expression_types"><h2>Common Expression Types</h2><div class="slide-content"><div class="paragraph"><p><strong>Literals</strong> — <code>5</code>, <code>"hi"</code>, <code>True</code></p></div>
+<div class="paragraph"><p><strong>Variables</strong> — evaluate to their current value</p></div>
+<div class="paragraph"><p><strong>Function calls</strong> — <code>abs(-4)</code>, <code>round(10.6)</code></p></div>
+<aside class="notes"><div class="paragraph"><p>LITERALS: These are values written directly in your code. The number 5 is an expression that evaluates to&#8230;&#8203; 5. The string "hi" evaluates to the string "hi".</p></div>
+<div class="paragraph"><p>VARIABLES: When Python sees a variable name, it looks up the value and uses that. So if x equals 10, the expression <code>x</code> evaluates to 10.</p></div>
+<div class="paragraph"><p>FUNCTION CALLS: These run a function and evaluate to whatever the function returns. <code>abs(-4)</code> evaluates to 4. <code>round(10.6)</code> evaluates to 11.</p></div>
+<div class="paragraph"><p>You can combine these with operators to make more complex expressions.</p></div></aside></div></section><section id="_operators"><h2>Operators</h2><div class="slide-content"><table class="tableblock frame-none grid-none" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Arithmetic</strong></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Comparison</strong></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Logical</strong></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>+</code> <code>-</code> <code>*</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>==</code> <code>!=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>not</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code> <code>//</code> <code>%</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;</code> <code>&lt;</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>and</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>**</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>&gt;=</code> <code>&lt;=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>or</code></p></td></tr></table>
+<div class="paragraph"><p>Also: <code>in</code> (membership), <code>is</code> (identity)</p></div>
+<aside class="notes"><div class="paragraph"><p>ARITHMETIC: Standard math operators. Note there are THREE division operators—we&#8217;ll cover those next.</p></div>
+<div class="paragraph"><p>COMPARISON: These compare values and return True or False. Double equals for equality (single equals is assignment!).</p></div>
+<div class="paragraph"><p>LOGICAL: For combining boolean values. <code>not</code> flips True/False. <code>and</code> requires both to be true. <code>or</code> requires at least one to be true.</p></div>
+<div class="paragraph"><p>MEMBERSHIP: <code>in</code> checks if something is inside a collection. Very useful for strings and lists.</p></div>
+<div class="paragraph"><p>IDENTITY: <code>is</code> checks if two things are the exact same object in memory. Different from <code>==</code> which checks if values are equal.</p></div></aside></div></section><section id="_division_operators"><h2>Division Operators</h2><div class="slide-content"><div class="paragraph"><p><code>/</code> — floating-point division → <code>5 / 4</code> is <code>1.25</code></p></div>
+<div class="paragraph"><p><code>//</code> — floor division → <code>5 // 4</code> is <code>1</code></p></div>
+<div class="paragraph"><p><code>%</code> — modulo (remainder) → <code>5 % 4</code> is <code>1</code></p></div>
+<aside class="notes"><div class="paragraph"><p>This trips up students constantly. Take time here.</p></div>
+<div class="paragraph"><p>FLOATING-POINT DIVISION (<code>/</code>): Always gives you a decimal result, even if it divides evenly. <code>4 / 2</code> gives <code>2.0</code>, not <code>2</code>.</p></div>
+<div class="paragraph"><p>FLOOR DIVISION (<code>//</code>): Rounds DOWN to the nearest integer. For positive numbers, it&#8217;s like truncating. But <code>-5 // 4</code> is <code>-2</code>, not <code>-1</code>! It rounds toward negative infinity.</p></div>
+<div class="paragraph"><p>MODULO (<code>%</code>): Gives the remainder. Super useful for:
+- Testing if a number is even: <code>x % 2 == 0</code>
+- Wrapping around (like clock arithmetic)
+- Extracting digits from numbers</p></div>
+<div class="paragraph"><p>Common student confusion: They use <code>/</code> when they want <code>//</code>, then wonder why they&#8217;re getting floats.</p></div>
+<div class="paragraph"><p>Mention: Floating-point math can be imprecise due to how computers store decimals. <code>0.1 + 0.2</code> is not exactly <code>0.3</code>.</p></div></aside></div></section><section id="_parentheses"><h2>Parentheses</h2><div class="slide-content"><div class="paragraph"><p>Used for grouping, just like algebra</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">(  3 * x**3
  + 4 * x**2
  - 2 * x
- + 1)</code></pre></div></div></li></ul></div></div></section><section id="_summary_2"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>An expression is a chunk of code that evaluates to a value</p></div>
-<div class="ulist"><ul><li><p>Simple expressions include literal values, variables, and function calls</p></li><li><p>You can use operators to make more complex expressions</p><div class="ulist"><ul><li><p>Mind the differences between division operators (<code>/</code>, <code>//</code>, <code>%</code>)</p></li></ul></div></li><li><p>Parentheses in expressions are used for grouping (as in algebra)</p></li></ul></div></div></section></section>
-<section><section id="_variables"><h2>Variables</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li><p>Variables in Python are labels attached to values</p><div class="ulist"><ul><li><p>Multiple labels can be attached to the same value</p></li></ul></div></li><li><p>Variable names can consist of letters, numbers, and underscores</p><div class="ulist"><ul><li><p>Variable names can&#8217;t start with numbers</p></li><li><p>Can&#8217;t use keywords (<code>if</code>, <code>return</code>, <code>def</code>, etc.) as variable names</p></li><li><p>Shouldn&#8217;t use function names (<code>print</code>, <code>list</code>, <code>round</code>, etc.) as variable names</p></li><li><p>By convention, avoid capital letters in variable names</p></li></ul></div></li></ul></div></div></section><section id="_variable_assignment"><h2>Variable assignment</h2><div class="slide-content"><div class="paragraph"><p><span class="slot">variable</span> <code>=</code> <span class="slot">expression</span></p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">name = "Gina"</code></pre></div></div>
+ + 1)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Parentheses work exactly like in math class—they force certain operations to happen first.</p></div>
+<div class="paragraph"><p>BONUS: A parenthesized expression can span multiple lines! This is really useful for long calculations or conditions. No backslashes needed.</p></div>
+<div class="paragraph"><p>This is cleaner than using backslashes for line continuation.</p></div>
+<div class="paragraph"><p>Operator precedence exists (PEMDAS-like), but when in doubt, use parentheses to make your intent clear.</p></div></aside></div></section><section id="_expressions_summary"><h2>Expressions: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Expressions evaluate to values</p></li><li><p>Types: literals, variables, function calls</p></li><li><p>Operators combine expressions</p></li><li><p>Division: <code>/</code> vs <code>//</code> vs <code>%</code></p></li><li><p>Parentheses for grouping</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition: "Now that we know about expressions, let&#8217;s talk about storing values in variables."</p></div></aside></div></section></section>
+<section><section id="_variables"><h2>Variables</h2><div class="slide-content"><div class="paragraph"><p>Variables are <strong>labels</strong> attached to values</p></div><aside class="notes"><div class="paragraph"><p>Important mental model: Variables in Python are NOT boxes that hold values. They&#8217;re labels or name tags attached to values.</p></div>
+<div class="paragraph"><p>This means multiple variables can point to the same value. If you do <code>a = [1,2,3]</code> and then <code>b = a</code>, both variables point to the SAME list. Changing the list through <code>a</code> affects what you see through <code>b</code>.</p></div>
+<div class="paragraph"><p>This is different from languages like C where variables are memory locations.</p></div></aside></div></section><section id="_variable_naming_rules"><h2>Variable Naming Rules</h2><div class="slide-content"><div class="ulist"><ul><li><p>Letters, numbers, underscores only</p></li><li><p>Cannot start with a number</p></li><li><p>Cannot use keywords (<code>if</code>, <code>return</code>, <code>def</code>)</p></li><li><p>Avoid function names (<code>print</code>, <code>list</code>, <code>round</code>)</p></li><li><p>Convention: use lowercase</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>CANNOT START WITH NUMBER: <code>2fast</code> is invalid, but <code>fast2</code> is fine.</p></div>
+<div class="paragraph"><p>KEYWORDS: Python reserves certain words. You&#8217;ll get a syntax error if you try to use them as variable names.</p></div>
+<div class="paragraph"><p>FUNCTION NAMES: You CAN use these, but you&#8217;ll break the function! If you do <code>print = 5</code>, you can no longer use the print function. Very common beginner mistake.</p></div>
+<div class="paragraph"><p>CONVENTION: Python uses <code>snake_case</code> for variables (lowercase with underscores). <code>CamelCase</code> is reserved for class names. Following conventions makes your code readable to other Python programmers.</p></div>
+<div class="paragraph"><p>Good names: <code>user_age</code>, <code>total_score</code>, <code>first_name</code>
+Bad names: <code>x</code>, <code>data</code>, <code>temp</code> (unless truly temporary)</p></div></aside></div></section><section id="_variable_assignment"><h2>Variable Assignment</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">name = "Gina"</code></pre></div></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">area = width * height</code></pre></div></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">nearest_int = round(5.3)</code></pre></div></div>
-<div class="paragraph"><p>Variable assignment statements are not expressions</p></div></div></section><section id="_augmented_assignment"><h2>Augmented assignment</h2><div class="slide-content"><table class="tableblock frame-none grid-none" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="openblock rightborder"><div class="content"><div class="paragraph"><p>Common task:</p></div>
-<div class="ulist"><ul><li><p>Take a variable</p></li><li><p>Do some operation on the value of the variable</p></li><li><p>Assign the result of the operation to the variable</p></li></ul></div></div></div></div></td><td class="tableblock halign-left valign-top"><div><div class="openblock rightborder"><div class="content"><div class="paragraph"><p>Python gives us a set of augmented assignment operators to simplify this process:</p></div>
-<table class="tableblock frame-none grid-none" style="width:100%"><colgroup><col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>+=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>-=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>*=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>**=</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>/=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>//=</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock"><code>%=</code></p></td><td class="tableblock halign-left valign-top"></td></tr></table></div></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="openblock rightborder"><div class="content"><div class="paragraph"><p>Example:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x = x + 1</code></pre></div></div></div></div></div></td><td class="tableblock halign-left valign-top"><div><div class="openblock rightborder"><div class="content"><div class="paragraph"><p>Example:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x += 1</code></pre></div></div></div></div></div></td></tr></table>
-<aside class="notes"><div class="paragraph"><p>A common programming task is to perform an operation on a value stored in a variable and redefine the variable to the result of the operation (for example, add one to <code>x</code>). Python gives us a set of operators to make this task a little easier.</p></div></aside></div></section><section id="_summary_3"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>Variables in Python are labels attached to values</p></div>
-<div class="ulist"><ul><li><p>Variable assignment is usually done with <code>=</code></p></li><li><p>Variables can be updated with augmented assignment operators (e.g., <code>+=</code>)</p></li></ul></div></div></section></section>
-<section><section id="_conditional_statements" class="columns"><h2>Conditional statements</h2><div class="slide-content"><div class="ulist column nobullet nosubbullet"><ul><li><p><code>if</code> clause is mandatory, comes first</p><div class="ulist"><ul><li><p><code>if</code> <span class="slot">condition</span><code>:</code><br>
-<code>    </code><span class="slot">body</span></p></li></ul></div></li><li><p>Zero or more <code>elif</code> clauses</p><div class="ulist"><ul><li><p><code>elif</code> <span class="slot">condition</span><code>:</code><br>
-<code>    </code><span class="slot">body</span></p></li></ul></div></li><li><p>Zero or one <code>else</code> clause</p><div class="ulist"><ul><li><p><code>else:</code><br>
-<code>    </code><span class="slot">body</span></p></li></ul></div></li></ul></div><div class="openblock column"><div class="content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if temp &lt;= 0:
+<aside class="notes"><div class="paragraph"><p>The pattern: variable = expression</p></div>
+<div class="paragraph"><p>Python evaluates the RIGHT side first, then attaches the label to that value.</p></div>
+<div class="paragraph"><p>Example 1: Creates a string "Gina" and labels it <code>name</code>.</p></div>
+<div class="paragraph"><p>Example 2: Multiplies width by height, then labels the result <code>area</code>. Note: width and height must already exist!</p></div>
+<div class="paragraph"><p>Example 3: Calls round(5.3), which returns 5, then labels that 5 as <code>nearest_int</code>.</p></div>
+<div class="admonitionblock important"><table><tr><td class="icon"><div class="title">Important</div></td><td class="content">Assignment statements are NOT expressions. You cannot do <code>print(x = 5)</code> like in some other languages. (Python 3.8+ has the walrus operator <code>:=</code> for this, but that&#8217;s advanced.)</td></tr></table></div></aside></div></section><section id="_augmented_assignment"><h2>Augmented Assignment</h2><div class="slide-content"><div class="paragraph"><p>Instead of: <code>x = x + 1</code></p></div>
+<div class="paragraph"><p>Write: <code>x += 1</code></p></div>
+<div class="paragraph"><p>Available: <code>+=</code> <code>-=</code> <code><strong>=</code> <code>/=</code> <code>//=</code> <code>%=</code> <code></strong>*=</code></p></div>
+<aside class="notes"><div class="paragraph"><p>This is syntactic sugar for a very common pattern: update a variable based on its current value.</p></div>
+<div class="paragraph"><p><code>x += 1</code> means "take the current value of x, add 1, and store it back in x."</p></div>
+<div class="paragraph"><p>All the arithmetic operators have augmented versions. You&#8217;ll use <code>+=</code> most often.</p></div>
+<div class="paragraph"><p>Common use cases:
+- Counting: <code>count += 1</code>
+- Accumulating sums: <code>total += price</code>
+- Building strings: <code>message += " more text"</code></p></div>
+<div class="paragraph"><p>Note: These are still statements, not expressions.</p></div></aside></div></section><section id="_variables_summary"><h2>Variables: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Variables are labels attached to values</p></li><li><p>Assignment: <code>variable = expression</code></p></li><li><p>Augmented assignment: <code>+=</code>, <code>-=</code>, etc.</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition: "Now let&#8217;s look at how to make decisions in our code."</p></div></aside></div></section></section>
+<section><section id="_conditional_statements"><h2>Conditional Statements</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if temp &lt;= 0:
     water_state = "ice"
 elif temp &lt;= 100:
     water_state = "water"
 else:
-    water_state = "steam"</code></pre></div></div>
-<div class="paragraph"><p><br></p></div>
-<div class="ulist"><ul><li><p>At most one clause gets executed</p></li><li><p>Conditions in a conditional statement are expressions</p></li></ul></div></div></div></div></section><section id="_elif_vs_if" class="columns"><h2><code>elif</code> vs. <code>if</code></h2><div class="slide-content"><div class="openblock column leftalign"><div class="content"><div class="paragraph"><p>Compare:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if temp &lt;= 0:
+    water_state = "steam"</code></pre></div></div><aside class="notes"><div class="paragraph"><p>Conditional statements let your program make decisions.</p></div>
+<div class="paragraph"><p>Walk through the example: We&#8217;re determining the state of water based on temperature (in Celsius).</p></div>
+<div class="ulist"><ul><li><p>If temp is 0 or below → ice</p></li><li><p>Otherwise, if temp is 100 or below → water</p></li><li><p>Otherwise → steam</p></li></ul></div>
+<div class="paragraph"><p>Only ONE of these three branches will execute. Once a condition is true, Python runs that branch and skips the rest.</p></div></aside></div></section><section id="_structure"><h2>Structure</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>if</code> — required, comes first</p></li><li><p><code>elif</code> — zero or more</p></li><li><p><code>else</code> — zero or one, comes last</p></li></ul></div>
+<div class="paragraph"><p>Only <strong>one</strong> branch executes!</p></div>
+<aside class="notes"><div class="paragraph"><p>IF: Always required. Must have at least one <code>if</code>.</p></div>
+<div class="paragraph"><p>ELIF: "Else if" — only checked if previous conditions were false. You can have as many as you need, or none at all.</p></div>
+<div class="paragraph"><p>ELSE: Catches everything that didn&#8217;t match above. No condition needed—it&#8217;s the default. Optional.</p></div>
+<div class="paragraph"><p>Critical point: At most ONE branch executes. As soon as Python finds a true condition, it runs that branch and skips checking the rest. This is why order matters!</p></div></aside></div></section><section id="_elif_vs_if"><h2><code>elif</code> vs <code>if</code></h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Using elif
+if temp &lt;= 0:
     water_state = "ice"
 elif temp &lt;= 100:
-    water_state = "water"
-else:
-    water_state = "steam"</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if temp &lt;= 0:
+    water_state = "water"</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Using if
+if temp &lt;= 0:
     water_state = "ice"
 if temp &lt;= 100:
-    water_state = "water"
-else:
-    water_state = "steam"</code></pre></div></div></div></div>
-<div class="openblock column fragment"><div class="content"><div class="paragraph"><p>What if the value of <code>temp</code> is</p></div>
-<div class="ulist"><ul><li class="fragment"><p>120?</p></li><li class="fragment"><p>15?</p></li><li class="fragment"><p>-10?</p></li></ul></div></div></div></div></section><section id="_boolean_contexts"><h2>Boolean contexts</h2><div class="slide-content"><div class="ulist"><ul><li><p>Conditions are <em>Boolean contexts</em>: Python converts the result of these expressions to <code>True</code> or <code>False</code></p></li><li><p>Most values are "truthy". The following are "falsy":</p><div class="ulist"><ul><li><p><code>0</code> and <code>0.0</code></p></li><li><p>Empty collections (e.g., empty string, empty list, empty dictionary)</p></li><li><p><code>None</code></p></li></ul></div></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>truthy: a value considered True in a Boolean context</p></div></aside></div></section><section id="_example_non_boolean_value_in_a_boolean_context"><h2>Example: non-Boolean value in a Boolean context</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">answer = input("What is your favorite color? ")
-if answer:
+    water_state = "water"</code></pre></div></div>
+<div class="paragraph"><p>What happens when temp is -10?</p></div>
+<aside class="notes"><div class="paragraph"><p>This is a CRITICAL distinction that confuses students.</p></div>
+<div class="paragraph"><p>WITH ELIF: If temp is -10, the first condition is true, so water_state becomes "ice". The elif is SKIPPED because we already found a match. Final answer: "ice"</p></div>
+<div class="paragraph"><p>WITH SEPARATE IFS: If temp is -10, the first if is true, so water_state becomes "ice". But then Python checks the SECOND if independently. Is -10 &#8656; 100? Yes! So water_state gets overwritten to "water". Final answer: "water" — WRONG!</p></div>
+<div class="paragraph"><p>Rule: Use <code>elif</code> when conditions are mutually exclusive and you only want one to run. Use separate <code>if</code> statements when you want to check each condition independently.</p></div>
+<div class="paragraph"><p>Test the students: What happens with temp = 15? With temp = 120?</p></div></aside></div></section><section id="_boolean_contexts"><h2>Boolean Contexts</h2><div class="slide-content"><div class="paragraph"><p>Conditions are <strong>Boolean contexts</strong></p></div>
+<div class="paragraph"><p>Most values are "truthy"</p></div>
+<div class="paragraph"><p>Falsy values: <code>0</code>, <code>0.0</code>, empty collections, <code>None</code></p></div>
+<aside class="notes"><div class="paragraph"><p>When Python needs a True/False answer, it converts values automatically.</p></div>
+<div class="paragraph"><p>TRUTHY: Most things. Any non-zero number, any non-empty string, any non-empty list, etc.</p></div>
+<div class="paragraph"><p>FALSY (memorize these):
+- Zero (integer 0 or float 0.0)
+- Empty string ""
+- Empty list []
+- Empty dictionary {}
+- None
+- False (obviously)</p></div>
+<div class="paragraph"><p>This is useful! Instead of <code>if len(my_list) &gt; 0:</code> you can just write <code>if my_list:</code></p></div>
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">answer = input("Enter something: ")
+if answer:    # True if they typed anything
     print("You entered:", answer)
 else:
-    print("You didn't enter anything")</code></pre></div></div></div></section><section id="_conditional_expressions"><h2>Conditional expressions</h2><div class="slide-content"><div class="paragraph"><p><span class="slot">expression1</span> <code>if</code> <span class="slot">condition</span> <code>else</code> <span class="slot">expression2</span></p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">status = "minor" if age &lt; 18 else "adult"</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("¡Hola!" if lang="es" else "Hello!")</code></pre></div></div>
-<div class="openblock fragment"><div class="content"><div class="paragraph"><p><br></p></div>
-<div class="paragraph"><p>Note that <span class="slot">expression2</span> can be another conditional expression:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">water_state = ("ice"   if temp &lt;=   0 else
-               "water" if temp &lt;= 100 else
-               "steam")</code></pre></div></div></div></div>
-<aside class="notes"><div class="paragraph"><p>A conditional expression evaluates to one of two values depending on whether a condition is satisfied.</p></div>
-<div class="paragraph"><p>Python starts by evaluating <span class="slot">condition</span>. If it is truthy, the entire conditional expression evaluates to the result of <span class="slot">expression1</span>; otherwise, the entire conditional expression evaluates to the result of <span class="slot">expression2</span>.</p></div>
-<div class="paragraph"><p>Conditional expressions can be chained; there always has to be a final "else" part.</p></div></aside></div></section><section id="_conditional_statements_vs_conditional_expressions"><h2>Conditional statements vs. conditional expressions</h2><div class="slide-content"><table class="tableblock frame-none grid-cols" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>Conditional statements execute code if certain conditions are met; <code>elif</code> and <code>else</code> clauses are optional</p></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>Conditional expressions evaluate to one of two values depending on a condition; <code>else</code> component is required</p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if today == user_birthday:
-    print("Happy birthday!")
-else:
-    print("Have a nice day!")</code></pre></div></div></div></td><td class="tableblock halign-left valign-top"><div><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("Happy birthday!"
-      if today == user_birthday
-      else "Have a nice day!")</code></pre></div></div></div></td></tr></table></div></section><section id="_summary_4"><h2>Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Conditional statements execute code conditionally</p></li><li><p>Conditional expressions evaluate to one of two values depending on a condition</p></li><li><p>Conditions are Boolean contexts</p></li></ul></div></div></section></section>
-<section><section id="_loops"><h2>Loops</h2><div class="slide-content"><div class="paragraph"><p>Loops let us repeat instructions. Two kinds:</p></div><div class="ulist"><ul><li><p><code>for</code> loops: number of iterations is known in advance</p></li><li><p><code>while</code> loops: number of iterations is not known in advance</p></li></ul></div><aside class="notes"><div class="paragraph"><p>Both kinds of loops are compound statements.</p></div></aside></div></section><section id="_for_loops" class="columns"><h2><code>for</code> loops</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="paragraph"><p><code>for</code> <span class="slot">varname</span> <code>in</code> <span class="slot">iterable</span>:<br>
-<code>    </code><span class="slot">body</span></p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("The first ten"
-      " triangular numbers:")
-t = 0
-for i in range(1, 11):
+    print("You didn't enter anything")</code></pre></div></div></aside></div></section><section id="_conditional_expressions"><h2>Conditional Expressions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">status = "minor" if age &lt; 18 else "adult"</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>This is Python&#8217;s ternary operator—a one-liner for simple if/else.</p></div>
+<div class="paragraph"><p>Pattern: <code>value_if_true if condition else value_if_false</code></p></div>
+<div class="paragraph"><p>Read it as: "status equals 'minor' IF age is less than 18, ELSE 'adult'"</p></div>
+<div class="paragraph"><p>The else part is REQUIRED (unlike in conditional statements).</p></div>
+<div class="paragraph"><p>Use these for simple cases. If your logic is complex, use a regular if/else statement—readability matters more than brevity.</p></div>
+<div class="paragraph"><p>You can chain them:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">water_state = "ice" if temp &lt;= 0 else "water" if temp &lt;= 100 else "steam"</code></pre></div></div>
+<div class="paragraph"><p>But this gets hard to read quickly.</p></div></aside></div></section><section id="_conditionals_summary"><h2>Conditionals: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Conditional <strong>statements</strong> execute code</p></li><li><p>Conditional <strong>expressions</strong> produce values</p></li><li><p>Conditions are Boolean contexts</p></li><li><p>Use <code>elif</code> for mutually exclusive conditions</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition: "What if we want to repeat code multiple times? That&#8217;s where loops come in."</p></div></aside></div></section></section>
+<section><section id="_loops"><h2>Loops</h2><div class="slide-content"><div class="paragraph"><p>Loops let us repeat instructions</p></div><div class="paragraph"><p><strong>for</strong> — iterations known in advance</p></div><div class="paragraph"><p><strong>while</strong> — iterations not known in advance</p></div><aside class="notes"><div class="paragraph"><p>Both types are compound statements with headers and bodies.</p></div>
+<div class="paragraph"><p>FOR loops: Use when you know how many times to iterate, or when you&#8217;re iterating over a collection.</p></div>
+<div class="paragraph"><p>WHILE loops: Use when you need to repeat until some condition changes, and you don&#8217;t know in advance when that will be.</p></div></aside></div></section><section id="_for_loops"><h2><code>for</code> Loops</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">for i in range(1, 11):
     t += i
-    print(t)</code></pre></div></div></div></div>
-<div class="openblock column"><div class="content"><div class="ulist"><ul><li class="fragment"><p><span class="slot">iterable</span> is a sequence (such as a string or a list) or sequence-like object (such as a <code>range</code> object).</p></li><li class="fragment"><p><span class="slot">varname</span> is called the <em>iteration variable</em>. It is created and populated by the <code>for</code> loop.</p></li><li class="fragment"><p>There will be one iteration of the loop for every item in <span class="slot">iterable</span>.</p></li></ul></div></div></div></div></section><section id="_while_loops" class="columns"><h2><code>while</code> loops</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="paragraph"><p><code>while</code> <span class="slot">condition</span>:<br>
-<code>    </code><span class="slot">body</span></p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">n = 1
+    print(t)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Pattern: <code>for variable in iterable:</code></p></div>
+<div class="paragraph"><p>ITERABLE: Something you can iterate over—a list, string, range, file, etc.</p></div>
+<div class="paragraph"><p>ITERATION VARIABLE: Created by the for loop. Takes on each value from the iterable in turn. In this example, i will be 1, then 2, then 3&#8230;&#8203; up to 10.</p></div>
+<div class="paragraph"><p>Note: <code>range(1, 11)</code> gives you 1 through 10. The end value is exclusive! This trips up students.</p></div>
+<div class="paragraph"><p>The body runs once for each item. Here we&#8217;re calculating triangular numbers (1, 3, 6, 10, 15&#8230;&#8203;).</p></div>
+<div class="paragraph"><p>Common uses:
+- <code>for item in my_list:</code> — process each item
+- <code>for char in my_string:</code> — process each character
+- <code>for i in range(n):</code> — repeat n times</p></div></aside></div></section><section id="_while_loops"><h2><code>while</code> Loops</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">n = 1
 while n &lt; 1000:
     n *= 3
-print("The first power of 3 greater"
-      " than 1000 is", n)</code></pre></div></div></div></div>
-<div class="openblock column"><div class="content"><div class="ulist"><ul><li class="fragment"><p><span class="slot">condition</span> is an expression.</p></li><li class="fragment"><p>The loop iterates as long as <span class="slot">condition</span> evaluates to <code>True</code> (or another truthy value).</p></li></ul></div></div></div></div></section><section id="_altering_flow_of_control_in_a_loop"><h2>Altering flow of control in a loop</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p><code>continue</code> ends the current iteration of a loop. The loop moves on to the next iteration, if there is one; otherwise it terminates.</p></li><li class="fragment"><p><code>break</code> causes a loop to terminate. Control passes to the code after the loop.</p></li><li class="fragment"><p><code>return</code> terminates both a loop and the function it is in. Control passes to the statement that called the function.</p></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>We&#8217;ll take a look at these in a second, but first, I want to introduce an important Python idiom related to while loops: while True.</p></div></aside></div></section><section id="_while_true"><h2><code>while True:</code></h2><div class="slide-content"><div class="ulist"><ul><li><p>Ensures the body of a loop executes at least once</p></li><li><p>Loop should contain <code>break</code> or <code>return</code> so that it is not infinite</p></li></ul></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_selection():
-    """ Ask the user to select 'a' or 'b'. Return their selection. """
-    while True:
-        response = input("Choose 'a' or 'b': ")
-        if response in ['a', 'b']:
-            return response
-        # if we didn't return, the user made an invalid choice
-        print("Sorry, that's not one of the choices.")</code></pre></div></div>
-<aside class="notes"><div class="paragraph"><p>We said earlier that the header of a while loop contains a condition, which is an expression in a Boolean context. As long as that expression evaluates to True or some other truthy value, the loop continues to iterate. Well, the ultimate truthy expression is the value True. But, I hear you asking, wouldn&#8217;t that create an infinite loop? And it definitely could. To make it work, you need some other way to end the loop, such as <code>break</code> or <code>return.</code></p></div>
-<div class="paragraph"><p>So why would you want to do this? Well, it&#8217;s very common to want the body of a loop to execute at least once and possibly more times. In the code on this slide, we want to ask the user at least once to make a choice, and we want to keep asking until they make a valid choice. <code>while True</code> works well for this situation.</p></div></aside></div></section><section id="_example_with_continue_and_break" class="columns"><h2>Example with <code>continue</code> and <code>break</code></h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="paragraph"><p>Imagine we need to extract some information from a file. Here are the rules we will follow to get the information we need:</p></div>
-<div class="ulist"><ul><li><p>Ignore lines that start with <code>#</code></p></li><li><p>Stop reading the file if we encounter a line consisting of four hyphens</p></li><li><p>Make a list containing the text of other lines in the file</p></li></ul></div></div></div>
-<div class="listingblock column"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">data = list()
-f = open('somefile.txt')
+print(n)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Pattern: <code>while condition:</code></p></div>
+<div class="paragraph"><p>The loop keeps running AS LONG AS the condition is true. When it becomes false, the loop ends.</p></div>
+<div class="paragraph"><p>DANGER: If the condition never becomes false, you have an infinite loop! Always make sure something in the body can change the condition.</p></div>
+<div class="paragraph"><p>This example finds the first power of 3 greater than 1000. We start at 1 and keep multiplying by 3 until we exceed 1000.</p></div>
+<div class="paragraph"><p>Trace through: n=1, n=3, n=9, n=27, n=81, n=243, n=729, n=2187 (stops here because 2187 &gt;= 1000).</p></div>
+<div class="paragraph"><p>Use while when:
+- Waiting for user to enter valid input
+- Reading until end of file
+- Searching for something
+- Any situation where you don&#8217;t know the count beforehand</p></div></aside></div></section><section id="_while_true"><h2><code>while True:</code></h2><div class="slide-content"><div class="paragraph"><p>Guarantees at least one iteration</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">while True:
+    response = input("Choose 'a' or 'b': ")
+    if response in ['a', 'b']:
+        return response
+    print("Invalid choice.")</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p><code>while True</code> creates an intentionally infinite loop. You MUST have a <code>break</code> or <code>return</code> inside to exit!</p></div>
+<div class="paragraph"><p>Why use it? When you want the body to run AT LEAST ONCE before checking a condition.</p></div>
+<div class="paragraph"><p>This pattern is called a "do-while" in other languages. Python doesn&#8217;t have do-while, so we use <code>while True</code> with a break/return.</p></div>
+<div class="paragraph"><p>Perfect for input validation: Ask for input, check if it&#8217;s valid, return if yes, otherwise show error and ask again.</p></div>
+<div class="paragraph"><p>Common mistake: Forgetting the exit condition and creating an actual infinite loop. Always have a clear path out!</p></div></aside></div></section><section id="_loop_control"><h2>Loop Control</h2><div class="slide-content"><div class="paragraph"><p><strong>continue</strong> — skip to next iteration</p></div>
+<div class="paragraph"><p><strong>break</strong> — exit the loop entirely</p></div>
+<div class="paragraph"><p><strong>return</strong> — exit loop and function</p></div>
+<aside class="notes"><div class="paragraph"><p>CONTINUE: Stops the current iteration and jumps back to the top of the loop. For <code>for</code> loops, moves to the next item. For <code>while</code> loops, re-checks the condition.</p></div>
+<div class="paragraph"><p>BREAK: Immediately exits the loop. Code continues after the loop.</p></div>
+<div class="paragraph"><p>RETURN: Exits both the loop AND the function it&#8217;s in. Only works inside functions.</p></div>
+<div class="paragraph"><p>Use cases:
+- Continue: Skip items that don&#8217;t meet criteria
+- Break: Found what you&#8217;re looking for, no need to keep searching
+- Return: Ready to give back a result</p></div></aside></div></section><section id="_loop_control_example"><h2>Loop Control Example</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">data = list()
 for line in f:
     line = line.strip()
     if line[0] == "#":
-        continue
+        continue       # skip comments
     if line == "----":
-        break
-    data.append(line)
-f.close()</code></pre></div></div>
-<aside class="notes"><div class="paragraph"><p>Imagine we need to read in text from a file in a particular format. We should ignore lines that start with #, as well as all lines after a line consisting of four hyphens. We should store the remaining lines in a list. The code at right uses <code>continue</code> when it encounters the # sign to move on to the next line, and <code>break</code> when it encounters four hyphens because at that point we don&#8217;t care about the rest of the file.</p></div></aside></div></section><section id="_summary_5"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>Loops let us repeat instructions</p></div>
-<div class="ulist"><ul><li><p><code>for</code> loops iterate a definite number of times</p></li><li><p><code>while</code> loops iterate until a condition is false/falsy</p><div class="ulist"><ul><li><p><code>while True</code> guarantees at least one iteration</p></li></ul></div></li><li><p>The flow of control in a loop can be altered using</p><div class="ulist"><ul><li><p><code>continue</code></p></li><li><p><code>break</code></p></li><li><p><code>return</code> (only if the loop is in a function)</p></li></ul></div></li></ul></div></div></section></section>
-<section><section id="_functions" class="columns"><h2>Functions</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="ulist"><ul><li><p>Reusable sequences of instructions packaged as a unit</p></li><li><p>Can take input values (arguments)</p></li><li><p>Can return a value</p></li></ul></div></div></div><div class="openblock column"><div class="content"><div class="paragraph"><p>Some built-in functions you should know:</p></div>
-<table class="tableblock frame-none grid-none" style="width:100%"><colgroup><col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3334%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="ulist nobullet"><ul><li><p><code>print</code></p></li><li><p><code>abs</code></p></li></ul></div></div></td><td class="tableblock halign-left valign-top"><div><div class="ulist nobullet"><ul><li><p><code>round</code></p></li><li><p><code>float</code></p></li></ul></div></div></td><td class="tableblock halign-left valign-top"><div><div class="ulist nobullet"><ul><li><p><code>int</code></p></li><li><p><code>str</code></p></li></ul></div></div></td></tr></table></div></div></div></section><section id="_calling_functions"><h2>Calling functions</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li><p>All function calls include the function name followed by parentheses</p></li><li><p>Many functions take arguments; these go inside the parentheses</p><div class="ulist"><ul><li><p>Arguments can be expressions</p></li></ul></div></li><li><p>Function calls are expressions; they evaluate to the return value of the function</p></li></ul></div>
-<div class="paragraph"><p>Examples:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print()              # function call with no arguments</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x = abs(-10)         # function call with one argument</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">n = round(14.723, 2) # function call with two arguments</code></pre></div></div></div></section><section id="_two_kinds_of_arguments"><h2>Two kinds of arguments</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("Hello", "world!", sep="::", end="\n--\n")</code></pre></div></div>
-<div class="ulist nosubbullet"><ul><li><p><code>"Hello"</code> and <code>"world!"</code> are <em>positional arguments</em></p></li><li><p><code>sep="::"</code> and <code>end="\n--\n"</code> are <em>keyword arguments</em></p><div class="ulist"><ul><li><p>Keyword arguments always have a keyword, an equal sign, and a value/expression</p></li></ul></div></li><li><p>Positional arguments always precede keyword arguments</p></li><li><p>The order of positional arguments is important</p></li><li><p>The order of keyword arguments isn&#8217;t important</p></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>Positional arguments: Python determines which arguments they are by their position in the argument list</p></div>
-<div class="paragraph"><p>Keyword arguments: the name (<code>sep</code>) tells Python which argument it is</p></div></aside></div></section><section id="_defining_functions"><h2>Defining functions</h2><div class="slide-content"><div class="paragraph"><p>Breaking a program into small functions is a Really Good Idea</p></div>
-<div class="ulist"><ul><li><p>Functions help you break down a problem into discrete steps</p></li><li><p>Functions make a program easier to</p><div class="ulist"><ul><li><p>Read</p></li><li><p>Test and debug</p></li><li><p>Reuse</p></li></ul></div></li></ul></div></div></section><section id="_defining_functions_2" class="columns"><h2>Defining functions</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="paragraph"><p><code>def</code> <span class="slot">function</span><code>(</code><span class="slot">parameters</span><code>):</code><br>
-<code>    </code><code>"""</code> <span class="slot">docstring</span> <code>"""</code><br>
-<code>    </code><span class="slot">body</span></p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def dist(x1, y1, x2, y2):
-    """ Calculate the Euclidean distance
-    between coordinates (x1, y1) and
-    (x2, y2). """
-    return ((x1 - x2)**2 +
-            (y1 - y2)**2)**0.5</code></pre></div></div>
-<div class="ulist nosubbullet"><ul><li class="fragment"><p><span class="slot">function</span> is the name of the function.</p></li></ul></div></div></div>
-<div class="openblock column"><div class="content"><div class="ulist nosubbullet"><ul><li class="fragment"><p><span class="slot">parameters</span> (optional) are variables that get their values when the function is called.</p></li><li class="fragment"><p>A <span class="slot">docstring</span> (optional) describes what the function does and how to use it.</p></li><li class="fragment"><p>The <span class="slot">body</span> contains the instructions that constitute the function. It usually contains a <code>return</code> statement.</p></li></ul></div></div></div>
-<aside class="notes"><div class="paragraph"><p>If there are multiple parameters, they are separated by commas.</p></div>
-<div class="paragraph"><p>Although it&#8217;s possible to write a function without a docstring, it&#8217;s a really good idea to write docstrings for all but the simplest functions.</p></div></aside></div></section><section id="_variable_scope"><h2>Variable scope</h2><div class="slide-content"><div class="paragraph"><p>Two kinds of variables (for now):</p></div>
-<table class="tableblock frame-none grid-none" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="openblock rightborder"><div class="content"><div class="ulist"><ul><li><p>Global variables</p><div class="ulist"><ul><li><p>Usually defined outside of any function</p></li><li><p>Can be accessed anywhere in a program</p></li><li><p><span class="thumbsdown">Functions that use global variables are not self-contained</span></p></li><li><p><span class="thumbsdown">Can lead to bugs that are hard to track down</span></p></li></ul></div></li></ul></div></div></div></div></td><td class="tableblock halign-left valign-top"><div><div class="openblock"><div class="content"><div class="ulist"><ul><li><p>Local variables</p><div class="ulist"><ul><li><p>Defined within a function (includes parameters)</p></li><li><p><span class="thumbsup">Can only be accessed within the function where they are defined</span></p></li><li><p><span class="thumbsup">Less risk of weird bugs</span></p></li></ul></div></li></ul></div>
-<div class="paragraph"><p><strong>Local variables are a Really Good Thing</strong></p></div></div></div></div></td></tr></table>
-<aside class="notes"><div class="paragraph"><p>Variables defined within a function, including parameters, come into existence when the function is called and cease to exist when the function ends.</p></div></aside></div></section><section id="_two_kinds_of_parameters"><h2>Two kinds of parameters</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Required parameters are just variable names. The function won&#8217;t work unless an argument is provided for each required parameter.</p></li><li class="fragment"><p>Optional parameters look like keyword arguments: <span class="slot">parameter</span><code>=</code><span class="slot">default_value</span>. If the user omits an optional parameter, the function will still work and the parameter&#8217;s value will be the default value.</p><div class="ulist"><ul><li class="fragment"><p>Optional parameters always follow required parameters.</p></li><li class="fragment"><p>Avoid mutable values as default values.</p></li></ul></div></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_pace(dist, time, dist_unit="mile", time_unit="minute"):
-    """ Calculate a pace given a distance and time. """
+        break          # stop at separator
+    data.append(line)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Walk through this file-reading example:</p></div>
+<div class="paragraph"><p>We&#8217;re processing a file with specific rules:
+1. Lines starting with # are comments—skip them
+2. A line of "----" means stop reading
+3. Everything else gets added to our list</p></div>
+<div class="paragraph"><p>CONTINUE: When we hit a comment line, we don&#8217;t want to add it to data. <code>continue</code> skips the rest of the loop body and moves to the next line.</p></div>
+<div class="paragraph"><p>BREAK: When we hit the separator, we&#8217;re done. <code>break</code> exits the loop entirely—we don&#8217;t care about lines after this.</p></div>
+<div class="paragraph"><p>Without continue/break, we&#8217;d need nested if statements and flag variables. This is cleaner.</p></div></aside></div></section><section id="_loops_summary"><h2>Loops: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>for</code> — known number of iterations</p></li><li><p><code>while</code> — repeat until condition is false</p></li><li><p><code>while True</code> — at least one iteration</p></li><li><p>Control: <code>continue</code>, <code>break</code>, <code>return</code></p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition: "Now let&#8217;s package our code into reusable units—functions."</p></div></aside></div></section></section>
+<section><section id="_functions"><h2>Functions</h2><div class="slide-content"><div class="paragraph"><p>Reusable instruction sequences</p></div><div class="ulist"><ul><li><p>Take input (arguments)</p></li><li><p>Return output (return value)</p></li></ul></div><aside class="notes"><div class="paragraph"><p>Functions are the fundamental unit of code organization. They let you:
+- Write code once, use it many times
+- Break complex problems into smaller pieces
+- Test pieces independently
+- Make code readable by giving names to operations</p></div>
+<div class="paragraph"><p>Think of a function like a machine: you put things in (arguments), something happens inside, and you get something out (return value).</p></div></aside></div></section><section id="_built_in_functions"><h2>Built-in Functions</h2><div class="slide-content"><div class="paragraph"><p><code>print()</code> — display output</p></div>
+<div class="paragraph"><p><code>abs()</code> — absolute value</p></div>
+<div class="paragraph"><p><code>round()</code> — round a number</p></div>
+<div class="paragraph"><p><code>int()</code>, <code>float()</code>, <code>str()</code> — type conversion</p></div>
+<aside class="notes"><div class="paragraph"><p>Python comes with many built-in functions. These are always available.</p></div>
+<div class="paragraph"><p>PRINT: Display to console. Returns None.</p></div>
+<div class="paragraph"><p>ABS: Absolute value. <code>abs(-5)</code> returns <code>5</code>.</p></div>
+<div class="paragraph"><p>ROUND: Round to nearest integer (or specified decimals). <code>round(3.7)</code> returns <code>4</code>. <code>round(3.14159, 2)</code> returns <code>3.14</code>.</p></div>
+<div class="paragraph"><p>TYPE CONVERSIONS:
+- <code>int("42")</code> returns <code>42</code>
+- <code>float("3.14")</code> returns <code>3.14</code>
+- <code>str(42)</code> returns <code>"42"</code></p></div>
+<div class="paragraph"><p>These will raise errors if the conversion isn&#8217;t possible: <code>int("hello")</code> raises ValueError.</p></div></aside></div></section><section id="_calling_functions"><h2>Calling Functions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print()              # no arguments</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">x = abs(-10)         # one argument</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">n = round(14.723, 2) # two arguments</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Every function call has parentheses, even if there are no arguments.</p></div>
+<div class="paragraph"><p>The value inside the parentheses (the argument) can be any expression. So <code>abs(-10)</code> works, but so does <code>abs(x)</code> or <code>abs(y - z)</code>.</p></div>
+<div class="paragraph"><p>Function calls ARE expressions—they evaluate to the return value. That&#8217;s why we can assign <code>abs(-10)</code> to <code>x</code>.</p></div>
+<div class="paragraph"><p>If a function doesn&#8217;t explicitly return something, it returns <code>None</code>.</p></div></aside></div></section><section id="_positional_vs_keyword_arguments"><h2>Positional vs Keyword Arguments</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print("Hello", "world!", sep="::", end="\n")</code></pre></div></div>
+<div class="paragraph"><p><strong>Positional:</strong> <code>"Hello"</code>, <code>"world!"</code></p></div>
+<div class="paragraph"><p><strong>Keyword:</strong> <code>sep="::"</code>, <code>end="\n"</code></p></div>
+<aside class="notes"><div class="paragraph"><p>POSITIONAL: Matched to parameters by position (first argument to first parameter, etc.). Order matters!</p></div>
+<div class="paragraph"><p>KEYWORD: Matched by name. Order doesn&#8217;t matter among keyword arguments.</p></div>
+<div class="paragraph"><p>Rules:
+1. Positional arguments must come BEFORE keyword arguments
+2. You can&#8217;t have positional arguments after keyword arguments</p></div>
+<div class="paragraph"><p>This print call outputs: <code>Hello::world!</code> followed by a newline and dashes.</p></div>
+<div class="paragraph"><p>Use keyword arguments for optional parameters or when the meaning isn&#8217;t obvious from position.</p></div></aside></div></section><section id="_why_write_functions"><h2>Why Write Functions?</h2><div class="slide-content"><div class="ulist"><ul><li><p>Break problems into discrete steps</p></li><li><p>Make code easier to read</p></li><li><p>Make code easier to test</p></li><li><p>Enable code reuse</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Functions are not just about avoiding repetition (though that&#8217;s important).</p></div>
+<div class="paragraph"><p>PROBLEM DECOMPOSITION: Complex problems become manageable when broken into small functions.</p></div>
+<div class="paragraph"><p>READABILITY: <code>calculate_tax(income)</code> is clearer than 20 lines of tax calculation inline.</p></div>
+<div class="paragraph"><p>TESTING: You can test small functions in isolation. If each function works, the whole program is more likely to work.</p></div>
+<div class="paragraph"><p>REUSE: Write once, use many times. Even use in other projects.</p></div>
+<div class="paragraph"><p>Rule of thumb: If you&#8217;re copying and pasting code, you probably need a function.</p></div></aside></div></section><section id="_defining_functions"><h2>Defining Functions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def dist(x1, y1, x2, y2):
+    """ Calculate Euclidean distance
+    between (x1, y1) and (x2, y2). """
+    return ((x1-x2)**2 + (y1-y2)**2)**0.5</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Pattern: <code>def function_name(parameters):</code></p></div>
+<div class="paragraph"><p>DEF: Keyword that starts a function definition.</p></div>
+<div class="paragraph"><p>FUNCTION NAME: Same rules as variable names. Should describe what the function does.</p></div>
+<div class="paragraph"><p>PARAMETERS: Variables that receive the arguments. Separated by commas if multiple.</p></div>
+<div class="paragraph"><p>DOCSTRING: A string right after the header that describes the function. Triple quotes for multi-line. This is documentation!</p></div>
+<div class="paragraph"><p>BODY: The code that runs when the function is called.</p></div>
+<div class="paragraph"><p>RETURN: Specifies what value the function evaluates to. If you don&#8217;t return anything (or just <code>return</code> with no value), the function returns <code>None</code>.</p></div></aside></div></section><section id="_variable_scope"><h2>Variable Scope</h2><div class="slide-content"><div class="paragraph"><p><strong>Global</strong> — defined outside functions, accessible everywhere</p></div>
+<div class="paragraph"><p><strong>Local</strong> — defined inside functions, only accessible there</p></div>
+<div class="paragraph"><p><strong>Local variables are preferred!</strong></p></div>
+<aside class="notes"><div class="paragraph"><p>SCOPE: Where a variable can be accessed.</p></div>
+<div class="paragraph"><p>GLOBAL VARIABLES: Defined at the top level of your script. Can be read anywhere. But modifying them from inside a function requires the <code>global</code> keyword.</p></div>
+<div class="paragraph"><p>Problems with globals:
+- Functions aren&#8217;t self-contained
+- Hard to track what&#8217;s changing the variable
+- Leads to subtle bugs</p></div>
+<div class="paragraph"><p>LOCAL VARIABLES: Defined inside a function (including parameters). Created when function runs, destroyed when function ends.</p></div>
+<div class="paragraph"><p>Benefits of locals:
+- Function is self-contained
+- No outside interference
+- Easier to test and debug</p></div>
+<div class="paragraph"><p>Best practice: Pass values IN through parameters, get values OUT through return. Avoid globals.</p></div></aside></div></section><section id="_required_vs_optional_parameters"><h2>Required vs Optional Parameters</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_pace(dist, time, dist_unit="mile", time_unit="minute"):
+    """ Calculate pace given distance and time. """
     print(time/dist, time_unit + "s per", dist_unit)</code></pre></div></div>
-<aside class="notes"><div class="paragraph"><p>Required parameters make sense when there is no obvious default value.</p></div>
-<div class="paragraph"><p>Optional parameters make sense when there is a sensible default.</p></div></aside></div></section><section id="_calling_functions_with_optional_parameters"><h2>Calling functions with optional parameters</h2><div class="slide-content"><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_pace(dist, time, dist_unit="mile", time_unit="minute"):
-    """ Calculate a pace given a distance and time. """
-    print(time/dist, time_unit + "s per", dist_unit)</code></pre></div></div>
-<div class="openblock fragment"><div class="content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">get_pace(3, 54)</code></pre></div></div>
-<div class="listingblock output"><div class="content"><pre>18.0 minutes per mile</pre></div></div></div></div>
-<div class="openblock fragment"><div class="content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">get_pace(6, 0.9, time_unit="hour")</code></pre></div></div>
-<div class="listingblock output"><div class="content"><pre>0.15 hours per mile</pre></div></div></div></div>
-<div class="openblock fragment"><div class="content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">get_pace(16, 0.8, dist_unit="kilometer", time_unit="hour")</code></pre></div></div>
-<div class="listingblock output"><div class="content"><pre>0.05 hours per kilometer</pre></div></div></div></div>
-<div class="openblock fragment"><div class="content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">get_pace(16, 0.8, time_unit="hour", dist_unit="kilometer")</code></pre></div></div>
-<div class="listingblock output"><div class="content"><pre>0.05 hours per kilometer</pre></div></div></div></div></div></section><section id="_return_vs_print"><h2><code>return</code> vs. <code>print()</code></h2><div class="slide-content"><table class="tableblock frame-none grid-cols" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>return</code> defines what your function will evaluate to when it is called</p></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>print()</code> writes information to the console (or to a file or file-like object)</p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>return</code> communicates information to another part of a program</p></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>print()</code> (usually) communicates information to the user</p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>return</code>ed values are easy to test</p></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p><code>print()</code>ed values are harder to test</p></div></div></td></tr><tr><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>Most functions should use <code>return</code> rather than <code>print()</code></p></div></div></td><td class="tableblock halign-left valign-top"><div><div class="paragraph"><p>If it&#8217;s important to show the user the result of a function, call the function, then <code>print()</code> the return value</p></div></div></td></tr></table>
-<aside class="notes"><div class="paragraph"><p>Beginning students often confuse <code>return</code> and <code>print</code>, but they do very different things.</p></div></aside></div></section><section id="_can_you_make_sense_of_this" class="slide-in none-out"><h2>Can you make sense of this?</h2><div class="slide-content"><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def f(n):
+<aside class="notes"><div class="paragraph"><p>REQUIRED: Just a name. Must be provided when calling. Here: <code>dist</code> and <code>time</code>.</p></div>
+<div class="paragraph"><p>OPTIONAL: Have a default value using <code>=</code>. Can be omitted when calling. Here: <code>dist_unit</code> and <code>time_unit</code>.</p></div>
+<div class="paragraph"><p>Rules:
+- Required parameters must come BEFORE optional parameters
+- Avoid mutable defaults like lists or dictionaries (they&#8217;re shared between calls!)</p></div>
+<div class="paragraph"><p>Calling this function:
+- <code>get_pace(3, 54)</code> — uses defaults: "minutes per mile"
+- <code>get_pace(6, 0.9, time_unit="hour")</code> — override one default
+- <code>get_pace(16, 0.8, dist_unit="km", time_unit="hour")</code> — override both</p></div></aside></div></section><section id="_return_vs_print"><h2><code>return</code> vs <code>print()</code></h2><div class="slide-content"><div class="paragraph"><p><strong>return</strong> — defines the function&#8217;s output value</p></div>
+<div class="paragraph"><p><strong>print()</strong> — displays text to the user</p></div>
+<aside class="notes"><div class="paragraph"><p>Students confuse these constantly!</p></div>
+<div class="paragraph"><p>RETURN:
+- Sends a value back to the calling code
+- The function call expression equals this value
+- You can use the returned value in further calculations
+- Nothing visible happens on screen</p></div>
+<div class="paragraph"><p>PRINT:
+- Displays text on the console
+- Returns None
+- The displayed text cannot be used by your program
+- Only for human eyes</p></div>
+<div class="paragraph"><p>Example:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def add(a, b):
+    return a + b  # Good: result can be used
+
+result = add(3, 4)  # result is 7</code></pre></div></div>
+<div class="paragraph"><p>vs.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def add(a, b):
+    print(a + b)  # Bad: just displays, can't use result
+
+result = add(3, 4)  # result is None!</code></pre></div></div>
+<div class="paragraph"><p>Rule: Functions should RETURN results. Print them separately if needed.</p></div></aside></div></section><section id="_can_you_read_this"><h2>Can You Read This?</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def f(n):
     if not isinstance(n, int):
         raise TypeError("n must be an integer")
     if n &lt; 2:
@@ -582,81 +732,121 @@ f.close()</code></pre></div></div>
     if n != 1:
         fs.append(n)
     return fs</code></pre></div></div>
-<aside class="notes"><div class="paragraph"><p>A while back, a former student of mine joined a computer science professor&#8217;s research group. The first task he was given was to read and understand code written by a former member of the research group. Although the code was in Python, it was not well written. The variables and functions had terse names that didn&#8217;t make their purpose clear; the algorithms were long and complicated; the comments were few and far between.</p></div>
-<div class="paragraph"><p>I want you to get a sesne of what this experience was like. Take a look at this code and see if you can figure out what it does, how you should call it, and what it will give you back.</p></div></aside></div></section><section id="_can_you_make_sense_of_this_2" class="none-in slide-out"><h2>Can you make sense of this?</h2><div class="slide-content"><div class="listingblock bigcode"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def factorize(n):
+<aside class="notes"><div class="paragraph"><p>Show this slide briefly, then ask: "What does this function do?"</p></div>
+<div class="paragraph"><p>Give students 30 seconds to think about it.</p></div>
+<div class="paragraph"><p>Problems:
+- Cryptic function name <code>f</code>
+- Cryptic variable name <code>fs</code>
+- No docstring
+- No comments
+- Algorithm is not obvious</p></div>
+<div class="paragraph"><p>This is REAL code that a student had to decipher at a research job. Don&#8217;t write code like this!</p></div>
+<div class="paragraph"><p>Now show the next slide with the improved version&#8230;&#8203;</p></div></aside></div></section><section id="_much_better"><h2>Much Better!</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def factorize(n):
     """Find all prime factors of n.
 
     Args:
-        n (int): number to factorize. Must be greater than 1.
+        n (int): number to factorize. Must be &gt; 1.
 
     Returns:
-        list of int: a list of all prime factors of n. The product of
-        these numbers will be equal to n. Factors will be ordered from
-        smallest to largest.
-
-    Raises:
-        TypeError: value of n is not an integer.
-        ValueError: n is less than 2.
+        list of int: prime factors, smallest to largest.
     """
-    if not isinstance(n, int):
-        raise TypeError("n must be an integer")
-    if n &lt; 2:
-        raise ValueError("n must be at least 2")
-
+    # ... same algorithm with clear variable names
     factors = []
-    for i in range(2, int(n**0.5)+1):
-        while n % i == 0:
-            factors.append(i)
-            n //= i
-    # if n is not 1, it is also a prime factor
-    if n != 1:
-        factors.append(n)
-    return factors</code></pre></div></div></div></section><section id="_docstrings" class="columns"><h2>Docstrings</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="ulist"><ul><li><p>Purpose of function</p></li><li><p>Purpose of arguments and expected data types</p></li><li><p>Meaning and data type of return value</p></li><li><p>Exceptions the function might raise</p></li><li><p>Side effects the function might have</p></li></ul></div></div></div>
-<div class="openblock column"><div class="content"><div class="listingblock"><div class="content"><pre>"""Find all prime factors of n.
-
-Args:
-    n (int): number to factorize. Must
-        be greater than 1.
-
-Returns:
-    list of int: a list of all prime
-        factors of n. The product of
-        these numbers will be equal to
-        n. Factors will be ordered from
-        smallest to largest.
-
-Raises:
-    TypeError: value of n is not an
-        integer.
-    ValueError: n is less than 2.
-"""</pre></div></div></div></div>
-<aside class="notes"><div class="paragraph"><p>Docstrings are strings. They need to be the first statement in a function in order to be recognized as docstrings.</p></div>
-<div class="paragraph"><p>Docstrings don&#8217;t provide any information on the inner workings of a function, only the elements of the function that concern the "outside world".</p></div></aside></div></section><section id="_summary_6"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>Functions are reusable sequences of instructions packaged as a unit</p></div>
-<div class="ulist"><ul><li><p>Arguments are values passed to functions as input</p><div class="ulist"><ul><li><p>Positional arguments</p></li><li><p>Keyword arguments</p></li></ul></div></li><li><p>Parameters are variables defined in a function header whose values correspond to the arguments</p><div class="ulist"><ul><li><p>Required parameters</p></li><li><p>Optional parameters</p></li></ul></div></li><li><p>Variables have scope</p></li><li><p>Docstrings communicate how to use a function</p></li></ul></div></div></section></section>
-<section><section id="_exceptions"><h2>Exceptions</h2><div class="slide-content"><div class="paragraph"><p>When something goes wrong in a Python program, an exception is raised. Common exceptions include</p></div><div class="ulist"><ul><li><p><code>IndexError</code>: the specified index (e.g., of a list) is out of range</p></li><li><p><code>KeyError</code>: the specified key (in a dictionary) is undefined</p></li><li><p><code>NameError</code>: the specified name (of a variable, function, etc.) is undefined</p></li><li><p><code>ValueError</code>: the specified value is incompatible with the requested operation or function (e.g., <code>int("hello")</code>)</p></li><li><p><code>ZeroDivisionError</code>: the code tried to divide by zero</p></li></ul></div></div></section><section id="_stack_traces" class="slide-in none-out"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack01.svg" alt="CallStack01"></div>
-<aside class="notes"><div class="paragraph"><p>When Python runs a program, it keeps track of all the variables and resources the program is using. Since each function can have its own variables and resources, Python has to keep track of this information</p></div></aside></div></section><section id="_stack_traces_2" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack02.svg" alt="CallStack02"></div></div></section><section id="_stack_traces_3" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack03.svg" alt="CallStack03"></div></div></section><section id="_stack_traces_4" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack04.svg" alt="CallStack04"></div></div></section><section id="_stack_traces_5" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack05.svg" alt="CallStack05"></div></div></section><section id="_stack_traces_6" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack06.svg" alt="CallStack06"></div></div></section><section id="_stack_traces_7" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack07.svg" alt="CallStack07"></div></div></section><section id="_stack_traces_8" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack08.svg" alt="CallStack08"></div></div></section><section id="_stack_traces_9" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack09.svg" alt="CallStack09"></div></div></section><section id="_stack_traces_10" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack10.svg" alt="CallStack10"></div></div></section><section id="_stack_traces_11" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack11.svg" alt="CallStack11"></div></div></section><section id="_stack_traces_12" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack12.svg" alt="CallStack12"></div></div></section><section id="_stack_traces_13" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack13.svg" alt="CallStack13"></div></div></section><section id="_stack_traces_14" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack14.svg" alt="CallStack14"></div></div></section><section id="_stack_traces_15" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack15.svg" alt="CallStack15"></div></div></section><section id="_stack_traces_16" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack16.svg" alt="CallStack16"></div></div></section><section id="_stack_traces_17" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack17.svg" alt="CallStack17"></div></div></section><section id="_stack_traces_18" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack18.svg" alt="CallStack18"></div></div></section><section id="_stack_traces_19" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack19.svg" alt="CallStack19"></div></div></section><section id="_stack_traces_20" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack20.svg" alt="CallStack20"></div></div></section><section id="_stack_traces_21" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack21.svg" alt="CallStack21"></div></div></section><section id="_stack_traces_22" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack22.svg" alt="CallStack22"></div></div></section><section id="_stack_traces_23" class="none"><h2>Stack traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack23.svg" alt="CallStack23"></div></div></section><section id="_raising_exceptions"><h2>Raising exceptions</h2><div class="slide-content"><div class="paragraph"><p>Your code can raise exceptions using a <code>raise</code> statement:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if response not in ['a', 'b', 'c']:
+    # ... rest of code with comments
+    return factors</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Same algorithm, but now:
+- Descriptive function name: <code>factorize</code>
+- Descriptive variable name: <code>factors</code> instead of <code>fs</code>
+- Comprehensive docstring explaining:
+  - What the function does
+  - What arguments it takes
+  - What it returns
+  - What exceptions it might raise</p></div>
+<div class="paragraph"><p>Comments explain non-obvious parts of the algorithm.</p></div>
+<div class="paragraph"><p>Good code is READ more often than it&#8217;s WRITTEN. Invest in readability!</p></div></aside></div></section><section id="_docstrings"><h2>Docstrings</h2><div class="slide-content"><div class="ulist"><ul><li><p>Purpose of the function</p></li><li><p>Arguments and their types</p></li><li><p>Return value and type</p></li><li><p>Exceptions that might be raised</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>A docstring is a string literal as the first statement in a function. Python recognizes it as documentation.</p></div>
+<div class="paragraph"><p>What to include:
+1. One-line summary of what the function does
+2. Blank line, then more detail if needed
+3. Args section: each parameter, its type, what it means
+4. Returns section: type and meaning of return value
+5. Raises section: exceptions and when they&#8217;re raised</p></div>
+<div class="paragraph"><p>Style: This is "Google style" docstrings. There are other styles (NumPy, Sphinx). Pick one and be consistent.</p></div>
+<div class="paragraph"><p>Tools like <code>help()</code> and documentation generators use docstrings. So do IDEs for autocomplete hints.</p></div>
+<div class="paragraph"><p>Minimum: Every function should have at least a one-line docstring saying what it does.</p></div></aside></div></section><section id="_functions_summary"><h2>Functions: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Functions package reusable code</p></li><li><p>Arguments: positional and keyword</p></li><li><p>Parameters: required and optional</p></li><li><p>Variables have scope (prefer local)</p></li><li><p>Use <code>return</code>, not <code>print()</code></p></li><li><p>Write docstrings!</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition: "What happens when something goes wrong? Let&#8217;s talk about exceptions."</p></div></aside></div></section></section>
+<section><section id="_exceptions"><h2>Exceptions</h2><div class="slide-content"><div class="paragraph"><p>When something goes wrong, an exception is raised</p></div><aside class="notes"><div class="paragraph"><p>Exceptions are Python&#8217;s way of signaling errors. When Python can&#8217;t do what you asked, it raises an exception.</p></div>
+<div class="paragraph"><p>Without handling, exceptions crash your program. But you can catch them and handle them gracefully.</p></div>
+<div class="paragraph"><p>Different types of exceptions indicate different problems.</p></div></aside></div></section><section id="_common_exceptions"><h2>Common Exceptions</h2><div class="slide-content"><div class="paragraph"><p><strong>IndexError</strong> — index out of range</p></div>
+<div class="paragraph"><p><strong>KeyError</strong> — dictionary key doesn&#8217;t exist</p></div>
+<div class="paragraph"><p><strong>NameError</strong> — variable/function not defined</p></div>
+<div class="paragraph"><p><strong>ValueError</strong> — wrong value for operation</p></div>
+<div class="paragraph"><p><strong>ZeroDivisionError</strong> — divided by zero</p></div>
+<aside class="notes"><div class="paragraph"><p>INDEXERROR: <code>my_list[100]</code> when list only has 5 items.</p></div>
+<div class="paragraph"><p>KEYERROR: <code>my_dict["missing"]</code> when key doesn&#8217;t exist.</p></div>
+<div class="paragraph"><p>NAMEERROR: Using a variable before defining it, or typo in variable name.</p></div>
+<div class="paragraph"><p>VALUEERROR: <code>int("hello")</code> — "hello" isn&#8217;t a valid integer.</p></div>
+<div class="paragraph"><p>ZERODIVISIONERROR: Exactly what it sounds like.</p></div>
+<div class="paragraph"><p>When you see these, the error message tells you the line number where it happened. Read the message carefully!</p></div></aside></div></section><section id="_stack_traces"><h2>Stack Traces</h2><div class="slide-content"><div class="imageblock"><img src="images/call_stack01.svg" alt="CallStack01"></div>
+<aside class="notes"><div class="paragraph"><p>When an exception occurs, Python shows you a "stack trace" (also called traceback).</p></div>
+<div class="paragraph"><p>The stack trace shows:
+- Where the error actually occurred (bottom of the trace)
+- How you got there (the chain of function calls)</p></div>
+<div class="paragraph"><p>Reading a stack trace:
+1. Start at the BOTTOM — that&#8217;s where the actual error is
+2. Read the error type and message
+3. Look at the line of code shown
+4. If it&#8217;s in your code, that&#8217;s where to start debugging
+5. If it&#8217;s in library code, trace back UP to find your code that caused it</p></div>
+<div class="paragraph"><p>The "stack" is the call stack — the chain of function calls that are currently active.</p></div></aside></div></section><section id="_raising_exceptions"><h2>Raising Exceptions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if response not in ['a', 'b', 'c']:
     raise ValueError("Response should be 'a', 'b', or 'c'")</code></pre></div></div>
-<div class="paragraph notes"><p>A <code>raise</code> statement consists of the keyword <code>raise</code> and an exception. It&#8217;s a good idea to include an error message that explains why the exception got raised.</p></div></div></section><section id="_handling_exceptions" class="columns"><h2>Handling exceptions</h2><div class="slide-content"><div class="openblock column nobullet nosubbullet"><div class="content"><div class="ulist"><ul><li><p><code>try</code> clause is mandatory, comes first</p><div class="ulist"><ul><li><p><code>try:</code><br>
-<code>    </code><span class="slot">body</span></p></li></ul></div></li><li><p>Zero or more <code>except</code> clauses</p><div class="ulist"><ul><li><p><code>except:</code><br>
-<code>    </code><span class="slot">body</span></p><div class="ulist"><ul><li><p>Handles any exception; not recommended</p></li></ul></div></li><li><p><code>except</code> <span class="slot">exception</span><code>:</code><br>
-<code>    </code><span class="slot">body</span></p></li><li><p><code>except</code> <span class="slot">exception</span> <code>as</code> <span class="slot">varname</span><code>:</code><br>
-<code>    </code><span class="slot">body</span></p></li></ul></div></li></ul></div></div></div>
-<div class="openblock column nobullet nosubbullet"><div class="content"><div class="ulist"><ul><li><p>Optional <code>else</code> clause</p><div class="ulist"><ul><li><p><code>else:</code><br>
-<code>    </code><span class="slot">body</span></p><div class="ulist"><ul><li><p>Applies when no exception is encountered</p></li></ul></div></li></ul></div></li><li><p>Optional <code>finally</code> clause</p><div class="ulist"><ul><li><p><code>finally:</code><br>
-<code>    </code><span class="slot">body</span></p><div class="ulist"><ul><li><p>Applies whether or not an exception was encountered</p></li></ul></div></li></ul></div></li><li><p>A <code>try</code> statement needs a <code>finally</code> clause or at least one <code>except</code> clause</p></li></ul></div></div></div>
-<aside class="notes"><div class="paragraph"><p>If you anticipate that part of your code may raise an exception, you can enclose that code in a <code>try</code> statement</p></div></aside></div></section><section id="_exception_handling_example_input_validation"><h2>Exception handling example: input validation</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_int():
-    """ Ask the user for an integer.
-    Repeat until the user enters a valid integer. """
+<aside class="notes"><div class="paragraph"><p>Your code can raise exceptions too! Use this when the caller has done something wrong.</p></div>
+<div class="paragraph"><p>Pattern: <code>raise ExceptionType("descriptive message")</code></p></div>
+<div class="paragraph"><p>Common exceptions to raise:
+- ValueError: Argument has wrong value
+- TypeError: Argument has wrong type
+- RuntimeError: Something went wrong during execution</p></div>
+<div class="paragraph"><p>Always include a helpful error message. Future you will thank present you.</p></div>
+<div class="paragraph"><p>This is better than returning error codes or None — it forces the issue to be dealt with.</p></div></aside></div></section><section id="_handling_exceptions"><h2>Handling Exceptions</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">try:
+    number = int(response)
+except ValueError:
+    print("Not a valid integer")
+else:
+    return number</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Use try/except to handle exceptions gracefully.</p></div>
+<div class="paragraph"><p>TRY: Code that might raise an exception.</p></div>
+<div class="paragraph"><p>EXCEPT: What to do if that specific exception occurs. You can have multiple except blocks for different exceptions.</p></div>
+<div class="paragraph"><p>ELSE (optional): Runs if NO exception occurred. Cleaner than putting code in the try block.</p></div>
+<div class="paragraph"><p>FINALLY (not shown): Runs whether or not an exception occurred. Good for cleanup like closing files.</p></div>
+<div class="paragraph"><p>Be specific about which exceptions you catch. Bare <code>except:</code> catches everything, including Ctrl+C, which makes your program hard to stop!</p></div></aside></div></section><section id="_exception_handling_example"><h2>Exception Handling Example</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def get_int():
+    """ Ask for an integer until valid. """
     while True:
         response = input("Enter an integer: ")
         try:
             number = int(response)
         except ValueError:
-            print("The value you entered is not an integer; please try again")
+            print("Invalid; try again")
         else:
-            return number</code></pre></div></div></div></section><section id="_summary_7"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>An exception is raised when something goes wrong in a Python program</p></div>
-<div class="ulist"><ul><li><p>Exceptions propagate up the call stack</p></li><li><p>A stack trace gives you useful information for debugging</p></li><li><p>The <code>raise</code> statement allows your code to raise its own exceptions</p></li><li><p>Exceptions can be handled using <code>try</code> statements</p></li></ul></div></div></section></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+            return number</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>This combines several concepts:
+- <code>while True</code> for input validation
+- <code>try/except</code> for handling invalid input
+- <code>else</code> to return only on success</p></div>
+<div class="paragraph"><p>The flow:
+1. Ask for input
+2. Try to convert to int
+3. If ValueError, print message, loop back
+4. If no error, return the number (exits loop and function)</p></div>
+<div class="paragraph"><p>This is a very common pattern for robust input handling.</p></div>
+<div class="paragraph"><p>Note: We don&#8217;t catch all exceptions—just ValueError. If something else goes wrong (like the user hits Ctrl+C), it should propagate up.</p></div></aside></div></section><section id="_exceptions_summary"><h2>Exceptions: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Exceptions signal errors</p></li><li><p>Stack traces help you debug</p></li><li><p><code>raise</code> to signal errors from your code</p></li><li><p><code>try/except</code> to handle errors gracefully</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Final summary for the section.</p></div>
+<div class="paragraph"><p>Key takeaways:
+1. Read error messages carefully — they tell you what went wrong and where
+2. Stack traces read from bottom to top
+3. Raise exceptions for caller errors
+4. Handle exceptions you know how to recover from
+5. Let unexpected exceptions propagate</p></div>
+<div class="paragraph"><p>That covers Python fundamentals! Questions?</p></div></aside></div></section></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
@@ -880,7 +1070,7 @@ Reveal.addEventListener('ready', function () {
 });
 Reveal.addEventListener('resize', function () {
   layoutSlideContents(1400, 800)
-});</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/plugin/highlight/monokai.css"/>
+});</script><link rel="stylesheet" href="none"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
 
 <script>

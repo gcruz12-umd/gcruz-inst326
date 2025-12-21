@@ -245,6 +245,174 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 }
 
 /*********************************************
+ * SYNTAX HIGHLIGHTING (highlight.js)
+ *********************************************/
+
+/* Base code text */
+.hljs {
+    color: var(--text-primary);
+    background: transparent;
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+    color: #6a737d;
+    font-style: italic;
+}
+
+/* Keywords (def, class, if, for, return, import, etc.) */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-addition {
+    color: var(--accent-pink);
+    font-weight: 600;
+}
+
+/* Class names and type definitions */
+.hljs-title.class_,
+.hljs-class .hljs-title,
+.hljs-title.class_.inherited__,
+.hljs-type {
+    color: #50fa7b;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
+}
+
+/* Function names and calls */
+.hljs-title.function_,
+.hljs-function .hljs-title,
+.hljs-title {
+    color: #8be9fd;
+    font-weight: 600;
+}
+
+/* Built-in functions (print, len, range, etc.) */
+.hljs-built_in {
+    color: #8be9fd;
+}
+
+/* Strings */
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp,
+.hljs-template-variable,
+.hljs-template-tag {
+    color: #f1fa8c;
+}
+
+/* Numbers */
+.hljs-number,
+.hljs-literal {
+    color: #bd93f9;
+}
+
+/* Variables and parameters */
+.hljs-variable,
+.hljs-params {
+    color: #ffb86c;
+}
+
+/* Attributes and properties (self.name, obj.attr) */
+.hljs-attr,
+.hljs-attribute,
+.hljs-property {
+    color: #ff79c6;
+    font-weight: 500;
+}
+
+/* Self/this keyword - highlighted prominently */
+.hljs-variable.language_,
+.hljs-this {
+    color: #ff79c6;
+    font-style: italic;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(255, 121, 198, 0.5);
+}
+
+/* F-string curly braces (substitution blocks) */
+.hljs-subst {
+    color: #8be9fd;
+}
+
+/* Highlight curly brackets specifically in f-strings */
+.hljs-subst .hljs-punctuation,
+.hljs-template-variable {
+    color: #50fa7b;
+    font-weight: 700;
+    text-shadow: 0 0 6px rgba(80, 250, 123, 0.5);
+}
+
+/* Punctuation and operators */
+.hljs-punctuation {
+    color: var(--text-secondary);
+}
+
+/* Curly brackets highlighted distinctly */
+.hljs-punctuation.hljs-curly-brace,
+.reveal pre code .curly-brace {
+    color: #50fa7b;
+    font-weight: 700;
+}
+
+/* Boolean values */
+.hljs-literal {
+    color: #bd93f9;
+}
+
+/* Decorators (@property, @staticmethod) */
+.hljs-meta,
+.hljs-decorator {
+    color: #50fa7b;
+}
+
+/* Deletion (diff) */
+.hljs-deletion {
+    color: #ff5555;
+    background: rgba(255, 85, 85, 0.1);
+}
+
+/* Addition (diff) */
+.hljs-addition {
+    color: #50fa7b;
+    background: rgba(80, 250, 123, 0.1);
+}
+
+/* Emphasis */
+.hljs-emphasis {
+    font-style: italic;
+}
+
+/* Strong */
+.hljs-strong {
+    font-weight: bold;
+}
+
+/* Section headers */
+.hljs-section {
+    color: var(--accent-cyan);
+    font-weight: bold;
+}
+
+/* Selector (CSS) */
+.hljs-selector-class,
+.hljs-selector-id {
+    color: #50fa7b;
+}
+
+/* Symbol */
+.hljs-symbol,
+.hljs-bullet {
+    color: #8be9fd;
+}
+
+/* Link */
+.hljs-link {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+/*********************************************
  * LINKS
  *********************************************/
 .reveal a {

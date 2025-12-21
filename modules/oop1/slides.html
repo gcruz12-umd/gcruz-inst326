@@ -413,198 +413,383 @@ ul.byline {
 ul.byline li + li {
   margin-top: 0.25em;
 }
-</style><link rel="stylesheet" href="../../css/default.css"></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-image="images/letterpress_detail.png"><h1>Objects and classes</h1><h2>Introduction to OOP</h2></section><section><section id="_what_is_an_object"><h2>What is an object?</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>All values in Python are objects</p></li><li class="fragment"><p>All objects are <em>instances</em> of a data type</p></li><li class="fragment"><p>Objects can have <em>properties</em></p><div class="ulist"><ul><li class="fragment"><p><em>Methods</em> (functionality)</p></li><li class="fragment"><p><em>Attributes</em> (data)</p></li></ul></div></li></ul></div></div></section><section id="_what_is_a_class"><h2>What is a class?</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Classes define data types</p><div class="ulist"><ul><li class="fragment"><p>Classes allow us to combine data and functionality into a single package</p></li></ul></div></li><li class="fragment"><p>Classes are used to create (or <em>instantiate</em>) objects</p></li><li class="fragment"><p>Classes let us define how operators and other features of Python behave for the objects we create</p></li></ul></div>
-<aside class="notes"><div class="paragraph"><p>Classes are like factories for objects (or class instances).</p></div>
-<div class="paragraph"><p>In this module, we&#8217;re going to use the terms 'object' and 'class instance' (or just 'instance') interchangeably. Think of the class as a factory and the object/instance as one thing made by the factory.</p></div></aside></div></section><section id="_youve_used_classes_before"><h2>You&#8217;ve used classes before:</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>int</code></p></li><li><p><code>str</code></p></li><li><p><code>float</code></p></li><li><p><code>list</code></p></li><li><p><code>bool</code></p></li></ul></div></div></section><section id="_youve_used_methods_before"><h2>You&#8217;ve used methods before:</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>mylist.<strong>append("some value")</strong></code></p></li><li><p><code>mystring.<strong>upper()</strong></code></p></li><li><p><code>myfile.<strong>close()</strong></code></p></li></ul></div></div></section></section>
-<section><section id="_example_pathlib_path"><h2>Example: <code>pathlib.Path</code></h2><div class="slide-content"><div class="paragraph"><p>The <code>Path</code> class from <code>pathlib</code> is an excellent example of a good class.</p></div><div class="paragraph fragment"><p>We&#8217;ll look at</p></div><div class="ulist"><ul><li class="fragment"><p>instantiation</p></li><li class="fragment"><p>some attributes</p></li><li class="fragment"><p>some methods</p></li><li class="fragment"><p>interaction with features of Python</p></li></ul></div></div></section><section id="_creating_objects"><h2>Creating objects</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>To create an instance of a class, invoke the class like a function: <span class="slot">cls</span><code>()</code></p></li><li class="fragment"><p>Arguments (if any) go inside the parentheses: <span class="slot">cls</span><code>(</code><span class="slot">arg1</span><code>,</code> <span class="slot">arg2</span><code>,</code> <span class="slot">&#8230;&#8203;</span><code>)</code></p><div class="ulist"><ul><li class="fragment"><p>When creating a <code>Path</code> object, you can specify a path as a string</p></li></ul></div></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; from pathlib import Path
-&gt;&gt;&gt;
-&gt;&gt;&gt; dir = Path("/home/aric/INST326")
-&gt;&gt;&gt; script = Path("/home/aric/INST326/homework1.py")</code></pre></div></div></div></section><section id="_attributes"><h2>Attributes</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Attributes are accessed like this: <span class="slot">obj</span><code>.</code><span class="slot">attribute</span></p><div class="ulist"><ul><li class="fragment"><p><code>Path</code> object attributes include</p><div class="ulist"><ul><li class="fragment"><p><code>name</code>: the name of the file, without the directory</p></li><li class="fragment"><p><code>suffix</code>: the file extension, if any</p></li><li class="fragment"><p><code>parent</code>: the directory of the file, as a <code>Path</code> object</p></li></ul></div></li></ul></div></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; script.name
-'homework1.py'
-&gt;&gt;&gt; script.suffix
-'.py'
-&gt;&gt;&gt; script.parent
-PosixPath('/home/aric/INST326')</code></pre></div></div></div></section><section id="_methods" class="columns"><h2>Methods</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Methods are invoked like this: <span class="slot">obj</span><code>.</code><span class="slot">method</span><code>()</code></p><div class="ulist"><ul><li><p><code>Path</code> object methods include</p><div class="ulist"><ul><li class="fragment"><p><code>exists()</code>: indicates whether or not the file exists</p></li><li class="fragment"><p><code>read_text()</code>: open the file as a text file and return the contents</p></li><li class="fragment"><p><code>glob()</code>: search for files in a directory matching a pattern</p></li></ul></div></li></ul></div></li></ul></div></div></div>
-<div class="openblock column"><div class="content"><div class="ulist"><ul><li class="fragment"><p>Arguments (if any) go inside the parentheses: <span class="slot">obj</span><code>.</code><span class="slot">method</span><code>(</code><span class="slot">arg1</span><code>,</code> <span class="slot">arg2</span><code>,</code> <span class="slot">&#8230;&#8203;</span><code>)</code></p></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; script.exists()
-True
-&gt;&gt;&gt; script.read_text(encoding="utf-8")
-'print("Hello world!")\n'
-&gt;&gt;&gt; for path in dir.glob("*.py"):
-...     print(path)
-...
-/home/aric/INST326/exercise1.py
-/home/aric/INST326/homework1.py</code></pre></div></div></div></div></div></section><section id="_interaction_with_features_of_python"><h2>Interaction with features of Python</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Using <code>str()</code> on a <code>Path</code> object gives you the path as a string:</p></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; str(dir)
-'/home/aric/INST326'</code></pre></div></div>
-<div class="ulist"><ul><li class="fragment"><p>Using the <code>/</code> operator on a <code>Path</code> object lets you create child paths:</p></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; dir / "homework2.py"
-PosixPath('/home/aric/INST326/homework2.py')</code></pre></div></div></div></section><section id="_summary"><h2>Summary</h2><div class="slide-content"><div class="paragraph"><p>Using <code>pathlib.Path</code>, we looked at examples of</p></div>
-<div class="ulist"><ul><li class="fragment"><p>how to instantiate a class</p></li><li class="fragment"><p>how to access attributes of an object</p></li><li class="fragment"><p>how to invoke methods of an object</p></li><li class="fragment"><p>how objects can define how they interact with features of Python</p></li></ul></div></div></section></section>
-<section><section id="_defining_classes" class="columns"><h2>Defining classes</h2><div class="slide-content"><div class="openblock column fragment"><div class="content"><div class="ulist"><ul><li class="fragment"><p>Classes are defined using a <code>class</code> statement</p></li><li class="fragment"><p>By convention, non-built-in class names use CamelCase</p></li></ul></div></div></div><div class="openblock column fragment"><div class="content"><div class="paragraph"><p><code>class</code> <span class="slot">ClassName</span><code>:</code><br>
-<code>    </code><span class="slot">body</span></p></div></div></div></div></section><section id="_the_simplest_class_we_can_write"><h2>The simplest class we can write</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Blob:
+</style><link rel="stylesheet" href="../../css/default.css"></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title" data-background-image="images/letterpress_detail.png"><h1>Objects and classes</h1><h2>Introduction to OOP</h2></section><section><section id="_what_is_an_object"><h2>What is an object?</h2><div class="slide-content"><div class="paragraph"><p>All values in Python are objects</p></div><div class="paragraph"><p>Objects are <em>instances</em> of a data type</p></div><aside class="notes"><div class="paragraph"><p>Start with a question: "What do you think of when you hear the word 'object'?"</p></div>
+<div class="paragraph"><p>In everyday life, objects are things—a chair, a phone, a dog. They have characteristics (color, size) and can do things (a phone can ring, a dog can bark).</p></div>
+<div class="paragraph"><p>Python objects are similar! Every value you&#8217;ve ever used in Python—every number, string, list—is an object.</p></div>
+<div class="paragraph"><p>Key vocabulary:
+- OBJECT: A thing in your program that combines data and functionality
+- INSTANCE: Another word for object. We say an object is "an instance of" its class.</p></div></aside></div></section><section id="_objects_have_properties"><h2>Objects Have Properties</h2><div class="slide-content"><div class="paragraph"><p><strong>Attributes</strong> — data the object stores</p></div>
+<div class="paragraph"><p><strong>Methods</strong> — actions the object can perform</p></div>
+<aside class="notes"><div class="paragraph"><p>Think of a dog:
+- ATTRIBUTES (data): name, age, breed, hunger level
+- METHODS (actions): bark, eat, sleep, fetch</p></div>
+<div class="paragraph"><p>Or think of your phone:
+- ATTRIBUTES: battery level, volume, contacts list
+- METHODS: make_call(), send_text(), take_photo()</p></div>
+<div class="paragraph"><p>This is the core insight of OOP: we bundle related data and functionality together into a single package.</p></div></aside></div></section><section id="_what_is_a_class"><h2>What is a class?</h2><div class="slide-content"><div class="paragraph"><p>A <strong>class</strong> defines a data type</p></div>
+<div class="paragraph"><p>Classes are blueprints for creating objects</p></div>
+<aside class="notes"><div class="paragraph"><p>If an object is a dog, the class is the concept of "Dog-ness"—what it means to be a dog.</p></div>
+<div class="paragraph"><p>ANALOGY: A class is like a cookie cutter, and objects are the cookies. One cookie cutter can make many cookies. Each cookie is its own thing, but they all have the same shape.</p></div>
+<div class="paragraph"><p>ANOTHER ANALOGY: A class is like a factory. The factory (class) produces products (objects). Each product is a separate item, but they&#8217;re all made the same way.</p></div>
+<div class="paragraph"><p>Classes let us:
+1. Bundle data and functionality together
+2. Create multiple objects with the same structure
+3. Define how our objects work with Python features (like print, +, etc.)</p></div></aside></div></section><section id="_youve_used_classes_before"><h2>You&#8217;ve Used Classes Before</h2><div class="slide-content"><div class="paragraph"><p><code>int</code>, <code>str</code>, <code>float</code>, <code>list</code>, <code>bool</code></p></div>
+<div class="paragraph"><p>These are all classes!</p></div>
+<aside class="notes"><div class="paragraph"><p>Every time you&#8217;ve created a string or a list, you&#8217;ve been creating an object—an instance of a class.</p></div>
+<div class="paragraph"><p><code>"hello"</code> is an instance of the <code>str</code> class.
+<code>[1, 2, 3]</code> is an instance of the <code>list</code> class.
+<code>42</code> is an instance of the <code>int</code> class.</p></div>
+<div class="paragraph"><p>You&#8217;ve been doing OOP this whole time without knowing it!</p></div></aside></div></section><section id="_youve_used_methods_before"><h2>You&#8217;ve Used Methods Before</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">mylist.append("value")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">mystring.upper()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">myfile.close()</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>The dot notation you&#8217;ve been using? That&#8217;s calling methods on objects.</p></div>
+<div class="paragraph"><p><code>mylist.append("value")</code> — calling the append METHOD on a list OBJECT
+<code>mystring.upper()</code> — calling the upper METHOD on a string OBJECT</p></div>
+<div class="paragraph"><p>Methods are just functions that belong to an object. They often use or modify the object&#8217;s data.</p></div>
+<div class="paragraph"><p>Today we&#8217;ll learn to create our own classes with our own methods.</p></div></aside></div></section></section>
+<section><section id="_example_the_dog_class"><h2>Example: The <code>Dog</code> Class</h2><div class="slide-content"><div class="paragraph"><p>Let&#8217;s build a class from scratch</p></div><div class="paragraph"><p>We&#8217;ll learn:</p></div><div class="ulist"><ul><li><p>How to create (instantiate) objects</p></li><li><p>How to store data (attributes)</p></li><li><p>How to add behavior (methods)</p></li></ul></div><aside class="notes"><div class="paragraph"><p>We&#8217;re going to build a Dog class together. This will make all the OOP concepts concrete.</p></div>
+<div class="paragraph"><p>Have students open their Python interpreter or a new file to follow along. Building it step by step will help it stick.</p></div>
+<div class="paragraph"><p>By the end, we&#8217;ll have dogs that can bark, eat, and get hungry over time!</p></div></aside></div></section><section id="_creating_a_simple_class"><h2>Creating a Simple Class</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
     pass</code></pre></div></div>
-<aside class="notes"><div class="paragraph"><p>When we write a class in Python, by default we inherit a lot of machinery from Python itself. We can override parts of that machinery as needed, but in this example, we&#8217;re just taking advantage of the fact that it&#8217;s provided for us.</p></div>
-<div class="paragraph"><p>In order to understand what&#8217;s going on here, we need to go off on a bit of a tangent and discuss the <code>pass</code> statement.</p></div></aside></div></section><section id="_tangent_the_pass_statement"><h2>Tangent: the <code>pass</code> statement</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p><code>pass</code> is called a <em>no-op</em>: it does nothing</p></li><li class="fragment"><p><code>pass</code> is used when we need a compound statement, but we have nothing meaningful to put in the body</p><div class="ulist"><ul><li><p>Remember, all compound statements need a body</p></li></ul></div></li></ul></div></div></section><section id="_where_not_to_use_a_pass_statement" class="columns"><h2>Where not to use a <code>pass</code> statement</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="paragraph"><p>Instead of this:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if today == user_birthday:
-    print("Happy birthday!")
+<div class="paragraph"><p>That&#8217;s it! We&#8217;ve defined a class.</p></div>
+<aside class="notes"><div class="paragraph"><p>This is the absolute minimum class. The <code>pass</code> statement is a placeholder—it does nothing, but Python requires something in the body.</p></div>
+<div class="paragraph"><p>CLASS keyword starts the definition.
+DOG is the class name. Convention: use CamelCase (capitalize each word, no underscores).
+COLON and indented body, just like functions, loops, and conditionals.</p></div>
+<div class="paragraph"><p>Even this empty class gives us a lot for free from Python—we can create instances of it.</p></div></aside></div></section><section id="_creating_objects_instantiation"><h2>Creating Objects (Instantiation)</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    pass</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
+&gt;&gt;&gt; rex = Dog()</code></pre></div></div>
+<div class="paragraph"><p>Call the class like a function to create an instance</p></div>
+<aside class="notes"><div class="paragraph"><p>To create an object, we CALL the class like a function. <code>Dog()</code> creates a new Dog object and returns it.</p></div>
+<div class="paragraph"><p><code>fido</code> and <code>rex</code> are now two separate Dog objects. They&#8217;re independent—changing one doesn&#8217;t affect the other.</p></div>
+<div class="paragraph"><p>This is called INSTANTIATION—we&#8217;re creating an INSTANCE of the Dog class.</p></div>
+<div class="paragraph"><p>Have students try this:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; type(fido)
+&lt;class '__main__.Dog'&gt;
+&gt;&gt;&gt; type(rex)
+&lt;class '__main__.Dog'&gt;
+&gt;&gt;&gt; fido is rex
+False  # They're different objects!</code></pre></div></div></aside></div></section><section id="_adding_attributes"><h2>Adding Attributes</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
+&gt;&gt;&gt; fido.name = "Fido"
+&gt;&gt;&gt; fido.age = 3
+&gt;&gt;&gt; fido.breed = "Labrador"</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; print(fido.name)
+Fido
+&gt;&gt;&gt; print(fido.age)
+3</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Attributes are accessed with DOT NOTATION: object.attribute</p></div>
+<div class="paragraph"><p>Setting attributes is like setting variables, but the variable lives INSIDE the object.</p></div>
+<div class="paragraph"><p>Each object has its own namespace—its own set of attributes. fido.name and rex.name are completely separate variables.</p></div>
+<div class="paragraph"><p>Have students create another dog with different attributes:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; rex = Dog()
+&gt;&gt;&gt; rex.name = "Rex"
+&gt;&gt;&gt; rex.age = 5
+&gt;&gt;&gt; print(fido.name, rex.name)
+Fido Rex</code></pre></div></div>
+<div class="paragraph"><p>Why is this better than global variables? The data is organized—all info about Fido stays with Fido.</p></div></aside></div></section><section id="_why_attributes_beat_global_variables"><h2>Why Attributes Beat Global Variables</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Messy: global variables
+fido_name = "Fido"
+fido_age = 3
+rex_name = "Rex"
+rex_age = 5</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Clean: attributes
+fido.name = "Fido"
+fido.age = 3
+rex.name = "Rex"
+rex.age = 5</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>With global variables, you end up with a mess of related variables scattered around. What if you have 10 dogs? 100?</p></div>
+<div class="paragraph"><p>With objects, each dog&#8217;s data stays with that dog. It&#8217;s organized, it&#8217;s clear, and it scales.</p></div>
+<div class="paragraph"><p>Also, global variables can be accidentally modified from anywhere. Attributes are tucked away in their object&#8217;s namespace—safer and more organized.</p></div>
+<div class="paragraph"><p>Rule of thumb: When you&#8217;re tempted to use multiple related global variables, consider making a class instead.</p></div></aside></div></section><section id="_adding_methods"><h2>Adding Methods</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    def bark(self):
+        print("Woof!")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
+&gt;&gt;&gt; fido.bark()
+Woof!</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Methods are functions defined inside a class. They describe what the object can DO.</p></div>
+<div class="paragraph"><p>Notice the <code>self</code> parameter—we&#8217;ll explain this next. For now, just know that every method needs <code>self</code> as its first parameter.</p></div>
+<div class="paragraph"><p>When you CALL the method, you don&#8217;t pass anything for self: <code>fido.bark()</code> not <code>fido.bark(fido)</code>. Python fills in self automatically.</p></div>
+<div class="paragraph"><p>Have students add this and try it:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; rex = Dog()
+&gt;&gt;&gt; rex.bark()
+Woof!</code></pre></div></div>
+<div class="paragraph"><p>Both dogs can bark! They share the same method definition, but each dog is doing the barking independently.</p></div></aside></div></section><section id="_understanding_self"><h2>Understanding <code>self</code></h2><div class="slide-content"><div class="paragraph"><p><code>self</code> refers to the object running the method</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    def bark(self):
+        print(f"{self.name} says Woof!")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
+&gt;&gt;&gt; fido.name = "Fido"
+&gt;&gt;&gt; rex = Dog()
+&gt;&gt;&gt; rex.name = "Rex"
+&gt;&gt;&gt; fido.bark()
+Fido says Woof!
+&gt;&gt;&gt; rex.bark()
+Rex says Woof!</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>THIS IS THE KEY CONCEPT. Take time here.</p></div>
+<div class="paragraph"><p>When you call <code>fido.bark()</code>, Python sets <code>self</code> to <code>fido</code>. Inside the method, <code>self.name</code> means "fido&#8217;s name".</p></div>
+<div class="paragraph"><p>When you call <code>rex.bark()</code>, Python sets <code>self</code> to <code>rex</code>. Same code, but <code>self.name</code> now means "rex&#8217;s name".</p></div>
+<div class="paragraph"><p><code>self</code> is how a method knows WHICH object it&#8217;s working with. It&#8217;s the method&#8217;s way of accessing "my own" attributes and methods.</p></div>
+<div class="paragraph"><p>Common confusion: Students forget to include <code>self</code> as the first parameter. They&#8217;ll get an error like "bark() takes 0 positional arguments but 1 was given."</p></div>
+<div class="paragraph"><p>Why "1 was given"? Because Python automatically passes the object as the first argument—that&#8217;s <code>self</code>!</p></div></aside></div></section><section id="_the_init_method"><h2>The <code>__init__()</code> Method</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def bark(self):
+        print(f"{self.name} says Woof!")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog("Fido", 3)
+&gt;&gt;&gt; print(fido.name, fido.age)
+Fido 3</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p><code><em>init</em></code> (double underscores on both sides) is a special "magic" method. Python calls it automatically when you create a new object.</p></div>
+<div class="paragraph"><p>This is where we set up the object&#8217;s initial state—its starting attributes.</p></div>
+<div class="paragraph"><p>The parameters after <code>self</code> become arguments when you instantiate: <code>Dog("Fido", 3)</code> passes "Fido" to <code>name</code> and 3 to <code>age</code>.</p></div>
+<div class="paragraph"><p>Inside <code><em>init</em></code>, we create attributes: <code>self.name = name</code> stores the name parameter as an attribute.</p></div>
+<div class="admonitionblock important"><table><tr><td class="icon"><div class="title">Important</div></td><td class="content">The parameter <code>name</code> and the attribute <code>self.name</code> are different things! The parameter is temporary; the attribute persists.</td></tr></table></div>
+<div class="paragraph"><p>Now we can&#8217;t create a Dog without giving it a name and age. This ensures every Dog is properly set up.</p></div></aside></div></section><section id="_building_a_complete_dog"><h2>Building a Complete Dog</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self.hunger = 5  # Scale of 0-10
+
+    def bark(self):
+        print(f"{self.name} says Woof!")
+
+    def eat(self):
+        self.hunger = max(0, self.hunger - 3)
+        print(f"{self.name} ate! Hunger: {self.hunger}")
+
+    def pass_time(self):
+        self.hunger = min(10, self.hunger + 1)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Now we have a more interesting Dog! Notice:</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p><code><em>init</em></code> sets THREE attributes, but only takes TWO parameters. <code>hunger</code> starts at 5 for every dog—it doesn&#8217;t need to be passed in.</p></li><li><p><code>eat()</code> MODIFIES an attribute. The dog gets less hungry (but not below 0).</p></li><li><p><code>pass_time()</code> also modifies hunger. The dog gets hungrier (but not above 10).</p></li></ol></div>
+<div class="paragraph"><p>This is the power of OOP: the dog tracks its own state and has behaviors that change that state.</p></div>
+<div class="paragraph"><p>Have students create a dog and play with it:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 2)
+&gt;&gt;&gt; buddy.hunger
+5
+&gt;&gt;&gt; buddy.eat()
+Buddy ate! Hunger: 2
+&gt;&gt;&gt; buddy.pass_time()
+&gt;&gt;&gt; buddy.pass_time()
+&gt;&gt;&gt; buddy.hunger
+4</code></pre></div></div>
+<div class="paragraph"><p>The object remembers its state between method calls. That&#8217;s what attributes are for!</p></div></aside></div></section><section id="_using_our_dog_class"><h2>Using Our Dog Class</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 2)
+&gt;&gt;&gt; buddy.bark()
+Buddy says Woof!
+
+&gt;&gt;&gt; buddy.hunger
+5
+&gt;&gt;&gt; buddy.eat()
+Buddy ate! Hunger: 2
+&gt;&gt;&gt; buddy.eat()
+Buddy ate! Hunger: 0
+
+&gt;&gt;&gt; buddy.pass_time()
+&gt;&gt;&gt; buddy.pass_time()
+&gt;&gt;&gt; buddy.hunger
+2</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Walk through this interaction:</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p>Create Buddy, a 2-year-old dog</p></li><li><p>Buddy barks—uses his name attribute</p></li><li><p>Check hunger—starts at 5 (set in <em>init</em>)</p></li><li><p>Buddy eats twice—hunger drops to 2, then to 0 (can&#8217;t go negative)</p></li><li><p>Time passes twice—hunger increases by 1 each time</p></li></ol></div>
+<div class="paragraph"><p>The dog is a little simulation! It has state (hunger) that changes over time through its behaviors (eat, pass_time).</p></div>
+<div class="paragraph"><p>This is a common pattern in OOP: objects that model real-world things with state that changes.</p></div>
+<div class="paragraph"><p>Extensions students could try:
+- Add an <code>energy</code> attribute that decreases when barking
+- Add a <code>play()</code> method that decreases hunger AND energy
+- Add a <code>sleep()</code> method that restores energy</p></div></aside></div></section><section id="_example_summary"><h2>Example: Summary</h2><div class="slide-content"><div class="paragraph"><p>We built a <code>Dog</code> class with:</p></div>
+<div class="ulist"><ul><li><p><strong>Instantiation</strong>: <code>Dog("Fido", 3)</code></p></li><li><p><strong>Attributes</strong>: <code>name</code>, <code>age</code>, <code>hunger</code></p></li><li><p><strong>Methods</strong>: <code>bark()</code>, <code>eat()</code>, <code>pass_time()</code></p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Recap what we&#8217;ve built. Each concept maps to something concrete:</p></div>
+<div class="ulist"><ul><li><p>INSTANTIATION: Creating a specific dog</p></li><li><p>ATTRIBUTES: Data about that dog (name, age, hunger level)</p></li><li><p>METHODS: Things the dog can do (bark, eat)</p></li><li><p>SELF: How methods access "their own" dog&#8217;s data</p></li></ul></div>
+<div class="paragraph"><p>The Dog class is a template. Each Dog object is a specific dog with its own name, age, and hunger level.</p></div>
+<div class="paragraph"><p>Transition: "Now let&#8217;s look at the formal rules for defining classes."</p></div></aside></div></section></section>
+<section><section id="_defining_classes_the_rules"><h2>Defining Classes: The Rules</h2><div class="slide-content"><div class="paragraph"><p><code>class</code> <span class="slot">ClassName</span><code>:</code><br>
+<code>    </code><span class="slot">body</span></p></div><div class="paragraph"><p>Use <strong>CamelCase</strong> for class names</p></div><aside class="notes"><div class="paragraph"><p>Formal syntax for class definitions.</p></div>
+<div class="paragraph"><p>CLASS keyword, then the name, then a colon.</p></div>
+<div class="paragraph"><p>Body is indented (like functions, loops, conditionals).</p></div>
+<div class="paragraph"><p>CAMELCASE convention: Each word capitalized, no underscores.
+- Good: <code>Dog</code>, <code>BankAccount</code>, <code>GameCharacter</code>
+- Bad: <code>dog</code>, <code>bank_account</code>, <code>GAME_CHARACTER</code></p></div>
+<div class="paragraph"><p>This is different from functions and variables, which use snake_case. The different conventions make it easy to tell classes from functions at a glance.</p></div></aside></div></section><section id="_the_pass_statement"><h2>The <code>pass</code> Statement</h2><div class="slide-content"><div class="paragraph"><p><code>pass</code> does nothing—it&#8217;s a placeholder</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Blob:
+    pass</code></pre></div></div>
+<div class="paragraph"><p>Use when you need a body but have nothing to put there</p></div>
+<aside class="notes"><div class="paragraph"><p>Sometimes you need to define a class (or function, or conditional) but you&#8217;re not ready to write the body yet.</p></div>
+<div class="paragraph"><p><code>pass</code> is a "no-op"—no operation. It satisfies Python&#8217;s requirement for a body without doing anything.</p></div>
+<div class="paragraph"><p>You&#8217;ll use this when:
+- Sketching out code structure before filling in details
+- Creating a minimal class that just needs to exist
+- Leaving a branch empty in a conditional (though usually there&#8217;s a better way)</p></div>
+<div class="paragraph"><p>Don&#8217;t use <code>pass</code> when you could just omit the branch entirely:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Bad
+if condition:
+    do_something()
 else:
-    pass</code></pre></div></div></div></div>
-<div class="openblock column"><div class="content"><div class="paragraph"><p>Do this:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">if today == user_birthday:
-    print("Happy birthday!")</code></pre></div></div></div></div></div></section><section id="_the_simplest_class_we_can_write_revisited"><h2>The simplest class we can write, revisited</h2><div class="slide-content"><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Blob:
-    pass</code></pre></div></div>
-<div class="openblock fragment"><div class="content"><div class="paragraph"><p>Instantiating the class</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">myblob = Blob()</code></pre></div></div></div></div>
-<div class="openblock fragment"><div class="content"><div class="paragraph"><p>Setting attributes on our instance</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">myblob.name = "Desdemona"
-myblob.color = "purple"</code></pre></div></div></div></div>
-<div class="openblock fragment"><div class="content"><div class="paragraph"><p>Accessing our instance&#8217;s attributes</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print(myblob.name)
-print(myblob.color)</code></pre></div></div></div></div>
-<aside class="notes"><div class="paragraph"><p>Setting and accessing attributes is very similar to setting and accessing variables.</p></div>
-<div class="paragraph"><p>You may have noticed that attributes look a lot like namespace variables. When an object is created, Python creates a namespace for that object. Attributes are basically variables in the object&#8217;s namespace.</p></div></aside></div></section><section id="_attributes_important_points"><h2>Attributes: important points</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Attributes let us associate data with an object</p><div class="ulist"><ul><li class="fragment"><p>We can use that data inside the object&#8217;s methods as well as outside the object</p></li></ul></div></li><li class="fragment"><p>Like global variables, attributes persist beyond the lifetime of a method call</p></li><li class="fragment"><p>Unlike global variables, attributes live in a specific object&#8217;s namespace (so they&#8217;re less likely to be accidentally modified)</p></li><li class="fragment"><p>When you are tempted to use a global variable, consider writing a class and using an attribute instead</p></li></ul></div></div></section><section id="_summary_2"><h2>Summary</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Classes are declared using <code>class</code> statements</p></li><li class="fragment"><p>The simplest class we can write has a <code>pass</code> statement for a body and inherits all its functionality from Python</p></li><li class="fragment"><p>To make an instance of a class, we call the class like a function</p></li><li class="fragment"><p>Attributes are variables in the namespace of a class instance</p></li><li class="fragment"><p>Attributes are often a good alternative to global variables</p></li></ul></div></div></section></section>
-<section><section id="_methods_2"><h2>Methods</h2><div class="slide-content"><div class="ulist nosubbullet"><ul><li class="fragment"><p>Methods are basically functions declared inside of a class</p></li><li class="fragment"><p>Most methods require a special parameter called <code>self</code> as their first parameter</p></li></ul></div><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Greeter:
+    pass
+
+# Good
+if condition:
+    do_something()</code></pre></div></div></aside></div></section><section id="_methods_need_self"><h2>Methods Need <code>self</code></h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Greeter:
     def greet(self):
-        print("Hello!")</code></pre></div></div><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; g = Greeter()
-&gt;&gt;&gt; h = Greeter()
-&gt;&gt;&gt; g.greet()
-Hello!
-&gt;&gt;&gt; h.greet()
-Hello!</code></pre></div></div></div></section><section id="_tangent_objects_can_have_multiple_names"><h2>Tangent: objects can have multiple names</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Names in Python are references to objects</p></li><li class="fragment"><p>It&#8217;s possible for more than one name to refer to the same object in Python</p></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; b = myblob
-&gt;&gt;&gt; b.name
-'Desdemona'
-&gt;&gt;&gt; b.color
-'purple'
-&gt;&gt;&gt; b is myblob
-True</code></pre></div></div></div></section><section id="_self"><h2><code>self</code></h2><div class="slide-content"><div class="ulist nobullet nosubbullet"><ul><li class="fragment"><p><code>self</code> is a reference to whichever class instance is running your code at a given point in time</p><div class="ulist"><ul><li class="fragment"><p>If you have a <code>Greeter</code> object named <code>g</code> and you call <code>g.greet()</code>, <code>self</code> is a reference to <code>g</code></p></li></ul></div></li></ul></div></div></section><section id="_self_demonstration"><h2><code>self</code> demonstration</h2><div class="slide-content"><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; class Greeter:
-...     def greet(self):
-...         print(f"Hi, my name is {self.name}!")
-...
-&gt;&gt;&gt; g = Greeter()
-&gt;&gt;&gt; g.name = "Gabrielle"
-&gt;&gt;&gt; h = Greeter()
-&gt;&gt;&gt; h.name = "Henry"</code></pre></div></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; g.greet()
-Hi, my name is Gabrielle!</code></pre></div></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; h.greet()
-Hi, my name is Henry!</code></pre></div></div>
-<div class="paragraph fragment"><p><code>self</code> is how you access an object&#8217;s attributes and methods within the object&#8217;s methods</p></div>
-<aside class="notes"><div class="paragraph"><p>Note that when you call a method, you don&#8217;t specify a value for <code>self</code>. Python populates it for you.</p></div></aside></div></section><section id="_summary_3"><h2>Summary</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Methods are basically functions declared inside a class</p></li><li class="fragment"><p><code>self</code> is a (mostly) required parameter that refers to the object that is running your code</p></li><li class="fragment"><p><code>self</code> gives you access to an object&#8217;s attributes and methods within the object&#8217;s methods</p></li></ul></div></div></section></section>
-<section><section id="_the_init_method"><h2>The <code>__init__()</code> method</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>We often want to set some initial attributes on new objects</p></li><li class="fragment"><p>Less commonly, we may want new objects to perform some action upon creation</p></li><li class="fragment"><p>We can define a "magic" method called <code>__init__()</code> to initialize a new object</p></li><li class="fragment"><p>If we want a class to take arguments when we instantiate it, <code>__init__()</code> is where we declare these parameters</p></li></ul></div></div></section><section id="_init_example"><h2><code>__init__()</code> example</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Greeter:
+        print(f"Hi, I'm {self.name}!")</code></pre></div></div>
+<div class="paragraph"><p><code>self</code> = the object running the method</p></div>
+<aside class="notes"><div class="paragraph"><p>Every method (with rare exceptions) needs <code>self</code> as its first parameter.</p></div>
+<div class="paragraph"><p>When you call <code>obj.method()</code>, Python automatically passes <code>obj</code> as the first argument. That becomes <code>self</code> inside the method.</p></div>
+<div class="paragraph"><p><code>self</code> is how methods access the object&#8217;s attributes and other methods.</p></div>
+<div class="paragraph"><p>Common error: Forgetting <code>self</code></p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def greet():  # Wrong! Missing self
+    print(f"Hi, I'm {self.name}!")  # NameError: 'self' not defined</code></pre></div></div>
+<div class="paragraph"><p>Python will say something like "greet() takes 0 positional arguments but 1 was given" because Python tried to pass the object but the function had no parameter for it.</p></div></aside></div></section><section id="_init_initializes_objects"><h2><code>__init__()</code> Initializes Objects</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Greeter:
     def __init__(self, name):
-        self.name = name
-
-    def greet(self):
-        print(f"Hi, my name is {self.name}!")</code></pre></div></div></div></section><section id="_init_important_points"><h2><code>__init__()</code>: important points</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Just because something is a parameter of <code>__init__()</code> doesn&#8217;t mean we have to make an attribute for it</p></li><li class="fragment"><p>We can create attributes that don&#8217;t correspond to parameters of <code>__init__()</code></p></li></ul></div></div></section><section id="_summary_4"><h2>Summary</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p><code>__init__()</code> is a "magic" method that lets us set attributes and perform other actions when a new object is created</p></li><li class="fragment"><p><code>__init__()</code> is where we define parameters that should be specified when the class is instantiated</p><div class="ulist"><ul><li class="fragment"><p>Not all parameters of <code>__init__()</code> have to correspond to attributes</p></li><li class="fragment"><p>Not all attributes have to correspond to parameters of <code>__init__()</code></p></li></ul></div></li></ul></div></div></section></section>
-<section><section id="_revisiting_docstrings" class="columns"><h2>Revisiting docstrings</h2><div class="slide-content"><div class="openblock column"><div class="content"><div class="ulist"><ul><li class="fragment"><p>Docstrings give other programmers enough information to use our code</p></li><li class="fragment"><p>Three kinds:</p><div class="ulist"><ul><li class="fragment"><p>Function/method docstrings</p></li><li class="fragment"><p>Class docstrings</p></li><li class="fragment"><p>Module docstrings</p></li></ul></div></li><li class="fragment"><p>Docstrings are statements, not comments</p></li><li class="fragment"><p>Docstrings must be the first statement in the body of the thing they are describing</p></li></ul></div></div></div></div></section><section id="_docstrings_are_special"><h2>Docstrings are special</h2><div class="slide-content"><div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; def myfunction():
-...     """This shows that docstrings are special."""
-...     pass
-...
-&gt;&gt;&gt; help(myfunction)
-Help on function myfunction in module __main__:
-
-myfunction()
-    This shows that docstrings are special.
-
-&gt;&gt;&gt; myfunction.__doc__
-'This shows that docstrings are special.'</code></pre></div></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def myfunction():
-...     pass
-...     """This docstring is in the wrong place."""
-...
-&gt;&gt;&gt; help(myfunction)
-Help on function myfunction in module __main__:
-
-myfunction()
-
-&gt;&gt;&gt; myfunction.__doc__
-&gt;&gt;&gt;</code></pre></div></div></div></section><section id="_class_docstrings"><h2>Class docstrings</h2><div class="slide-content"><div class="paragraph"><p>Class docstrings should</p></div>
-<div class="ulist"><ul><li class="fragment"><p>begin with a brief description of the purpose of the class</p></li><li class="fragment"><p>document the data type and meaning of each attribute</p></li></ul></div>
-<div class="listingblock fragment"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Greeter:
-    """ An object that gives users a friendly greeting.
+        self.name = name</code></pre></div></div>
+<div class="paragraph"><p>Called automatically when object is created</p></div>
+<aside class="notes"><div class="paragraph"><p><code><em>init</em></code> is called the INITIALIZER or CONSTRUCTOR.</p></div>
+<div class="paragraph"><p>Python calls it automatically right after creating a new object. You never call <code><em>init</em></code> directly.</p></div>
+<div class="paragraph"><p>Use it to:
+1. Set up attributes the object needs
+2. Perform any setup actions</p></div>
+<div class="paragraph"><p>Parameters after <code>self</code> become arguments to the class:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">Greeter("Alice")  # "Alice" goes to the name parameter</code></pre></div></div>
+<div class="paragraph"><p>Not every attribute needs a parameter—you can set defaults:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def __init__(self, name):
+    self.name = name
+    self.greeting_count = 0  # Always starts at 0</code></pre></div></div></aside></div></section><section id="_attributes_vs_parameters"><h2>Attributes vs Parameters</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def __init__(self, name, age):
+    self.name = name        # Parameter → Attribute
+    self.age = age          # Parameter → Attribute
+    self.hunger = 5         # No parameter, default value
+    # age + 1               # Could use parameter without storing it</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Important distinction that confuses students:</p></div>
+<div class="paragraph"><p>PARAMETERS are the variables in the function signature. They exist only during the function call.</p></div>
+<div class="paragraph"><p>ATTRIBUTES are stored on <code>self</code>. They persist for the life of the object.</p></div>
+<div class="paragraph"><p>You can:
+- Turn a parameter into an attribute (most common)
+- Create an attribute without a parameter (default value)
+- Use a parameter without making it an attribute (rare but valid)</p></div>
+<div class="paragraph"><p>Example of using parameter without storing:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def __init__(self, birth_year):
+    self.age = 2024 - birth_year  # Calculate age, don't store birth_year</code></pre></div></div></aside></div></section><section id="_class_definition_summary"><h2>Class Definition: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p><code>class ClassName:</code> to define</p></li><li><p><code>ClassName()</code> to instantiate</p></li><li><p>Methods need <code>self</code> as first parameter</p></li><li><p><code>__init__()</code> sets up new objects</p></li><li><p>Attributes are variables on <code>self</code></p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Quick reference for students to remember.</p></div>
+<div class="paragraph"><p>These are the core mechanics. Everything else builds on these fundamentals.</p></div>
+<div class="paragraph"><p>Transition: "One more important topic—documenting our classes with docstrings."</p></div></aside></div></section></section>
+<section><section id="_docstrings_for_classes"><h2>Docstrings for Classes</h2><div class="slide-content"><div class="paragraph"><p>Document your code for others (and future you)</p></div><aside class="notes"><div class="paragraph"><p>You&#8217;ve written function docstrings. Classes need documentation too!</p></div>
+<div class="paragraph"><p>Good docstrings let someone use your class without reading all the code. They answer:
+- What does this class represent?
+- What attributes does it have?
+- What do the methods do?</p></div>
+<div class="paragraph"><p>Python&#8217;s <code>help()</code> function reads docstrings, so they&#8217;re not just comments—they&#8217;re integrated into the language.</p></div></aside></div></section><section id="_class_docstring_format"><h2>Class Docstring Format</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    """A virtual pet dog that tracks hunger.
 
     Attributes:
-        name (str): the greeter's name.
-    """</code></pre></div></div></div></section><section id="_summary_5"><h2>Summary</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>Docstrings document how to use our code</p></li><li class="fragment"><p>Functions/methods, classes, and modules can have docstrings</p></li><li class="fragment"><p>Improperly located docstrings aren&#8217;t docstrings</p></li><li class="fragment"><p>Class docstrings explain</p><div class="ulist"><ul><li class="fragment"><p>the purpose of the class</p></li><li class="fragment"><p>the data type and meaning of each attribute</p></li></ul></div></li></ul></div></div></section></section>
-<section id="_example_class"><h2>Example class</h2><div class="slide-content"><div class="listingblock bigcode"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Memobox:
-    """ A mechanism for users to communicate with each other.
-    
-    Attributes:
-        name (str): the user's name.
-        contacts (dict of str: Memobox): the people the user
-            communicates with and their Memobox objects. Each key is the
-            name of a contact; each value is that contact's Memobox.
-        memos (list of (tuple of str, str)): unread memos received
-            by the user. Each memo is a tuple consisting of a sender
-            and a memo string.
+        name (str): the dog's name.
+        age (int): the dog's age in years.
+        hunger (int): hunger level from 0 (full) to 10 (starving).
+    """</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Class docstrings go right after the class line, before any methods.</p></div>
+<div class="paragraph"><p>Include:
+1. Brief description of what the class represents (first line)
+2. Attributes section listing each attribute with type and meaning</p></div>
+<div class="paragraph"><p>This tells someone everything they need to know to USE the class without reading the implementation.</p></div>
+<div class="paragraph"><p>Students can see this with <code>help(Dog)</code> or in their IDE&#8217;s autocomplete.</p></div></aside></div></section><section id="_method_docstrings"><h2>Method Docstrings</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">def eat(self):
+    """Feed the dog, reducing hunger by 3.
+
+    Hunger will not go below 0.
     """
-    def __init__(self, name):
-        """ Initialize new Memobox object.
-        
-        Side effects:
-           Sets attributes name, contacts, and memos.
+    self.hunger = max(0, self.hunger - 3)</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Method docstrings work like function docstrings.</p></div>
+<div class="paragraph"><p>Include:
+- What the method does
+- Parameters (other than self) and their types
+- Return value if any
+- Side effects (like modifying attributes)</p></div>
+<div class="paragraph"><p>For simple methods, a one-line docstring is fine. For complex ones, add more detail.</p></div></aside></div></section><section id="_docstrings_must_come_first"><h2>Docstrings Must Come First</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Correct - docstring first
+def greet(self):
+    """Say hello."""
+    print("Hello!")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Wrong - docstring not first
+def greet(self):
+    print("Hello!")
+    """This won't work as a docstring."""</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Docstrings MUST be the first statement in the body. If anything comes before them, Python doesn&#8217;t recognize them as docstrings.</p></div>
+<div class="paragraph"><p>The second example is valid Python—it won&#8217;t cause an error—but the string is just ignored. <code>help(greet)</code> won&#8217;t show it.</p></div>
+<div class="paragraph"><p>Common mistake: Adding a docstring after you&#8217;ve already written the function, and putting it at the end instead of the beginning.</p></div></aside></div></section><section id="_docstrings_summary"><h2>Docstrings: Summary</h2><div class="slide-content"><div class="ulist"><ul><li><p>Class docstrings describe purpose and attributes</p></li><li><p>Method docstrings describe behavior</p></li><li><p>Must be the first statement in the body</p></li><li><p>Use <code>help()</code> to view docstrings</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Transition to the complete example that puts everything together.</p></div></aside></div></section></section>
+<section><section id="_complete_example"><h2>Complete Example</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
+    """A virtual pet dog that tracks hunger.
+
+    Attributes:
+        name (str): the dog's name.
+        age (int): the dog's age in years.
+        hunger (int): hunger level from 0 (full) to 10 (starving).
+    """
+
+    def __init__(self, name, age):
+        """Create a new Dog.
+
+        Args:
+            name (str): the dog's name.
+            age (int): the dog's age in years.
         """
         self.name = name
-        self.contacts = dict()
-        self.memos = list()
-    
-    def add_contact(self, contact):
-        """ Add contact to contacts.
-        
-        Args:
-            contact (Memobox): Memobox of a contact to add.
-        
-        Side effects:
-            Modifies contacts attribute.
-        """
-        self.contacts[contact.name] = contact
-    
-    def receive_memo(self, sender, memo):
-        """ Receive a memo.
-        
-        Args:
-            sender (Memobox): the sender of the memo.
-            memo (str): the memo that was received.
-        
-        Side effects:
-            Modifies memos attribute.
-        """
-        self.memos.append((sender.name, memo))
-    
-    def send_memo(self, recipient, memo):
-        """ Send a memo.
-        
-        Args:
-            recipient (str): the intended recipeint of the memo.
-            memo (str): the memo to send.
-        
-        Side effects:
-            Invokes recipient's receive_memo() method.
-        
-        Raises:
-            ValueError: recipient is not listed in contacts.
-        """
-        if recipient not in self.contacts:
-            raise ValueError(f"recipient {recipient} not in contacts")
-        self.contacts[recipient].receive_memo(self, memo)
-    
-    def read_memos(self):
-        """ Display all memos and clear memo queue.
-        
-        Side effects:
-            Modifies memos attribute.
-            Writes to stdout.
-        """
-        if len(self.memos) &gt; 0:
-            for sender, memo in self.memos:
-                print(f"memo from {sender}: {memo}")
-            self.memos = list()
-        else:
-            print("No new memos")</code></pre></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+        self.age = age
+        self.hunger = 5</code></pre></div></div><aside class="notes"><div class="paragraph"><p>This is the first half of a complete, well-documented class.</p></div>
+<div class="paragraph"><p>Notice:
+- Class docstring describes purpose and ALL attributes
+- <code><em>init</em></code> docstring describes the parameters
+- <code>hunger</code> attribute is documented in class docstring even though it&#8217;s not a parameter</p></div>
+<div class="paragraph"><p>Continue to next slide for methods&#8230;&#8203;</p></div></aside></div></section><section id="_complete_example_continued"><h2>Complete Example (continued)</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">    def bark(self):
+        """Make the dog bark."""
+        print(f"{self.name} says Woof!")
+
+    def eat(self):
+        """Feed the dog, reducing hunger by 3 (minimum 0)."""
+        self.hunger = max(0, self.hunger - 3)
+        print(f"{self.name} ate! Hunger: {self.hunger}")
+
+    def pass_time(self):
+        """Simulate time passing. Increases hunger by 1 (maximum 10)."""
+        self.hunger = min(10, self.hunger + 1)
+
+    def status(self):
+        """Print the dog's current status."""
+        mood = "happy" if self.hunger &lt; 5 else "hungry"
+        print(f"{self.name} ({self.age} yrs) - Hunger: {self.hunger} - {mood}")</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>The methods complete our Dog class.</p></div>
+<div class="paragraph"><p>Each method has a brief docstring explaining what it does.</p></div>
+<div class="paragraph"><p><code>status()</code> shows a nice pattern—using attributes to compute something (mood) without storing it as another attribute.</p></div>
+<div class="paragraph"><p>Have students type this whole class into a file and experiment:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 3)
+&gt;&gt;&gt; buddy.status()
+Buddy (3 yrs) - Hunger: 5 - hungry
+&gt;&gt;&gt; buddy.eat()
+Buddy ate! Hunger: 2
+&gt;&gt;&gt; buddy.status()
+Buddy (3 yrs) - Hunger: 2 - happy</code></pre></div></div>
+<div class="paragraph"><p>This is a complete, well-documented, functional class. Students can use this as a template for their own classes.</p></div></aside></div></section></section>
+<section><section id="_oop_key_takeaways"><h2>OOP: Key Takeaways</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Objects</strong> combine data and functionality</p></li><li><p><strong>Classes</strong> are blueprints for objects</p></li><li><p><strong>Attributes</strong> store data (<code>self.name</code>)</p></li><li><p><strong>Methods</strong> define behavior (<code>def bark(self)</code>)</p></li><li><p><strong><code>__init__()</code></strong> initializes new objects</p></li></ul></div><aside class="notes"><div class="paragraph"><p>Final summary of the entire module.</p></div>
+<div class="paragraph"><p>The core insight: OOP lets us model things as objects that have properties (attributes) and behaviors (methods).</p></div>
+<div class="paragraph"><p>This maps naturally to how we think about the world. Dogs have names and can bark. Bank accounts have balances and can deposit/withdraw. Game characters have health and can attack/defend.</p></div>
+<div class="paragraph"><p>When students encounter a problem, they can ask:
+- What are the "things" (nouns) in this problem? → Classes
+- What data do those things have? → Attributes
+- What can those things do? → Methods</p></div>
+<div class="paragraph"><p>Next steps for students:
+- Practice by creating their own classes
+- Extend the Dog class (add energy, tricks, etc.)
+- Try other examples: BankAccount, Student, PlaylistItem</p></div></aside></div></section><section id="_practice_ideas"><h2>Practice Ideas</h2><div class="slide-content"><div class="paragraph"><p>Create your own classes:</p></div>
+<div class="ulist"><ul><li><p><code>BankAccount</code> — balance, deposit(), withdraw()</p></li><li><p><code>Student</code> — name, grades list, add_grade(), gpa()</p></li><li><p><code>Rectangle</code> — width, height, area(), perimeter()</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Suggest these as practice exercises. Each one reinforces the same concepts:</p></div>
+<div class="paragraph"><p>BANKACCOUNT:
+- Attributes: owner_name, balance
+- Methods: deposit(amount), withdraw(amount), get_balance()
+- Challenge: Don&#8217;t allow withdrawing more than the balance</p></div>
+<div class="paragraph"><p>STUDENT:
+- Attributes: name, grades (a list)
+- Methods: add_grade(grade), gpa(), is_passing()
+- Challenge: Handle letter grades vs numeric grades</p></div>
+<div class="paragraph"><p>RECTANGLE:
+- Attributes: width, height
+- Methods: area(), perimeter(), is_square()
+- Challenge: Add a scale(factor) method that changes dimensions</p></div>
+<div class="paragraph"><p>Each of these is small enough to complete in 15-20 minutes but substantial enough to reinforce all the concepts from today.</p></div></aside></div></section></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
@@ -828,7 +1013,7 @@ Reveal.addEventListener('ready', function () {
 });
 Reveal.addEventListener('resize', function () {
   layoutSlideContents(1400, 810)
-});</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/plugin/highlight/monokai.css"/>
+});</script><link rel="stylesheet" href="none"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
 
 <script>

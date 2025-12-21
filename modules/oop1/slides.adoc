@@ -3,6 +3,7 @@
 :docinfo: shared
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
 :source-highlighter: highlightjs
+:highlightjs-theme: none
 :customcss: ../../css/default.css
 :revealjs_theme: black
 :revealjs_width: 1400
@@ -14,517 +15,876 @@
 
 == What is an object?
 
-[%step]
-* All values in Python are objects
-* All objects are _instances_ of a data type
-* Objects can have _properties_
-[%step]
-** _Methods_ (functionality)
-** _Attributes_ (data)
+All values in Python are objects
+
+Objects are _instances_ of a data type
+
+[.notes]
+--
+Start with a question: "What do you think of when you hear the word 'object'?"
+
+In everyday life, objects are things—a chair, a phone, a dog. They have characteristics (color, size) and can do things (a phone can ring, a dog can bark).
+
+Python objects are similar! Every value you've ever used in Python—every number, string, list—is an object.
+
+Key vocabulary: 
+- OBJECT: A thing in your program that combines data and functionality
+- INSTANCE: Another word for object. We say an object is "an instance of" its class.
+--
+
+=== Objects Have Properties
+
+*Attributes* — data the object stores
+
+*Methods* — actions the object can perform
+
+[.notes]
+--
+Think of a dog:
+- ATTRIBUTES (data): name, age, breed, hunger level
+- METHODS (actions): bark, eat, sleep, fetch
+
+Or think of your phone:
+- ATTRIBUTES: battery level, volume, contacts list
+- METHODS: make_call(), send_text(), take_photo()
+
+This is the core insight of OOP: we bundle related data and functionality together into a single package.
+--
 
 === What is a class?
 
-[%step]
-[.nosubbullet]
-* Classes define data types
-[%step]
-** Classes allow us to combine data and functionality into a single package
-* Classes are used to create (or _instantiate_) objects
-* Classes let us define how operators and other features of Python behave for the objects we create
+A *class* defines a data type
+
+Classes are blueprints for creating objects
 
 [.notes]
 --
-Classes are like factories for objects (or class instances).
+If an object is a dog, the class is the concept of "Dog-ness"—what it means to be a dog.
 
-In this module, we're going to use the terms 'object' and 'class instance' (or just 'instance') interchangeably. Think of the class as a factory and the object/instance as one thing made by the factory.
+ANALOGY: A class is like a cookie cutter, and objects are the cookies. One cookie cutter can make many cookies. Each cookie is its own thing, but they all have the same shape.
+
+ANOTHER ANALOGY: A class is like a factory. The factory (class) produces products (objects). Each product is a separate item, but they're all made the same way.
+
+Classes let us:
+1. Bundle data and functionality together
+2. Create multiple objects with the same structure
+3. Define how our objects work with Python features (like print, +, etc.)
 --
 
-=== You've used classes before:
+=== You've Used Classes Before
 
-* `int`
-* `str`
-* `float`
-* `list`
-* `bool`
+`int`, `str`, `float`, `list`, `bool`
 
-=== You've used methods before:
+These are all classes!
 
-* `mylist.*append("some value")*`
-* `mystring.*upper()*`
-* `myfile.*close()*`
+[.notes]
+--
+Every time you've created a string or a list, you've been creating an object—an instance of a class.
 
-== Example: `pathlib.Path`
+`"hello"` is an instance of the `str` class.
+`[1, 2, 3]` is an instance of the `list` class.
+`42` is an instance of the `int` class.
 
-The `Path` class from `pathlib` is an excellent example of a good class.
+You've been doing OOP this whole time without knowing it!
+--
 
-[.fragment]
-We'll look at
-
-[%step]
-* instantiation
-* some attributes
-* some methods
-* interaction with features of Python
-
-=== Creating objects
-
-[%step]
-[.nosubbullet]
-* To create an instance of a class, invoke the class like a function: [slot]#cls#`()`
-* Arguments (if any) go inside the parentheses: [slot]#cls#`(`[slot]#arg1#`,` [slot]#arg2#`,` [slot]#...#`)`
-[%step]
-** When creating a `Path` object, you can specify a path as a string
+=== You've Used Methods Before
 
 [source,python]
-[.fragment]
-----
->>> from pathlib import Path
->>>
->>> dir = Path("/home/aric/INST326")
->>> script = Path("/home/aric/INST326/homework1.py")
-----
+mylist.append("value")
 
-=== Attributes
+[source,python]
+mystring.upper()
 
-[%step]
-[.nosubbullet]
-* Attributes are accessed like this: [slot]#obj#`.`[slot]#attribute#
-[%step]
-** `Path` object attributes include
-[%step]
-*** `name`: the name of the file, without the directory
-*** `suffix`: the file extension, if any
-*** `parent`: the directory of the file, as a `Path` object
+[source,python]
+myfile.close()
 
-[source, python]
-[.fragment]
-----
->>> script.name
-'homework1.py'
->>> script.suffix
-'.py'
->>> script.parent
-PosixPath('/home/aric/INST326')
-----
-
-[.columns]
-=== Methods
-
-[.column]
+[.notes]
 --
-[%step]
-[.nosubbullet]
-* Methods are invoked like this: [slot]#obj#`.`[slot]#method#`()`
-** `Path` object methods include
-[%step]
-*** `exists()`: indicates whether or not the file exists
-*** `read_text()`: open the file as a text file and return the contents
-*** `glob()`: search for files in a directory matching a pattern
+The dot notation you've been using? That's calling methods on objects.
+
+`mylist.append("value")` — calling the append METHOD on a list OBJECT
+`mystring.upper()` — calling the upper METHOD on a string OBJECT
+
+Methods are just functions that belong to an object. They often use or modify the object's data.
+
+Today we'll learn to create our own classes with our own methods.
 --
 
-[.column]
+== Example: The `Dog` Class
+
+Let's build a class from scratch
+
+We'll learn:
+
+* How to create (instantiate) objects
+* How to store data (attributes)
+* How to add behavior (methods)
+
+[.notes]
 --
-[%step]
-* Arguments (if any) go inside the parentheses: [slot]#obj#`.`[slot]#method#`(`[slot]#arg1#`,` [slot]#arg2#`,` [slot]#...#`)`
+We're going to build a Dog class together. This will make all the OOP concepts concrete.
 
-[source, python]
-[.fragment]
-----
->>> script.exists()
-True
->>> script.read_text(encoding="utf-8")
-'print("Hello world!")\n'
->>> for path in dir.glob("*.py"):
-...     print(path)
-... 
-/home/aric/INST326/exercise1.py
-/home/aric/INST326/homework1.py
-----
---
+Have students open their Python interpreter or a new file to follow along. Building it step by step will help it stick.
 
-=== Interaction with features of Python
-
-[%step]
-* Using `str()` on a `Path` object gives you the path as a string:
-
-[source, python]
-[.fragment]
-----
->>> str(dir)
-'/home/aric/INST326'
-----
-
-[%step]
-* Using the `/` operator on a `Path` object lets you create child paths:
-
-[source, python]
-[.fragment]
-----
->>> dir / "homework2.py"
-PosixPath('/home/aric/INST326/homework2.py')
-----
-
-=== Summary
-
-Using `pathlib.Path`, we looked at examples of
-
-[%step]
-* how to instantiate a class
-* how to access attributes of an object
-* how to invoke methods of an object
-* how objects can define how they interact with features of Python
-
-[.columns]
-== Defining classes
-
-[.column.fragment]
---
-[%step]
-* Classes are defined using a `class` statement
-* By convention, non-built-in class names use CamelCase
+By the end, we'll have dogs that can bark, eat, and get hungry over time!
 --
 
-[.column.fragment]
+=== Creating a Simple Class
+
+[source,python]
+----
+class Dog:
+    pass
+----
+
+That's it! We've defined a class.
+
+[.notes]
 --
+This is the absolute minimum class. The `pass` statement is a placeholder—it does nothing, but Python requires something in the body.
+
+CLASS keyword starts the definition.
+DOG is the class name. Convention: use CamelCase (capitalize each word, no underscores).
+COLON and indented body, just like functions, loops, and conditionals.
+
+Even this empty class gives us a lot for free from Python—we can create instances of it.
+--
+
+=== Creating Objects (Instantiation)
+
+[source,python]
+----
+class Dog:
+    pass
+----
+
+[source,python]
+----
+>>> fido = Dog()
+>>> rex = Dog()
+----
+
+Call the class like a function to create an instance
+
+[.notes]
+--
+To create an object, we CALL the class like a function. `Dog()` creates a new Dog object and returns it.
+
+`fido` and `rex` are now two separate Dog objects. They're independent—changing one doesn't affect the other.
+
+This is called INSTANTIATION—we're creating an INSTANCE of the Dog class.
+
+Have students try this:
+```python
+>>> type(fido)
+<class '__main__.Dog'>
+>>> type(rex)
+<class '__main__.Dog'>
+>>> fido is rex
+False  # They're different objects!
+```
+--
+
+=== Adding Attributes
+
+[source,python]
+----
+>>> fido = Dog()
+>>> fido.name = "Fido"
+>>> fido.age = 3
+>>> fido.breed = "Labrador"
+----
+
+[source,python]
+----
+>>> print(fido.name)
+Fido
+>>> print(fido.age)
+3
+----
+
+[.notes]
+--
+Attributes are accessed with DOT NOTATION: object.attribute
+
+Setting attributes is like setting variables, but the variable lives INSIDE the object.
+
+Each object has its own namespace—its own set of attributes. fido.name and rex.name are completely separate variables.
+
+Have students create another dog with different attributes:
+```python
+>>> rex = Dog()
+>>> rex.name = "Rex"
+>>> rex.age = 5
+>>> print(fido.name, rex.name)
+Fido Rex
+```
+
+Why is this better than global variables? The data is organized—all info about Fido stays with Fido.
+--
+
+=== Why Attributes Beat Global Variables
+
+[source,python]
+----
+# Messy: global variables
+fido_name = "Fido"
+fido_age = 3
+rex_name = "Rex"
+rex_age = 5
+----
+
+[source,python]
+----
+# Clean: attributes
+fido.name = "Fido"
+fido.age = 3
+rex.name = "Rex"
+rex.age = 5
+----
+
+[.notes]
+--
+With global variables, you end up with a mess of related variables scattered around. What if you have 10 dogs? 100?
+
+With objects, each dog's data stays with that dog. It's organized, it's clear, and it scales.
+
+Also, global variables can be accidentally modified from anywhere. Attributes are tucked away in their object's namespace—safer and more organized.
+
+Rule of thumb: When you're tempted to use multiple related global variables, consider making a class instead.
+--
+
+=== Adding Methods
+
+[source,python]
+----
+class Dog:
+    def bark(self):
+        print("Woof!")
+----
+
+[source,python]
+----
+>>> fido = Dog()
+>>> fido.bark()
+Woof!
+----
+
+[.notes]
+--
+Methods are functions defined inside a class. They describe what the object can DO.
+
+Notice the `self` parameter—we'll explain this next. For now, just know that every method needs `self` as its first parameter.
+
+When you CALL the method, you don't pass anything for self: `fido.bark()` not `fido.bark(fido)`. Python fills in self automatically.
+
+Have students add this and try it:
+```python
+>>> rex = Dog()
+>>> rex.bark()
+Woof!
+```
+
+Both dogs can bark! They share the same method definition, but each dog is doing the barking independently.
+--
+
+=== Understanding `self`
+
+`self` refers to the object running the method
+
+[source,python]
+----
+class Dog:
+    def bark(self):
+        print(f"{self.name} says Woof!")
+----
+
+[source,python]
+----
+>>> fido = Dog()
+>>> fido.name = "Fido"
+>>> rex = Dog()
+>>> rex.name = "Rex"
+>>> fido.bark()
+Fido says Woof!
+>>> rex.bark()
+Rex says Woof!
+----
+
+[.notes]
+--
+THIS IS THE KEY CONCEPT. Take time here.
+
+When you call `fido.bark()`, Python sets `self` to `fido`. Inside the method, `self.name` means "fido's name".
+
+When you call `rex.bark()`, Python sets `self` to `rex`. Same code, but `self.name` now means "rex's name".
+
+`self` is how a method knows WHICH object it's working with. It's the method's way of accessing "my own" attributes and methods.
+
+Common confusion: Students forget to include `self` as the first parameter. They'll get an error like "bark() takes 0 positional arguments but 1 was given."
+
+Why "1 was given"? Because Python automatically passes the object as the first argument—that's `self`!
+--
+
+=== The `+++__init__()+++` Method
+
+[source,python]
+----
+class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def bark(self):
+        print(f"{self.name} says Woof!")
+----
+
+[source,python]
+----
+>>> fido = Dog("Fido", 3)
+>>> print(fido.name, fido.age)
+Fido 3
+----
+
+[.notes]
+--
+`__init__` (double underscores on both sides) is a special "magic" method. Python calls it automatically when you create a new object.
+
+This is where we set up the object's initial state—its starting attributes.
+
+The parameters after `self` become arguments when you instantiate: `Dog("Fido", 3)` passes "Fido" to `name` and 3 to `age`.
+
+Inside `__init__`, we create attributes: `self.name = name` stores the name parameter as an attribute.
+
+IMPORTANT: The parameter `name` and the attribute `self.name` are different things! The parameter is temporary; the attribute persists.
+
+Now we can't create a Dog without giving it a name and age. This ensures every Dog is properly set up.
+--
+
+=== Building a Complete Dog
+
+[source,python]
+----
+class Dog:
+    def __init__(self, name, age): 
+        self.name = name
+        self.age = age
+        self.hunger = 5  # Scale of 0-10
+    
+    def bark(self):
+        print(f"{self.name} says Woof!")
+    
+    def eat(self):
+        self.hunger = max(0, self.hunger - 3)
+        print(f"{self.name} ate! Hunger: {self.hunger}")
+    
+    def pass_time(self):
+        self.hunger = min(10, self.hunger + 1)
+----
+
+[.notes]
+--
+Now we have a more interesting Dog! Notice:
+
+1. `__init__` sets THREE attributes, but only takes TWO parameters. `hunger` starts at 5 for every dog—it doesn't need to be passed in.
+
+2. `eat()` MODIFIES an attribute. The dog gets less hungry (but not below 0).
+
+3. `pass_time()` also modifies hunger. The dog gets hungrier (but not above 10).
+
+This is the power of OOP: the dog tracks its own state and has behaviors that change that state.
+
+Have students create a dog and play with it:
+```python
+>>> buddy = Dog("Buddy", 2)
+>>> buddy.hunger
+5
+>>> buddy.eat()
+Buddy ate! Hunger: 2
+>>> buddy.pass_time()
+>>> buddy.pass_time()
+>>> buddy.hunger
+4
+```
+
+The object remembers its state between method calls. That's what attributes are for!
+--
+
+=== Using Our Dog Class
+
+[source,python]
+----
+>>> buddy = Dog("Buddy", 2)
+>>> buddy.bark()
+Buddy says Woof!
+
+>>> buddy.hunger
+5
+>>> buddy.eat()
+Buddy ate! Hunger: 2
+>>> buddy.eat()
+Buddy ate! Hunger: 0
+
+>>> buddy.pass_time()
+>>> buddy.pass_time()
+>>> buddy.hunger
+2
+----
+
+[.notes]
+--
+Walk through this interaction:
+
+1. Create Buddy, a 2-year-old dog
+2. Buddy barks—uses his name attribute
+3. Check hunger—starts at 5 (set in __init__)
+4. Buddy eats twice—hunger drops to 2, then to 0 (can't go negative)
+5. Time passes twice—hunger increases by 1 each time
+
+The dog is a little simulation! It has state (hunger) that changes over time through its behaviors (eat, pass_time).
+
+This is a common pattern in OOP: objects that model real-world things with state that changes.
+
+Extensions students could try:
+- Add an `energy` attribute that decreases when barking
+- Add a `play()` method that decreases hunger AND energy
+- Add a `sleep()` method that restores energy
+--
+
+=== Example: Summary
+
+We built a `Dog` class with:
+
+* *Instantiation*: `Dog("Fido", 3)`
+* *Attributes*: `name`, `age`, `hunger`
+* *Methods*: `bark()`, `eat()`, `pass_time()`
+
+[.notes]
+--
+Recap what we've built. Each concept maps to something concrete:
+
+- INSTANTIATION: Creating a specific dog
+- ATTRIBUTES: Data about that dog (name, age, hunger level)
+- METHODS: Things the dog can do (bark, eat)
+- SELF: How methods access "their own" dog's data
+
+The Dog class is a template. Each Dog object is a specific dog with its own name, age, and hunger level.
+
+Transition: "Now let's look at the formal rules for defining classes."
+--
+
+== Defining Classes: The Rules
+
 `class` [slot]#ClassName#`:` +
-``    ``[slot]#body#
+``    ``[slot]#body#
+
+Use *CamelCase* for class names
+
+[.notes]
+--
+Formal syntax for class definitions.
+
+CLASS keyword, then the name, then a colon.
+
+Body is indented (like functions, loops, conditionals).
+
+CAMELCASE convention: Each word capitalized, no underscores.
+- Good: `Dog`, `BankAccount`, `GameCharacter`
+- Bad: `dog`, `bank_account`, `GAME_CHARACTER`
+
+This is different from functions and variables, which use snake_case. The different conventions make it easy to tell classes from functions at a glance.
 --
 
-=== The simplest class we can write
+=== The `pass` Statement
 
-[source, python]
+`pass` does nothing—it's a placeholder
+
+[source,python]
 ----
 class Blob:
     pass
 ----
 
+Use when you need a body but have nothing to put there
+
 [.notes]
 --
-When we write a class in Python, by default we inherit a lot of machinery from Python itself. We can override parts of that machinery as needed, but in this example, we're just taking advantage of the fact that it's provided for us.
+Sometimes you need to define a class (or function, or conditional) but you're not ready to write the body yet.
 
-In order to understand what's going on here, we need to go off on a bit of a tangent and discuss the `pass` statement.
---
+`pass` is a "no-op"—no operation. It satisfies Python's requirement for a body without doing anything.
 
-=== Tangent: the `pass` statement
+You'll use this when:
+- Sketching out code structure before filling in details
+- Creating a minimal class that just needs to exist
+- Leaving a branch empty in a conditional (though usually there's a better way)
 
-[%step]
-[.nosubbullet]
-* `pass` is called a _no-op_: it does nothing
-* `pass` is used when we need a compound statement, but we have nothing meaningful to put in the body
-** Remember, all compound statements need a body
-
-[.columns]
-=== Where not to use a `pass` statement
-
-[.column]
---
-Instead of this:
-
-[source, python]
-----
-if today == user_birthday:
-    print("Happy birthday!")
+Don't use `pass` when you could just omit the branch entirely:
+```python
+# Bad
+if condition:
+    do_something()
 else:
     pass
-----
+
+# Good
+if condition:
+    do_something()
+```
 --
 
-[.column]
---
-Do this:
+=== Methods Need `self`
 
-[source, python]
-----
-if today == user_birthday:
-    print("Happy birthday!")
-----
---
-
-=== The simplest class we can write, revisited
-
-[source, python]
-[.fragment]
-----
-class Blob:
-    pass
-----
-
-[.fragment]
---
-Instantiating the class
-
-[source, python]
-----
-myblob = Blob()
-----
---
-
-[.fragment]
---
-Setting attributes on our instance
-
-[source, python]
-----
-myblob.name = "Desdemona"
-myblob.color = "purple"
-----
---
-
-[.fragment]
---
-Accessing our instance's attributes
-
-[source, python]
-----
-print(myblob.name)
-print(myblob.color)
-----
---
-
-[.notes]
---
-Setting and accessing attributes is very similar to setting and accessing variables.
-
-You may have noticed that attributes look a lot like namespace variables. When an object is created, Python creates a namespace for that object. Attributes are basically variables in the object's namespace.
---
-
-=== Attributes: important points
-
-[%step]
-[.nosubbullet]
-* Attributes let us associate data with an object
-[%step]
-** We can use that data inside the object's methods as well as outside the object
-* Like global variables, attributes persist beyond the lifetime of a method call
-* Unlike global variables, attributes live in a specific object's namespace (so they're less likely to be accidentally modified)
-* When you are tempted to use a global variable, consider writing a class and using an attribute instead
-
-=== Summary
-
-[%step]
-* Classes are declared using `class` statements
-* The simplest class we can write has a `pass` statement for a body and inherits all its functionality from Python
-* To make an instance of a class, we call the class like a function
-* Attributes are variables in the namespace of a class instance
-* Attributes are often a good alternative to global variables
-
-== Methods
-
-[%step]
-[.nosubbullet]
-* Methods are basically functions declared inside of a class
-* Most methods require a special parameter called `self` as their first parameter
-
-[source, python]
-[.fragment]
+[source,python]
 ----
 class Greeter:
     def greet(self):
-        print("Hello!")
+        print(f"Hi, I'm {self.name}!")
 ----
 
-[source, python]
-[.fragment]
-----
->>> g = Greeter()
->>> h = Greeter()
->>> g.greet()
-Hello!
->>> h.greet()
-Hello!
-----
-
-=== Tangent: objects can have multiple names
-
-[%step]
-* Names in Python are references to objects
-* It's possible for more than one name to refer to the same object in Python
-
-[source, python]
-[.fragment]
-----
->>> b = myblob
->>> b.name
-'Desdemona'
->>> b.color
-'purple'
->>> b is myblob
-True
-----
-
-=== `self`
-
-[%step]
-[.nobullet.nosubbullet]
-* `self` is a reference to whichever class instance is running your code at a given point in time
-[%step]
-** If you have a `Greeter` object named `g` and you call `g.greet()`, `self` is a reference to `g`
-
-=== `self` demonstration
-
-[source, python]
-[.fragment]
-----
->>> class Greeter:
-...     def greet(self):
-...         print(f"Hi, my name is {self.name}!")
-... 
->>> g = Greeter()
->>> g.name = "Gabrielle"
->>> h = Greeter()
->>> h.name = "Henry"
-----
-
-[source, python]
-[.fragment]
-----
->>> g.greet()
-Hi, my name is Gabrielle!
-----
-
-[source, python]
-[.fragment]
-----
->>> h.greet()
-Hi, my name is Henry!
-----
-
-[.fragment]
-`self` is how you access an object's attributes and methods within the object's methods
-
+`self` = the object running the method
 
 [.notes]
 --
-Note that when you call a method, you don't specify a value for `self`. Python populates it for you.
+Every method (with rare exceptions) needs `self` as its first parameter.
+
+When you call `obj.method()`, Python automatically passes `obj` as the first argument. That becomes `self` inside the method.
+
+`self` is how methods access the object's attributes and other methods.
+
+Common error: Forgetting `self`
+```python
+def greet():  # Wrong! Missing self
+    print(f"Hi, I'm {self.name}!")  # NameError: 'self' not defined
+```
+
+Python will say something like "greet() takes 0 positional arguments but 1 was given" because Python tried to pass the object but the function had no parameter for it.
 --
 
-=== Summary
+=== `+++__init__()+++` Initializes Objects
 
-[%step]
-* Methods are basically functions declared inside a class
-* `self` is a (mostly) required parameter that refers to the object that is running your code
-* `self` gives you access to an object's attributes and methods within the object's methods
-
-== The `+++__init__+++()` method
-
-[%step]
-* We often want to set some initial attributes on new objects
-* Less commonly, we may want new objects to perform some action upon creation
-* We can define a "magic" method called `+++__init__+++()` to initialize a new object
-* If we want a class to take arguments when we instantiate it, `+++__init__+++()` is where we declare these parameters
-
-=== `+++__init__()+++` example
-
-[source, python]
+[source,python]
 ----
 class Greeter:
     def __init__(self, name):
         self.name = name
+----
+
+Called automatically when object is created
+
+[.notes]
+--
+`__init__` is called the INITIALIZER or CONSTRUCTOR.
+
+Python calls it automatically right after creating a new object. You never call `__init__` directly.
+
+Use it to:
+1. Set up attributes the object needs
+2. Perform any setup actions
+
+Parameters after `self` become arguments to the class:
+```python
+Greeter("Alice")  # "Alice" goes to the name parameter
+```
+
+Not every attribute needs a parameter—you can set defaults:
+```python
+def __init__(self, name):
+    self.name = name
+    self.greeting_count = 0  # Always starts at 0
+```
+--
+
+=== Attributes vs Parameters
+
+[source,python]
+----
+def __init__(self, name, age):
+    self.name = name        # Parameter → Attribute
+    self.age = age          # Parameter → Attribute  
+    self.hunger = 5         # No parameter, default value
+    # age + 1               # Could use parameter without storing it
+----
+
+[.notes]
+--
+Important distinction that confuses students:
+
+PARAMETERS are the variables in the function signature. They exist only during the function call.
+
+ATTRIBUTES are stored on `self`. They persist for the life of the object.
+
+You can:
+- Turn a parameter into an attribute (most common)
+- Create an attribute without a parameter (default value)
+- Use a parameter without making it an attribute (rare but valid)
+
+Example of using parameter without storing:
+```python
+def __init__(self, birth_year):
+    self.age = 2024 - birth_year  # Calculate age, don't store birth_year
+```
+--
+
+=== Class Definition: Summary
+
+* `class ClassName:` to define
+* `ClassName()` to instantiate
+* Methods need `self` as first parameter
+* `+++__init__()+++` sets up new objects
+* Attributes are variables on `self`
+
+[.notes]
+--
+Quick reference for students to remember.
+
+These are the core mechanics. Everything else builds on these fundamentals.
+
+Transition: "One more important topic—documenting our classes with docstrings."
+--
+
+== Docstrings for Classes
+
+Document your code for others (and future you)
+
+[.notes]
+--
+You've written function docstrings. Classes need documentation too!
+
+Good docstrings let someone use your class without reading all the code. They answer:
+- What does this class represent?
+- What attributes does it have?
+- What do the methods do?
+
+Python's `help()` function reads docstrings, so they're not just comments—they're integrated into the language.
+--
+
+=== Class Docstring Format
+
+[source,python]
+----
+class Dog:
+    """A virtual pet dog that tracks hunger.
     
-    def greet(self):
-        print(f"Hi, my name is {self.name}!")
-----
-
-=== `+++__init__+++()`: important points
-
-[%step]
-* Just because something is a parameter of `+++__init__+++()` doesn't mean we have to make an attribute for it
-* We can create attributes that don't correspond to parameters of `+++__init__+++()`
-
-=== Summary
-
-[%step]
-* `+++__init__+++()` is a "magic" method that lets us set attributes and perform other actions when a new object is created
-* `+++__init__+++()` is where we define parameters that should be specified when the class is instantiated
-[%step]
-** Not all parameters of `+++__init__+++()` have to correspond to attributes
-** Not all attributes have to correspond to parameters of `+++__init__+++()`
-
-[.columns]
-== Revisiting docstrings
-
-[.column]
---
-[%step]
-* Docstrings give other programmers enough information to use our code
-* Three kinds:
-[%step]
-** Function/method docstrings
-** Class docstrings
-** Module docstrings
-* Docstrings are statements, not comments
-* Docstrings must be the first statement in the body of the thing they are describing
---
-
-=== Docstrings are special
-
-[source, python]
-[.fragment]
-----
->>> def myfunction():
-...     """This shows that docstrings are special."""
-...     pass
-... 
->>> help(myfunction)
-Help on function myfunction in module __main__:
-
-myfunction()
-    This shows that docstrings are special.
-
->>> myfunction.__doc__
-'This shows that docstrings are special.'
-----
-
-[source, python]
-[.fragment]
-----
-def myfunction():
-...     pass
-...     """This docstring is in the wrong place."""
-... 
->>> help(myfunction)
-Help on function myfunction in module __main__:
-
-myfunction()
-
->>> myfunction.__doc__
->>> 
-----
-
-=== Class docstrings
-
-Class docstrings should
-
-[%step]
-* begin with a brief description of the purpose of the class
-* document the data type and meaning of each attribute
-
-[source, python]
-[.fragment]
-----
-class Greeter:
-    """ An object that gives users a friendly greeting.
-
     Attributes:
-        name (str): the greeter's name.
+        name (str): the dog's name.
+        age (int): the dog's age in years.
+        hunger (int): hunger level from 0 (full) to 10 (starving).
     """
 ----
 
-=== Summary
-
-[%step]
-* Docstrings document how to use our code
-* Functions/methods, classes, and modules can have docstrings
-* Improperly located docstrings aren't docstrings
-* Class docstrings explain
-[%step]
-** the purpose of the class
-** the data type and meaning of each attribute
-
-== Example class
-
-[source, python]
-[.bigcode]
+[.notes]
 --
-include::files/memobox.py[]
+Class docstrings go right after the class line, before any methods.
+
+Include:
+1. Brief description of what the class represents (first line)
+2. Attributes section listing each attribute with type and meaning
+
+This tells someone everything they need to know to USE the class without reading the implementation.
+
+Students can see this with `help(Dog)` or in their IDE's autocomplete.
+--
+
+=== Method Docstrings
+
+[source,python]
+----
+def eat(self):
+    """Feed the dog, reducing hunger by 3.
+    
+    Hunger will not go below 0.
+    """
+    self.hunger = max(0, self.hunger - 3)
+----
+
+[.notes]
+--
+Method docstrings work like function docstrings.
+
+Include:
+- What the method does
+- Parameters (other than self) and their types
+- Return value if any
+- Side effects (like modifying attributes)
+
+For simple methods, a one-line docstring is fine. For complex ones, add more detail.
+--
+
+=== Docstrings Must Come First
+
+[source,python]
+----
+# Correct - docstring first
+def greet(self):
+    """Say hello."""
+    print("Hello!")
+----
+
+[source,python]
+----
+# Wrong - docstring not first
+def greet(self):
+    print("Hello!")
+    """This won't work as a docstring."""
+----
+
+[.notes]
+--
+Docstrings MUST be the first statement in the body. If anything comes before them, Python doesn't recognize them as docstrings.
+
+The second example is valid Python—it won't cause an error—but the string is just ignored. `help(greet)` won't show it.
+
+Common mistake: Adding a docstring after you've already written the function, and putting it at the end instead of the beginning.
+--
+
+=== Docstrings: Summary
+
+* Class docstrings describe purpose and attributes
+* Method docstrings describe behavior
+* Must be the first statement in the body
+* Use `help()` to view docstrings
+
+[.notes]
+--
+Transition to the complete example that puts everything together.
+--
+
+== Complete Example
+
+[source,python]
+----
+class Dog:
+    """A virtual pet dog that tracks hunger.
+    
+    Attributes:
+        name (str): the dog's name.
+        age (int): the dog's age in years.
+        hunger (int): hunger level from 0 (full) to 10 (starving).
+    """
+    
+    def __init__(self, name, age):
+        """Create a new Dog.
+        
+        Args:
+            name (str): the dog's name.
+            age (int): the dog's age in years.
+        """
+        self.name = name
+        self.age = age
+        self.hunger = 5
+----
+
+[.notes]
+--
+This is the first half of a complete, well-documented class.
+
+Notice:
+- Class docstring describes purpose and ALL attributes
+- `__init__` docstring describes the parameters
+- `hunger` attribute is documented in class docstring even though it's not a parameter
+
+Continue to next slide for methods...
+--
+
+=== Complete Example (continued)
+
+[source,python]
+----
+    def bark(self):
+        """Make the dog bark."""
+        print(f"{self.name} says Woof!")
+    
+    def eat(self):
+        """Feed the dog, reducing hunger by 3 (minimum 0)."""
+        self.hunger = max(0, self.hunger - 3)
+        print(f"{self.name} ate! Hunger: {self.hunger}")
+    
+    def pass_time(self):
+        """Simulate time passing. Increases hunger by 1 (maximum 10)."""
+        self.hunger = min(10, self.hunger + 1)
+    
+    def status(self):
+        """Print the dog's current status."""
+        mood = "happy" if self.hunger < 5 else "hungry"
+        print(f"{self.name} ({self.age} yrs) - Hunger: {self.hunger} - {mood}")
+----
+
+[.notes]
+--
+The methods complete our Dog class.
+
+Each method has a brief docstring explaining what it does.
+
+`status()` shows a nice pattern—using attributes to compute something (mood) without storing it as another attribute.
+
+Have students type this whole class into a file and experiment:
+```python
+>>> buddy = Dog("Buddy", 3)
+>>> buddy.status()
+Buddy (3 yrs) - Hunger: 5 - hungry
+>>> buddy.eat()
+Buddy ate! Hunger: 2
+>>> buddy.status()
+Buddy (3 yrs) - Hunger: 2 - happy
+```
+
+This is a complete, well-documented, functional class. Students can use this as a template for their own classes.
+--
+
+== OOP: Key Takeaways
+
+* *Objects* combine data and functionality
+* *Classes* are blueprints for objects
+* *Attributes* store data (`self.name`)
+* *Methods* define behavior (`def bark(self)`)
+* *`+++__init__()+++`* initializes new objects
+
+[.notes]
+--
+Final summary of the entire module.
+
+The core insight: OOP lets us model things as objects that have properties (attributes) and behaviors (methods).
+
+This maps naturally to how we think about the world. Dogs have names and can bark. Bank accounts have balances and can deposit/withdraw. Game characters have health and can attack/defend.
+
+When students encounter a problem, they can ask:
+- What are the "things" (nouns) in this problem? → Classes
+- What data do those things have? → Attributes  
+- What can those things do? → Methods
+
+Next steps for students:
+- Practice by creating their own classes
+- Extend the Dog class (add energy, tricks, etc.)
+- Try other examples: BankAccount, Student, PlaylistItem
+--
+
+=== Practice Ideas
+
+Create your own classes:
+
+* `BankAccount` — balance, deposit(), withdraw()
+* `Student` — name, grades list, add_grade(), gpa()
+* `Rectangle` — width, height, area(), perimeter()
+
+[.notes]
+--
+Suggest these as practice exercises. Each one reinforces the same concepts:
+
+BANKACCOUNT:
+- Attributes: owner_name, balance
+- Methods: deposit(amount), withdraw(amount), get_balance()
+- Challenge: Don't allow withdrawing more than the balance
+
+STUDENT:
+- Attributes: name, grades (a list)
+- Methods: add_grade(grade), gpa(), is_passing()
+- Challenge: Handle letter grades vs numeric grades
+
+RECTANGLE:
+- Attributes: width, height
+- Methods: area(), perimeter(), is_square()
+- Challenge: Add a scale(factor) method that changes dimensions
+
+Each of these is small enough to complete in 15-20 minutes but substantial enough to reinforce all the concepts from today.
 --
