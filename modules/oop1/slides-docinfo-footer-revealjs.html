@@ -1,0 +1,67 @@
+<script>
+// Enhance Python syntax highlighting after highlight.js runs
+// This adds highlighting for class instantiation and method calls
+function enhancePythonHighlighting() {
+    document.querySelectorAll('code.language-python.hljs').forEach(function(block) {
+        // Only process if not already enhanced
+        if (block.dataset.enhanced) return;
+        block.dataset.enhanced = 'true';
+        
+        // Process the HTML to add highlighting for patterns highlight.js misses
+        let html = block.innerHTML;
+        
+        // Highlight CamelCase class instantiations: Dog(...), MyClass(...)
+        // Match CamelCase word followed by ( that isn't already in a span
+        html = html.replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, function(match, className) {
+            return '<span class="hljs-title class_ instantiation">' + className + '</span>(';
+        });
+        
+        // Highlight method calls: .method_name(...)
+        // Match .identifier( pattern for method calls
+        html = html.replace(/\.([a-z_][a-z0-9_]*)\s*\(/gi, function(match, methodName) {
+            return '.<span class="hljs-title function_ method-call">' + methodName + '</span>(';
+        });
+        
+        // Highlight property access: .property (not followed by parenthesis)
+        html = html.replace(/\.([a-z_][a-z0-9_]*)(?!\s*\()/gi, function(match, propName) {
+            // Don't re-wrap if already in a span
+            if (propName.match(/^span$|^class$/i)) return match;
+            return '.<span class="hljs-property">' + propName + '</span>';
+        });
+        
+        block.innerHTML = html;
+    });
+}
+
+// Run after page fully loads (all scripts executed)
+window.addEventListener('load', function() {
+    // Give highlight.js a moment to finish
+    setTimeout(enhancePythonHighlighting, 200);
+});
+
+// Also try after DOMContentLoaded with longer delay as fallback
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(enhancePythonHighlighting, 500);
+});
+</script>
+
+<style>
+/* Class instantiation - green like class definitions */
+.hljs-title.class_.instantiation {
+    color: #50fa7b !important;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
+}
+
+/* Method calls - cyan like function definitions */
+.hljs-title.function_.method-call {
+    color: #8be9fd !important;
+    font-weight: 600;
+}
+
+/* Property access - pink accent */
+.hljs-property {
+    color: #ff79c6 !important;
+    font-weight: 500;
+}
+</style>

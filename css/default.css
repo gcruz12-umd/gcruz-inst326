@@ -279,10 +279,15 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
 }
 
-/* Function names and calls */
+/* Function names in definitions and calls */
 .hljs-title.function_,
-.hljs-function .hljs-title,
-.hljs-title {
+.hljs-function .hljs-title {
+    color: #8be9fd;
+    font-weight: 600;
+}
+
+/* Generic title fallback (lower priority) */
+.hljs-title:not(.class_):not(.function_) {
     color: #8be9fd;
     font-weight: 600;
 }
@@ -290,6 +295,12 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 /* Built-in functions (print, len, range, etc.) */
 .hljs-built_in {
     color: #8be9fd;
+}
+
+/* Property/method access - highlight method names after dots */
+.hljs-property {
+    color: #8be9fd;
+    font-weight: 500;
 }
 
 /* Strings */
@@ -324,10 +335,10 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 /* Self/this keyword - highlighted prominently */
 .hljs-variable.language_,
 .hljs-this {
-    color: #ff79c6;
+    color: #ff5555;
     font-style: italic;
     font-weight: 700;
-    text-shadow: 0 0 8px rgba(255, 121, 198, 0.5);
+    text-shadow: 0 0 8px rgba(255, 85, 85, 0.5);
 }
 
 /* F-string curly braces (substitution blocks) */

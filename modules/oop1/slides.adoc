@@ -1,9 +1,10 @@
 = Objects and classes: Introduction to OOP
 :imagesdir: images
-:docinfo: shared
+:docinfo: private-footer
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
 :source-highlighter: highlightjs
-:highlightjs-theme: none
+:highlightjsdir: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1
+:highlightjs-theme: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/tomorrow-night.min.css
 :customcss: ../../css/default.css
 :revealjs_theme: black
 :revealjs_width: 1400
@@ -161,8 +162,8 @@ class Dog:
 
 [source,python]
 ----
->>> fido = Dog()
->>> rex = Dog()
+fido = Dog()
+rex = Dog()
 ----
 
 Call the class like a function to create an instance
@@ -177,12 +178,9 @@ This is called INSTANTIATION—we're creating an INSTANCE of the Dog class.
 
 Have students try this:
 ```python
->>> type(fido)
-<class '__main__.Dog'>
->>> type(rex)
-<class '__main__.Dog'>
->>> fido is rex
-False  # They're different objects!
+type(fido)   # <class '__main__.Dog'>
+type(rex)    # <class '__main__.Dog'>
+fido is rex  # False - They're different objects!
 ```
 --
 
@@ -190,17 +188,20 @@ False  # They're different objects!
 
 [source,python]
 ----
->>> fido = Dog()
->>> fido.name = "Fido"
->>> fido.age = 3
->>> fido.breed = "Labrador"
+fido = Dog()
+fido.name = "Fido"
+fido.age = 3
+fido.breed = "Labrador"
 ----
 
 [source,python]
 ----
->>> print(fido.name)
+print(fido.name)
+print(fido.age)
+----
+
+----
 Fido
->>> print(fido.age)
 3
 ----
 
@@ -214,11 +215,10 @@ Each object has its own namespace—its own set of attributes. fido.name and rex
 
 Have students create another dog with different attributes:
 ```python
->>> rex = Dog()
->>> rex.name = "Rex"
->>> rex.age = 5
->>> print(fido.name, rex.name)
-Fido Rex
+rex = Dog()
+rex.name = "Rex"
+rex.age = 5
+print(fido.name, rex.name)  # Fido Rex
 ```
 
 Why is this better than global variables? The data is organized—all info about Fido stays with Fido.
@@ -266,8 +266,11 @@ class Dog:
 
 [source,python]
 ----
->>> fido = Dog()
->>> fido.bark()
+fido = Dog()
+fido.bark()
+----
+
+----
 Woof!
 ----
 
@@ -281,9 +284,8 @@ When you CALL the method, you don't pass anything for self: `fido.bark()` not `f
 
 Have students add this and try it:
 ```python
->>> rex = Dog()
->>> rex.bark()
-Woof!
+rex = Dog()
+rex.bark()  # Woof!
 ```
 
 Both dogs can bark! They share the same method definition, but each dog is doing the barking independently.
@@ -302,13 +304,17 @@ class Dog:
 
 [source,python]
 ----
->>> fido = Dog()
->>> fido.name = "Fido"
->>> rex = Dog()
->>> rex.name = "Rex"
->>> fido.bark()
+fido = Dog()
+fido.name = "Fido"
+rex = Dog()
+rex.name = "Rex"
+
+fido.bark()
+rex.bark()
+----
+
+----
 Fido says Woof!
->>> rex.bark()
 Rex says Woof!
 ----
 
@@ -342,8 +348,11 @@ class Dog:
 
 [source,python]
 ----
->>> fido = Dog("Fido", 3)
->>> print(fido.name, fido.age)
+fido = Dog("Fido", 3)
+print(fido.name, fido.age)
+----
+
+----
 Fido 3
 ----
 
@@ -397,15 +406,12 @@ This is the power of OOP: the dog tracks its own state and has behaviors that ch
 
 Have students create a dog and play with it:
 ```python
->>> buddy = Dog("Buddy", 2)
->>> buddy.hunger
-5
->>> buddy.eat()
-Buddy ate! Hunger: 2
->>> buddy.pass_time()
->>> buddy.pass_time()
->>> buddy.hunger
-4
+buddy = Dog("Buddy", 2)
+buddy.hunger  # 5
+buddy.eat()   # Buddy ate! Hunger: 2
+buddy.pass_time()
+buddy.pass_time()
+buddy.hunger  # 4
 ```
 
 The object remembers its state between method calls. That's what attributes are for!
@@ -415,20 +421,42 @@ The object remembers its state between method calls. That's what attributes are 
 
 [source,python]
 ----
->>> buddy = Dog("Buddy", 2)
->>> buddy.bark()
+buddy = Dog("Buddy", 2)
+buddy.bark()
+----
+
+----
 Buddy says Woof!
+----
 
->>> buddy.hunger
+[source,python]
+----
+buddy.hunger
+----
+
+----
 5
->>> buddy.eat()
-Buddy ate! Hunger: 2
->>> buddy.eat()
-Buddy ate! Hunger: 0
+----
 
->>> buddy.pass_time()
->>> buddy.pass_time()
->>> buddy.hunger
+[source,python]
+----
+buddy.eat()
+buddy.eat()
+----
+
+----
+Buddy ate! Hunger: 2
+Buddy ate! Hunger: 0
+----
+
+[source,python]
+----
+buddy.pass_time()
+buddy.pass_time()
+buddy.hunger
+----
+
+----
 2
 ----
 
@@ -820,13 +848,10 @@ Each method has a brief docstring explaining what it does.
 
 Have students type this whole class into a file and experiment:
 ```python
->>> buddy = Dog("Buddy", 3)
->>> buddy.status()
-Buddy (3 yrs) - Hunger: 5 - hungry
->>> buddy.eat()
-Buddy ate! Hunger: 2
->>> buddy.status()
-Buddy (3 yrs) - Hunger: 2 - happy
+buddy = Dog("Buddy", 3)
+buddy.status()  # Buddy (3 yrs) - Hunger: 5 - hungry
+buddy.eat()     # Buddy ate! Hunger: 2
+buddy.status()  # Buddy (3 yrs) - Hunger: 2 - happy
 ```
 
 This is a complete, well-documented, functional class. Students can use this as a template for their own classes.

@@ -1,0 +1,51 @@
+<script>
+// Enhance Python syntax highlighting after highlight.js runs
+// This adds highlighting for class instantiation and method calls
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for highlight.js to finish
+    setTimeout(function() {
+        document.querySelectorAll('code.language-python').forEach(function(block) {
+            // Process the HTML to add highlighting for patterns highlight.js misses
+            let html = block.innerHTML;
+            
+            // Highlight CamelCase class instantiations: Dog(...), MyClass(...)
+            // Match CamelCase followed by ( but not already wrapped in a span
+            html = html.replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, function(match, className) {
+                // Check if it's already highlighted (inside a span)
+                return '<span class="hljs-title class_ instantiation">' + className + '</span>(';
+            });
+            
+            // Highlight method calls: .method_name(...)
+            // Match .identifier( pattern for method calls
+            html = html.replace(/\.([a-z_][a-z0-9_]*)\s*\(/gi, function(match, methodName) {
+                return '.<span class="hljs-title function_ method-call">' + methodName + '</span>(';
+            });
+            
+            // Highlight property access: .property (not followed by parenthesis)
+            html = html.replace(/\.([a-z_][a-z0-9_]*)(?!\s*\()/gi, function(match, propName) {
+                // Don't re-wrap if already in a span
+                if (propName.match(/^span$|^class$/i)) return match;
+                return '.<span class="hljs-property">' + propName + '</span>';
+            });
+            
+            block.innerHTML = html;
+        });
+    }, 100);
+});
+</script>
+
+<style>
+/* Class instantiation - green like class definitions */
+.hljs-title.class_.instantiation {
+    color: #50fa7b !important;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
+}
+
+/* Method calls - cyan like function definitions */
+.hljs-title.function_.method-call {
+    color: #8be9fd !important;
+    font-weight: 600;
+}
+</style>
+

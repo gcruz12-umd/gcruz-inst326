@@ -459,35 +459,31 @@ DOG is the class name. Convention: use CamelCase (capitalize each word, no under
 COLON and indented body, just like functions, loops, and conditionals.</p></div>
 <div class="paragraph"><p>Even this empty class gives us a lot for free from Python—we can create instances of it.</p></div></aside></div></section><section id="_creating_objects_instantiation"><h2>Creating Objects (Instantiation)</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
     pass</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
-&gt;&gt;&gt; rex = Dog()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">fido = Dog()
+rex = Dog()</code></pre></div></div>
 <div class="paragraph"><p>Call the class like a function to create an instance</p></div>
 <aside class="notes"><div class="paragraph"><p>To create an object, we CALL the class like a function. <code>Dog()</code> creates a new Dog object and returns it.</p></div>
 <div class="paragraph"><p><code>fido</code> and <code>rex</code> are now two separate Dog objects. They&#8217;re independent—changing one doesn&#8217;t affect the other.</p></div>
 <div class="paragraph"><p>This is called INSTANTIATION—we&#8217;re creating an INSTANCE of the Dog class.</p></div>
 <div class="paragraph"><p>Have students try this:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; type(fido)
-&lt;class '__main__.Dog'&gt;
-&gt;&gt;&gt; type(rex)
-&lt;class '__main__.Dog'&gt;
-&gt;&gt;&gt; fido is rex
-False  # They're different objects!</code></pre></div></div></aside></div></section><section id="_adding_attributes"><h2>Adding Attributes</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
-&gt;&gt;&gt; fido.name = "Fido"
-&gt;&gt;&gt; fido.age = 3
-&gt;&gt;&gt; fido.breed = "Labrador"</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; print(fido.name)
-Fido
-&gt;&gt;&gt; print(fido.age)
-3</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">type(fido)   # &lt;class '__main__.Dog'&gt;
+type(rex)    # &lt;class '__main__.Dog'&gt;
+fido is rex  # False - They're different objects!</code></pre></div></div></aside></div></section><section id="_adding_attributes"><h2>Adding Attributes</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">fido = Dog()
+fido.name = "Fido"
+fido.age = 3
+fido.breed = "Labrador"</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">print(fido.name)
+print(fido.age)</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Fido
+3</pre></div></div>
 <aside class="notes"><div class="paragraph"><p>Attributes are accessed with DOT NOTATION: object.attribute</p></div>
 <div class="paragraph"><p>Setting attributes is like setting variables, but the variable lives INSIDE the object.</p></div>
 <div class="paragraph"><p>Each object has its own namespace—its own set of attributes. fido.name and rex.name are completely separate variables.</p></div>
 <div class="paragraph"><p>Have students create another dog with different attributes:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; rex = Dog()
-&gt;&gt;&gt; rex.name = "Rex"
-&gt;&gt;&gt; rex.age = 5
-&gt;&gt;&gt; print(fido.name, rex.name)
-Fido Rex</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">rex = Dog()
+rex.name = "Rex"
+rex.age = 5
+print(fido.name, rex.name)  # Fido Rex</code></pre></div></div>
 <div class="paragraph"><p>Why is this better than global variables? The data is organized—all info about Fido stays with Fido.</p></div></aside></div></section><section id="_why_attributes_beat_global_variables"><h2>Why Attributes Beat Global Variables</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python"># Messy: global variables
 fido_name = "Fido"
 fido_age = 3
@@ -504,28 +500,28 @@ rex.age = 5</code></pre></div></div>
 <div class="paragraph"><p>Rule of thumb: When you&#8217;re tempted to use multiple related global variables, consider making a class instead.</p></div></aside></div></section><section id="_adding_methods"><h2>Adding Methods</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
     def bark(self):
         print("Woof!")</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
-&gt;&gt;&gt; fido.bark()
-Woof!</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">fido = Dog()
+fido.bark()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Woof!</pre></div></div>
 <aside class="notes"><div class="paragraph"><p>Methods are functions defined inside a class. They describe what the object can DO.</p></div>
 <div class="paragraph"><p>Notice the <code>self</code> parameter—we&#8217;ll explain this next. For now, just know that every method needs <code>self</code> as its first parameter.</p></div>
 <div class="paragraph"><p>When you CALL the method, you don&#8217;t pass anything for self: <code>fido.bark()</code> not <code>fido.bark(fido)</code>. Python fills in self automatically.</p></div>
 <div class="paragraph"><p>Have students add this and try it:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; rex = Dog()
-&gt;&gt;&gt; rex.bark()
-Woof!</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">rex = Dog()
+rex.bark()  # Woof!</code></pre></div></div>
 <div class="paragraph"><p>Both dogs can bark! They share the same method definition, but each dog is doing the barking independently.</p></div></aside></div></section><section id="_understanding_self"><h2>Understanding <code>self</code></h2><div class="slide-content"><div class="paragraph"><p><code>self</code> refers to the object running the method</p></div>
 <div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">class Dog:
     def bark(self):
         print(f"{self.name} says Woof!")</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog()
-&gt;&gt;&gt; fido.name = "Fido"
-&gt;&gt;&gt; rex = Dog()
-&gt;&gt;&gt; rex.name = "Rex"
-&gt;&gt;&gt; fido.bark()
-Fido says Woof!
-&gt;&gt;&gt; rex.bark()
-Rex says Woof!</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">fido = Dog()
+fido.name = "Fido"
+rex = Dog()
+rex.name = "Rex"
+
+fido.bark()
+rex.bark()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Fido says Woof!
+Rex says Woof!</pre></div></div>
 <aside class="notes"><div class="paragraph"><p>THIS IS THE KEY CONCEPT. Take time here.</p></div>
 <div class="paragraph"><p>When you call <code>fido.bark()</code>, Python sets <code>self</code> to <code>fido</code>. Inside the method, <code>self.name</code> means "fido&#8217;s name".</p></div>
 <div class="paragraph"><p>When you call <code>rex.bark()</code>, Python sets <code>self</code> to <code>rex</code>. Same code, but <code>self.name</code> now means "rex&#8217;s name".</p></div>
@@ -538,9 +534,9 @@ Rex says Woof!</code></pre></div></div>
 
     def bark(self):
         print(f"{self.name} says Woof!")</code></pre></div></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; fido = Dog("Fido", 3)
-&gt;&gt;&gt; print(fido.name, fido.age)
-Fido 3</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">fido = Dog("Fido", 3)
+print(fido.name, fido.age)</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Fido 3</pre></div></div>
 <aside class="notes"><div class="paragraph"><p><code><em>init</em></code> (double underscores on both sides) is a special "magic" method. Python calls it automatically when you create a new object.</p></div>
 <div class="paragraph"><p>This is where we set up the object&#8217;s initial state—its starting attributes.</p></div>
 <div class="paragraph"><p>The parameters after <code>self</code> become arguments when you instantiate: <code>Dog("Fido", 3)</code> passes "Fido" to <code>name</code> and 3 to <code>age</code>.</p></div>
@@ -565,30 +561,25 @@ Fido 3</code></pre></div></div>
 <div class="olist arabic"><ol class="arabic"><li><p><code><em>init</em></code> sets THREE attributes, but only takes TWO parameters. <code>hunger</code> starts at 5 for every dog—it doesn&#8217;t need to be passed in.</p></li><li><p><code>eat()</code> MODIFIES an attribute. The dog gets less hungry (but not below 0).</p></li><li><p><code>pass_time()</code> also modifies hunger. The dog gets hungrier (but not above 10).</p></li></ol></div>
 <div class="paragraph"><p>This is the power of OOP: the dog tracks its own state and has behaviors that change that state.</p></div>
 <div class="paragraph"><p>Have students create a dog and play with it:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 2)
-&gt;&gt;&gt; buddy.hunger
-5
-&gt;&gt;&gt; buddy.eat()
-Buddy ate! Hunger: 2
-&gt;&gt;&gt; buddy.pass_time()
-&gt;&gt;&gt; buddy.pass_time()
-&gt;&gt;&gt; buddy.hunger
-4</code></pre></div></div>
-<div class="paragraph"><p>The object remembers its state between method calls. That&#8217;s what attributes are for!</p></div></aside></div></section><section id="_using_our_dog_class"><h2>Using Our Dog Class</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 2)
-&gt;&gt;&gt; buddy.bark()
-Buddy says Woof!
-
-&gt;&gt;&gt; buddy.hunger
-5
-&gt;&gt;&gt; buddy.eat()
-Buddy ate! Hunger: 2
-&gt;&gt;&gt; buddy.eat()
-Buddy ate! Hunger: 0
-
-&gt;&gt;&gt; buddy.pass_time()
-&gt;&gt;&gt; buddy.pass_time()
-&gt;&gt;&gt; buddy.hunger
-2</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy = Dog("Buddy", 2)
+buddy.hunger  # 5
+buddy.eat()   # Buddy ate! Hunger: 2
+buddy.pass_time()
+buddy.pass_time()
+buddy.hunger  # 4</code></pre></div></div>
+<div class="paragraph"><p>The object remembers its state between method calls. That&#8217;s what attributes are for!</p></div></aside></div></section><section id="_using_our_dog_class"><h2>Using Our Dog Class</h2><div class="slide-content"><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy = Dog("Buddy", 2)
+buddy.bark()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Buddy says Woof!</pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy.hunger</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>5</pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy.eat()
+buddy.eat()</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>Buddy ate! Hunger: 2
+Buddy ate! Hunger: 0</pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy.pass_time()
+buddy.pass_time()
+buddy.hunger</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre>2</pre></div></div>
 <aside class="notes"><div class="paragraph"><p>Walk through this interaction:</p></div>
 <div class="olist arabic"><ol class="arabic"><li><p>Create Buddy, a 2-year-old dog</p></li><li><p>Buddy barks—uses his name attribute</p></li><li><p>Check hunger—starts at 5 (set in <em>init</em>)</p></li><li><p>Buddy eats twice—hunger drops to 2, then to 0 (can&#8217;t go negative)</p></li><li><p>Time passes twice—hunger increases by 1 each time</p></li></ol></div>
 <div class="paragraph"><p>The dog is a little simulation! It has state (hunger) that changes over time through its behaviors (eat, pass_time).</p></div>
@@ -756,13 +747,10 @@ def greet(self):
 <div class="paragraph"><p>Each method has a brief docstring explaining what it does.</p></div>
 <div class="paragraph"><p><code>status()</code> shows a nice pattern—using attributes to compute something (mood) without storing it as another attribute.</p></div>
 <div class="paragraph"><p>Have students type this whole class into a file and experiment:</p></div>
-<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">&gt;&gt;&gt; buddy = Dog("Buddy", 3)
-&gt;&gt;&gt; buddy.status()
-Buddy (3 yrs) - Hunger: 5 - hungry
-&gt;&gt;&gt; buddy.eat()
-Buddy ate! Hunger: 2
-&gt;&gt;&gt; buddy.status()
-Buddy (3 yrs) - Hunger: 2 - happy</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-python hljs" data-noescape="true" data-lang="python">buddy = Dog("Buddy", 3)
+buddy.status()  # Buddy (3 yrs) - Hunger: 5 - hungry
+buddy.eat()     # Buddy ate! Hunger: 2
+buddy.status()  # Buddy (3 yrs) - Hunger: 2 - happy</code></pre></div></div>
 <div class="paragraph"><p>This is a complete, well-documented, functional class. Students can use this as a template for their own classes.</p></div></aside></div></section></section>
 <section><section id="_oop_key_takeaways"><h2>OOP: Key Takeaways</h2><div class="slide-content"><div class="ulist"><ul><li><p><strong>Objects</strong> combine data and functionality</p></li><li><p><strong>Classes</strong> are blueprints for objects</p></li><li><p><strong>Attributes</strong> store data (<code>self.name</code>)</p></li><li><p><strong>Methods</strong> define behavior (<code>def bark(self)</code>)</p></li><li><p><strong><code>__init__()</code></strong> initializes new objects</p></li></ul></div><aside class="notes"><div class="paragraph"><p>Final summary of the entire module.</p></div>
 <div class="paragraph"><p>The core insight: OOP lets us model things as objects that have properties (attributes) and behaviors (methods).</p></div>
@@ -789,7 +777,73 @@ Buddy (3 yrs) - Hunger: 2 - happy</code></pre></div></div>
 - Attributes: width, height
 - Methods: area(), perimeter(), is_square()
 - Challenge: Add a scale(factor) method that changes dimensions</p></div>
-<div class="paragraph"><p>Each of these is small enough to complete in 15-20 minutes but substantial enough to reinforce all the concepts from today.</p></div></aside></div></section></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<div class="paragraph"><p>Each of these is small enough to complete in 15-20 minutes but substantial enough to reinforce all the concepts from today.</p></div></aside></div></section></section><script>
+// Enhance Python syntax highlighting after highlight.js runs
+// This adds highlighting for class instantiation and method calls
+function enhancePythonHighlighting() {
+    document.querySelectorAll('code.language-python.hljs').forEach(function(block) {
+        // Only process if not already enhanced
+        if (block.dataset.enhanced) return;
+        block.dataset.enhanced = 'true';
+
+        // Process the HTML to add highlighting for patterns highlight.js misses
+        let html = block.innerHTML;
+
+        // Highlight CamelCase class instantiations: Dog(...), MyClass(...)
+        // Match CamelCase word followed by ( that isn't already in a span
+        html = html.replace(/\b([A-Z][a-zA-Z0-9]*)\s*\(/g, function(match, className) {
+            return '<span class="hljs-title class_ instantiation">' + className + '</span>(';
+        });
+
+        // Highlight method calls: .method_name(...)
+        // Match .identifier( pattern for method calls
+        html = html.replace(/\.([a-z_][a-z0-9_]*)\s*\(/gi, function(match, methodName) {
+            return '.<span class="hljs-title function_ method-call">' + methodName + '</span>(';
+        });
+
+        // Highlight property access: .property (not followed by parenthesis)
+        html = html.replace(/\.([a-z_][a-z0-9_]*)(?!\s*\()/gi, function(match, propName) {
+            // Don't re-wrap if already in a span
+            if (propName.match(/^span$|^class$/i)) return match;
+            return '.<span class="hljs-property">' + propName + '</span>';
+        });
+
+        block.innerHTML = html;
+    });
+}
+
+// Run after page fully loads (all scripts executed)
+window.addEventListener('load', function() {
+    // Give highlight.js a moment to finish
+    setTimeout(enhancePythonHighlighting, 200);
+});
+
+// Also try after DOMContentLoaded with longer delay as fallback
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(enhancePythonHighlighting, 500);
+});
+</script>
+
+<style>
+/* Class instantiation - green like class definitions */
+.hljs-title.class_.instantiation {
+    color: #50fa7b !important;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
+}
+
+/* Method calls - cyan like function definitions */
+.hljs-title.function_.method-call {
+    color: #8be9fd !important;
+    font-weight: 600;
+}
+
+/* Property access - pink accent */
+.hljs-property {
+    color: #ff79c6 !important;
+    font-weight: 500;
+}
+</style></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
@@ -1013,8 +1067,8 @@ Reveal.addEventListener('ready', function () {
 });
 Reveal.addEventListener('resize', function () {
   layoutSlideContents(1400, 810)
-});</script><link rel="stylesheet" href="none"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.3/highlight.min.js"></script>
+});</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/tomorrow-night.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 
 <script>
 
