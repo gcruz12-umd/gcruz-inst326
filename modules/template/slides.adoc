@@ -1,11 +1,15 @@
 = Slide Deck Topic Here: Subtitle
 // Uncomment the following line if your slide contains images
 // :imagesdir: images
-:revealjsdir: ../../lib/reveal.js.4.0.2
+:revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
 :source-highlighter: highlightjs
-:customcss: ../../css/aric_slides.css
+:customcss: ../../css/default.css
+:revealjs_theme: black
 :revealjs_width: 1400
 :revealjs_height: 800
+:revealjs_slideNumber: true
+:revealjs_transition: slide
+:revealjs_transitionSpeed: default
 // Uncomment the following line to use a background image
 // :title-slide-background-image: some-image.jpg
 

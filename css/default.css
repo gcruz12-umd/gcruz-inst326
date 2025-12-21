@@ -1,0 +1,674 @@
+/**
+ * After Dark Theme for INST326 Slides
+ * Inspired by the After Dark VS Code theme
+ * Dark background with vibrant neon accents
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap');
+
+/*********************************************
+ * CSS CUSTOM PROPERTIES (Theme Colors)
+ *********************************************/
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-pink: #ff79c6;
+    --accent-cyan: #8be9fd;
+    --accent-purple: #bd93f9;
+    --accent-green: #50fa7b;
+    --accent-orange: #ffb86c;
+    --accent-yellow: #f1fa8c;
+    --accent-red: #ff5555;
+    --link-color: #58a6ff;
+    --link-hover: #79c0ff;
+    --code-bg: #1a1f29;
+    --border-color: #30363d;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/*********************************************
+ * GLOBAL STYLES
+ *********************************************/
+body {
+    background: var(--bg-primary);
+    background-image: 
+        radial-gradient(ellipse at top left, rgba(189, 147, 249, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(255, 121, 198, 0.08) 0%, transparent 50%);
+    background-color: var(--bg-primary);
+}
+
+.reveal {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: var(--text-primary);
+}
+
+.reveal .slides {
+    text-align: left;
+}
+
+::selection {
+    color: var(--bg-primary);
+    background: var(--accent-cyan);
+    text-shadow: none;
+}
+
+::-moz-selection {
+    color: var(--bg-primary);
+    background: var(--accent-cyan);
+    text-shadow: none;
+}
+
+.reveal .slides section,
+.reveal .slides section > section {
+    line-height: 1.5;
+    font-weight: inherit;
+}
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+    margin: 0 0 20px 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-shadow: none;
+    word-wrap: break-word;
+    text-transform: none;
+}
+
+.reveal h1 {
+    font-size: 2.2em;
+    color: var(--accent-pink);
+    text-shadow: 0 0 40px rgba(255, 121, 198, 0.3);
+}
+
+.reveal h2 {
+    font-size: 1.6em;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 30px rgba(139, 233, 253, 0.2);
+}
+
+.reveal h3 {
+    font-size: 1.3em;
+    color: var(--accent-purple);
+}
+
+.reveal h4 {
+    font-size: 1.1em;
+    color: var(--accent-green);
+}
+
+.reveal h5, .reveal h6 {
+    font-size: 1em;
+    color: var(--accent-orange);
+}
+
+/* Title slide styling */
+.title h1, .title h2 {
+    text-shadow: 0 0 60px rgba(255, 121, 198, 0.5), 2px 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+/*********************************************
+ * TEXT & PARAGRAPHS
+ *********************************************/
+.reveal p {
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.reveal strong,
+.reveal b {
+    font-weight: 700;
+    color: var(--accent-yellow);
+}
+
+.reveal em {
+    font-style: italic;
+    color: var(--accent-cyan);
+}
+
+/*********************************************
+ * LISTS
+ *********************************************/
+.reveal ol,
+.reveal dl,
+.reveal ul {
+    display: inline-block;
+    text-align: left;
+    margin: 0 0 0 1em;
+}
+
+.reveal ol {
+    list-style-type: decimal;
+}
+
+.reveal ul {
+    list-style-type: disc;
+}
+
+.reveal ul ul {
+    list-style-type: '› ';
+    color: var(--text-secondary);
+}
+
+.reveal ul ul ul {
+    list-style-type: '– ';
+}
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+    display: block;
+    margin-left: 40px;
+}
+
+.reveal li {
+    margin-bottom: 0.5em;
+}
+
+.reveal li::marker {
+    color: var(--accent-pink);
+}
+
+li li {
+    font-size: 90%;
+}
+
+/*********************************************
+ * CODE BLOCKS
+ *********************************************/
+.reveal pre {
+    display: block;
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+    text-align: left;
+    font-size: 0.55em;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    word-wrap: break-word;
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.reveal pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+}
+
+.reveal code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    text-transform: none;
+    font-size: 0.9em;
+    padding: 2px 6px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    color: var(--accent-purple);
+}
+
+.reveal pre code {
+    display: block;
+    padding: 20px;
+    overflow: auto;
+    max-height: 500px;
+    word-wrap: normal;
+    background: transparent;
+    border-radius: 0;
+    line-height: 1.5;
+}
+
+p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+    color: var(--accent-purple);
+    font-size: 85%;
+}
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.reveal a:hover {
+    color: var(--link-hover);
+    border-bottom-color: var(--link-hover);
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+}
+
+/*********************************************
+ * IMAGES
+ *********************************************/
+.reveal section img {
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reveal section img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 50px var(--shadow-color);
+}
+
+.reveal section img.plain {
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.noborder img {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.background img {
+    background-color: white !important;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/*********************************************
+ * TABLES
+ *********************************************/
+.reveal table {
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.reveal table th {
+    font-weight: 700;
+    background: var(--bg-tertiary);
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+}
+
+.reveal table th,
+.reveal table td {
+    font-size: 0.75em;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reveal table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.reveal table tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
+/*********************************************
+ * BLOCKQUOTES
+ *********************************************/
+.reveal blockquote {
+    display: block;
+    position: relative;
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px 30px;
+    font-style: italic;
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent-pink);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.reveal blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    font-size: 4em;
+    color: var(--accent-pink);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+}
+
+/*********************************************
+ * NAVIGATION & CONTROLS
+ *********************************************/
+.reveal .controls {
+    color: var(--accent-pink);
+}
+
+.reveal .controls button {
+    transition: all 0.3s ease;
+}
+
+.reveal .controls button:hover {
+    color: var(--accent-cyan);
+    transform: scale(1.1);
+}
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+.reveal .progress {
+    background: var(--bg-tertiary);
+    height: 4px;
+}
+
+.reveal .progress span {
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+    transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
+}
+
+/*********************************************
+ * SLIDE NUMBER
+ *********************************************/
+.reveal .slide-number {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+/*********************************************
+ * FRAGMENT ANIMATIONS
+ *********************************************/
+.reveal .slides section .fragment {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.reveal .slides section .fragment.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.reveal .slides section .fragment.fade-up {
+    transform: translateY(40px);
+}
+
+.reveal .slides section .fragment.fade-up.visible {
+    transform: translateY(0);
+}
+
+.reveal .slides section .fragment.highlight-current-blue.current-fragment {
+    color: var(--accent-cyan);
+}
+
+/*********************************************
+ * SLIDE TRANSITIONS
+ *********************************************/
+.reveal .slides > section,
+.reveal .slides > section > section {
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/*********************************************
+ * UTILITY CLASSES
+ *********************************************/
+
+/* Text emphasis */
+.emph {
+    color: var(--accent-orange) !important;
+    font-weight: 700;
+}
+
+.slot {
+    color: var(--accent-yellow);
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.output {
+    color: var(--accent-green);
+    padding-bottom: 0.1ex;
+}
+
+.filelisting {
+    color: var(--accent-cyan);
+}
+
+/* List styling */
+.nobullet ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.nosubbullet li li {
+    list-style-type: none;
+    color: var(--text-muted);
+    padding-left: 0;
+}
+
+.nosubbullet_white li li {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.nosubsubbullet li li li {
+    list-style-type: none;
+    color: var(--text-muted);
+    padding-left: 0;
+}
+
+/* Emoji bullets */
+.thumbsdown {
+    list-style: "👎 " !important;
+}
+
+.thumbsup {
+    list-style: "👍 " !important;
+}
+
+/* Layout helpers */
+.leftalign p {
+    text-align: left;
+}
+
+.rightborder {
+    border-right: 1em solid transparent;
+}
+
+.columns .slide-content > .column {
+    padding: 0 3rem 0 0;
+}
+
+.columns .slide-content > .column:last-of-type {
+    padding: 0;
+}
+
+/* Code sizing */
+.bigcode pre code {
+    max-height: 660px;
+    font-size: 80%;
+    line-height: 120%;
+}
+
+.fullwidth pre {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Table positioning */
+.lefttable {
+    margin: 0 !important;
+}
+
+.lefttable td {
+    padding-left: 0 !important;
+    padding-right: 2em !important;
+}
+
+.lefttable pre {
+    margin: 0;
+    width: 100%;
+}
+
+.twocoltable {
+    margin: 0 !important;
+}
+
+.twocoltable td {
+    padding-left: 0 !important;
+    padding-right: 1em !important;
+}
+
+.twocoltable td:last-child {
+    padding-left: 1em !important;
+    padding-right: 0 !important;
+}
+
+/* Text sizing */
+.smalltext {
+    font-size: 67%;
+}
+
+.tinytext {
+    font-size: 50%;
+}
+
+.tinytext p.tableblock {
+    margin: 0 !important;
+}
+
+.tinytext td {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.tighttext {
+    font-size: 67%;
+}
+
+.tighttext p.tableblock {
+    margin: .125em !important;
+}
+
+.tighttext td {
+    padding-left: .25em !important;
+    padding-right: .25em !important;
+}
+
+.prettytinytext {
+    font-size: 52%;
+}
+
+.prettytinytext p.tableblock {
+    margin: 0 !important;
+}
+
+.prettytinytext th {
+    padding: .2em .2em .2em .2em !important;
+}
+
+.prettytinytext td {
+    padding-left: .2em !important;
+    padding-right: .2em !important;
+}
+
+/* Spacing */
+.notopmargin li:first-child p {
+    margin: 0 !important;
+}
+
+.smallspace pre {
+    padding-top: 1em;
+}
+
+.lessspace li li p {
+    margin: 10px 0;
+    line-height: 1;
+}
+
+.lessspace li p {
+    margin: 10px 0;
+    line-height: 1;
+}
+
+/* Grid helpers */
+.reveal table.grid-none th,
+.reveal table.grid-none td {
+    border: none !important;
+}
+
+.reveal .slides section[data-vertical-align-top] {
+    top: 0 !important;
+}
+
+/*********************************************
+ * SPEAKER NOTES
+ *********************************************/
+.reveal aside.notes {
+    display: none;
+}
+
+/*********************************************
+ * PRINT STYLES
+ *********************************************/
+@media print {
+    .backgrounds {
+        background-color: var(--bg-primary);
+    }
+    
+    .reveal,
+    .reveal h1,
+    .reveal h2,
+    .reveal h3 {
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+}
+
+/*********************************************
+ * HIGHLIGHT EFFECTS
+ *********************************************/
+.reveal .slides section .highlight-box {
+    background: linear-gradient(135deg, rgba(255, 121, 198, 0.1), rgba(139, 233, 253, 0.1));
+    border: 1px solid var(--accent-purple);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.reveal .slides section .glow-text {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+.reveal .slides section .gradient-text {
+    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
