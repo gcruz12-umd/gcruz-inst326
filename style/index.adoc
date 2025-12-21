@@ -10,7 +10,7 @@ include::{includedir}/navigation.html[]
 == Course Stylesheet
 
 - link:style-guide.html[HTML version]
-- link:style-guide.pdf[PDF version]
+// - link:style-guide.pdf[PDF version]
 
 == Homework Template
 

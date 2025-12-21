@@ -1,26 +1,37 @@
 <div align="center">
     <nav id="main_navigation">
-        <a href="/inst326/index.html">Home</a> | 
-        <a href="/inst326/modules/index.html">Modules</a> | 
-        <a href="/inst326/style/index.html">Stylesheet</a> | 
-        <a href="/inst326/syllabi/index.html">Syllabus</a>
+        <a href="/gcruz-inst326/index.html">Home</a> | 
+        <a href="/gcruz-inst326/modules/index.html">Modules</a> | 
+        <a href="/gcruz-inst326/style/index.html">Stylesheet</a> | 
+        <a href="/gcruz-inst326/syllabi/index.html">Syllabus</a>
     </nav>
 </div>
 <script>
     function localurl() {
-        console.log("This happened");
         if (window.location.protocol == "file:") {
-            var ix = window.location.pathname.indexOf("inst326-public/");
-            var prefix = window.location.pathname.slice(0, ix);
-            var nav = document.getElementById("main_navigation");
-            console.log(nav);
-            var elements = Array.from(nav.getElementsByTagName("a"));
-            console.log(elements);
-            elements.forEach(element => {
-                var anchor = element.getAttribute("href");
-                var localpath = anchor.replace("/", prefix);
-                element.setAttribute("href", localpath);
-            });
+            // Find the repository directory in the path
+            var pathname = window.location.pathname;
+            var repoName = "gcruz-inst326";
+            var ix = pathname.indexOf(repoName);
+            
+            if (ix !== -1) {
+                // Get the path up to and including the repo directory
+                var prefix = pathname.slice(0, ix + repoName.length);
+                var nav = document.getElementById("main_navigation");
+                
+                if (nav) {
+                    var elements = Array.from(nav.getElementsByTagName("a"));
+                    elements.forEach(element => {
+                        var anchor = element.getAttribute("href");
+                        // Replace /gcruz-inst326 with the actual file path prefix
+                        // anchor is like "/gcruz-inst326/index.html"
+                        // prefix is like "/C:/Users/.../gcruz-inst326"
+                        // result should be "/C:/Users/.../gcruz-inst326/index.html"
+                        var localpath = anchor.replace(/^\/gcruz-inst326/, prefix);
+                        element.setAttribute("href", localpath);
+                    });
+                }
+            }
         }
     }
     window.onload = localurl;

@@ -70,19 +70,31 @@ def asciidoc(adoc_file, html_file, quiet=False):
     """
 
     if 'slides' in basename(adoc_file):
-        cmd = ["asciidoctor-revealjs", adoc_file, "-o", html_file]
+        # Use asciidoctor with reveal.js backend for slides
+        cmd = ["asciidoctor", "-r", "@asciidoctor/reveal.js", "-b", "revealjs", 
+               adoc_file, "-o", html_file]
     else:
         cmd = ["asciidoctor", adoc_file, "-o", html_file]
 
     if not quiet:
         print(adoc_file)
 
-    result = subprocess.run(cmd, capture_output=True)
-    if result.stderr:
-        print(f"{adoc_file} - {result.stderr.decode('utf8')}")
+    # Use shell=True on Windows to properly execute .cmd/.bat files
+    result = subprocess.run(cmd, capture_output=True, shell=sys.platform == "win32")
+    
+    if result.returncode != 0:
+        print(f"ERROR: {adoc_file}")
+        if result.stderr:
+            print(f"  {result.stderr.decode('utf8')}")
+        if result.stdout:
+            print(f"  {result.stdout.decode('utf8')}")
         return False
-    else:
-        return True
+    
+    if result.stderr:
+        # Warnings (non-fatal)
+        print(f"WARNING: {adoc_file} - {result.stderr.decode('utf8')}")
+    
+    return True
 
 
 if __name__ == "__main__":

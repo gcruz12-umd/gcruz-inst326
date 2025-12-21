@@ -1,7 +1,7 @@
 = Objects and classes: Introduction to OOP
 :imagesdir: images
 :docinfo: shared
-:revealjsdir: ../../lib/reveal.js.3.9.2
+:revealjsdir: ../../lib/reveal.js.4.0.2
 :source-highlighter: highlightjs
 :customcss: ../../css/aric_slides.css
 :revealjs_width: 1400

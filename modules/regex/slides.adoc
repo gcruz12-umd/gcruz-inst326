@@ -1,0 +1,751 @@
+= Regex: Regular Expressions
+:imagesdir: images
+:docinfo: shared
+:revealjsdir: ../../lib/reveal.js.4.0.2
+:source-highlighter: highlightjs
+:customcss: ../../css/aric_slides.css
+:revealjs_width: 1400
+:revealjs_height: 810
+:revealjs_history: true
+:title-slide-background-image: images/regex.png
+:stem:
+
+== Introduction
+
+image::regex.png[width=450,title="XKCD: Regular Expressions"]
+
+[.notes]
+--
+Regular expressions are a powerful tool for pattern matching in text. They can seem intimidating at first, but with practice they become an essential skill for data processing, web scraping, and text manipulation.
+--
+
+== What are Regular Expressions?
+
+[.nobullet.nosubbullet]
+[%step]
+* [emph]#Patterns# used to match and manipulate text
+[%step]
+* A [emph]#mini-language# for describing text patterns
+[%step]
+* Built into many programming languages, text editors, and command-line tools
+[%step]
+* Extremely useful for:
+** Finding specific patterns in text
+** Validating data formats
+** Extracting information from unstructured data
+** Replacing text patterns
+
+[.notes]
+--
+Regular expressions (regex) are sequences of characters that define a search pattern. They're used to find, match, or manipulate strings based on specific rules.
+--
+
+== Why Use Regular Expressions?
+
+[.nobullet.nosubbullet]
+[%step]
+* [emph]#Efficient# pattern matching
+[%step]
+* [emph]#Flexible# text processing
+[%step]
+* [emph]#Powerful# data extraction
+[%step]
+* [emph]#Standardized# across many tools and languages
+
+=== Example Use Cases
+
+[.nobullet.nosubbullet]
+[%step]
+* Validating email addresses, phone numbers, or zip codes
+[%step]
+* Extracting dates, prices, or IDs from text
+[%step]
+* Finding and replacing patterns in documents
+[%step]
+* Parsing log files or structured data
+[%step]
+* Web scraping to extract specific information
+
+== Basic Examples
+
+[frame=none,grid=cols,cols="a,a",noheader]
+|===
+| Pattern | Matches
+| +++[b-chm-pP]at+++{vbar}+++ot+++ | bat, cat, hat, mat, nat, oat, pat, Pat, ot
+| `\d` | Any single digit (0-9)
+| `\d{5}(-\d{4})?` | US zip code (5 digits, optionally followed by dash and 4 digits)
+| +++[a-z]+@[a-z]+\.[a-z]++++ | Simple email pattern (lowercase)
+|===
+
+[.notes]
+--
+These examples show the power of regex. Instead of writing complex string manipulation code, you can express patterns concisely.
+--
+
+== Character Classes
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| Literal string | The exact string | `word` | "word"
+| `\d` | Any digit (0-9) | `number:\d` | "number:5"
+| `\w` | Any word character (letters, digits, underscore) | `\w\w` | "_Q", "ab", "12"
+| `\s` | Any whitespace character (space, tab, newline) | `\s` | " "
+|===
+
+[.notes]
+--
+Character classes are the building blocks of regex. They match specific types of characters.
+--
+
+=== Character Classes (continued)
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| `\t` | Tab character | `T\t\w{2}` | "T    ab"
+| `\n` | Newline character | `line1\nline2` | Matches newline
+| `\D` | Any non-digit | `\D\D` | "ab", "!!"
+| `\W` | Any non-word character | `\W` | "!", " ", "@"
+| `\S` | Any non-whitespace character | `\S\S\S` | "abc", "123"
+|===
+
+[.notes]
+--
+The uppercase versions are the negations of the lowercase versions. This is a common pattern in regex.
+--
+
+=== Custom Character Classes
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| +++[abc]+++ | One of: a, b, or c | +++T[ao]p+++ | "Tap" or "Top"
+| +++[a-z]+++ | One lowercase letter | +++[a-z]+++ | "a" through "z"
+| +++[A-Z]+++ | One uppercase letter | +++[A-Z]+++ | "A" through "Z"
+| +++[0-9]+++ | One digit | +++[0-9]+++ | "0" through "9"
+| +++[^abc]+++ | One character that is NOT a, b, or c | +++[^a-z]{3}+++ | "A1!", "123"
+|===
+
+[.notes]
+--
+Square brackets create custom character classes. The caret (^) at the beginning negates the class.
+--
+
+== Quantifiers
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| `+` | One or more (greedy) | `w+` | "w", "ww", "wwww"
+| `*` | Zero or more (greedy) | `A*B*C*` | "", "A", "AACCCCCC"
+| `?` | Zero or one (optional) | `words?` | "word", "words"
+| `{n}` | Exactly n times | `w{3}` | "www"
+| `{n,m}` | Between n and m times (greedy) | `w{2,4}` | "ww", "www", "wwww"
+| `{n,}` | n or more times (greedy) | `\d{3,}` | "123", "12345"
+|===
+
+[.notes]
+--
+Quantifiers control how many times a pattern should match. Greedy means they match as much as possible.
+--
+
+=== Greedy vs. Lazy Quantifiers
+
+[.nobullet.nosubbullet]
+[%step]
+* [emph]#Greedy# quantifiers (`+`, `*`, `{n,m}`) match as [emph]#much as possible#
+[%step]
+* [emph]#Lazy# quantifiers (`+?`, `*?`, `{n,m}?`) match as [emph]#little as possible#
+[%step]
+* Add `?` after a quantifier to make it lazy
+
+[.columns]
+=== Greedy vs. Lazy Example
+
+[.column]
+--
+[emph]#Greedy:#
+[source,python]
+----
+import re
+text = "<div>Hello</div><div>World</div>"
+pattern = r"<div>.*</div>"
+re.findall(pattern, text)
+# Result: ['<div>Hello</div><div>World</div>']
+----
+--
+
+[.column]
+--
+[emph]#Lazy:#
+[source,python]
+----
+import re
+text = "<div>Hello</div><div>World</div>"
+pattern = r"<div>.*?</div>"
+re.findall(pattern, text)
+# Result: ['<div>Hello</div>', '<div>World</div>']
+----
+--
+
+[.notes]
+--
+Greedy matching is the default. It tries to match as much text as possible. Lazy matching stops as soon as it finds a match.
+--
+
+== Special Characters
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| `.` | Any character except newline | `.` | "w", "5", "!"
+| `.*` | Any character, any number of times | `.*` | Entire line of text
+| `\.` | Literal period (escaped) | `\.{3}` | "..."
+| `\\` | Literal backslash | `\\\\` | "\"
+|===
+
+[.notes]
+--
+The dot is a special character that matches almost anything. To match a literal dot, you need to escape it with a backslash.
+--
+
+== Anchors and Boundaries
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| `^` | Start of string or line | `^abc.*` | "abc..." (at start)
+| `$` | End of string or line | `.*end$` | "...end" (at end)
+| `\b` | Word boundary | `\bword\b` | "word" but not "password"
+| `\B` | Non-word boundary | `\Bword\B` | "password" but not "word"
+|===
+
+[.notes]
+--
+Anchors don't match characters; they match positions in the string. This is important for precise pattern matching.
+--
+
+== Alternation and Groups
+
+[frame=none,grid=cols,cols="a,a,a,a",noheader]
+|===
+| Pattern | Matches | Example | Sample Match
+| {vbar} | OR (alternation) | +++1{2}+++{vbar}+++2{2}+++ | "11" or "22"
+| `(...)` | Capturing group | `(\d{3})\s\d{3}-\d{4}` | Phone: captures area code
+| +++(?:...)+++ | Non-capturing group | +++(?:cat+++{vbar}+++dog)s+++ | "cats" or "dogs" (no capture)
+| `\1, \2, ...` | Backreference to group | `(\w+)\s+\1` | "word word" (repeated word)
+|===
+
+[.notes]
+--
+Groups allow you to capture parts of a match and refer back to them. This is very powerful for pattern matching and replacement.
+--
+
+=== Group Examples
+
+[source,python]
+----
+import re
+
+# Capturing groups
+pattern = r"(\d{3})-(\d{3})-(\d{4})"
+text = "Call 301-555-1234"
+match = re.search(pattern, text)
+if match:
+    print(match.group(0))  # Full match: "301-555-1234"
+    print(match.group(1))  # First group: "301"
+    print(match.group(2))  # Second group: "555"
+    print(match.group(3))  # Third group: "1234"
+    print(match.groups())  # All groups: ('301', '555', '1234')
+----
+
+[.notes]
+--
+Groups are numbered starting from 1. Group 0 is always the entire match.
+--
+
+== Applications of Regular Expressions
+
+[.nobullet.nosubbullet]
+[%step]
+* [emph]#Web Scraping#
+** Finding specific data points in HTML/XML
+** Extracting addresses, names, prices, etc.
+[%step]
+* [emph]#Data Wrangling#
+** Cleaning and extracting data from unstructured files
+** Parsing log files, CSV files, or text reports
+[%step]
+* [emph]#Data Validation#
+** Verifying email addresses, phone numbers, URLs
+** Checking format compliance
+
+[.notes]
+--
+Regular expressions are used everywhere in data processing. They're essential for working with real-world data that isn't perfectly structured.
+--
+
+=== Applications (continued)
+
+[.nobullet.nosubbullet]
+[%step]
+* [emph]#Text Processing#
+** Find and replace operations
+** Formatting text files
+** Extracting information from documents
+[%step]
+* [emph]#System Administration#
+** Parsing log files
+** Filtering command output
+** Configuring tools
+[%step]
+* [emph]#Programming#
+** Syntax highlighting in editors
+** Code parsing and analysis
+** Input validation
+
+== The `re` Module
+
+[.nobullet.nosubbullet]
+[%step]
+* Python's built-in module for regular expressions
+[%step]
+* Provides functions for pattern matching and manipulation
+[%step]
+* Import with: `import re`
+
+=== Basic `re` Functions
+
+[frame=none,grid=cols,cols="a,a",noheader]
+|===
+| Function | Purpose
+| `re.search(pattern, string)` | Find first match anywhere in string
+| `re.match(pattern, string)` | Match only at beginning of string
+| `re.findall(pattern, string)` | Find all non-overlapping matches
+| `re.finditer(pattern, string)` | Find all matches, returns iterator
+| `re.sub(pattern, repl, string)` | Replace matches with replacement
+| `re.split(pattern, string)` | Split string by pattern
+|===
+
+[.notes]
+--
+These are the most commonly used functions in the re module. Each serves a different purpose.
+--
+
+=== `re.search()` vs. `re.match()`
+
+[.columns]
+[.column]
+--
+[emph]#re.search():#
+[source,python]
+----
+import re
+text = "The price is $19.99"
+result = re.search(r"\$\d+\.\d{2}", text)
+# Finds: "$19.99"
+----
+--
+
+[.column]
+--
+[emph]#re.match():#
+[source,python]
+----
+import re
+text = "The price is $19.99"
+result = re.match(r"\$\d+\.\d{2}", text)
+# Returns: None (doesn't match at start)
+----
+--
+
+[.notes]
+--
+search() looks anywhere in the string, while match() only checks the beginning. This is an important distinction.
+--
+
+=== `re.findall()` and `re.finditer()`
+
+[.columns]
+[.column]
+--
+[emph]#re.findall():#
+[source,python]
+----
+import re
+text = "Call 301-555-1234 or 202-555-5678"
+numbers = re.findall(r"\d{3}-\d{3}-\d{4}", text)
+# Returns: ['301-555-1234', '202-555-5678']
+----
+--
+
+[.column]
+--
+[emph]#re.finditer():#
+[source,python]
+----
+import re
+text = "Call 301-555-1234 or 202-555-5678"
+for match in re.finditer(r"\d{3}-\d{3}-\d{4}", text):
+    print(f"Found: {match.group()} at position {match.start()}")
+# More efficient for large texts
+----
+--
+
+[.notes]
+--
+findall() returns a list of strings, while finditer() returns an iterator of match objects, which is more memory-efficient for large texts.
+--
+
+=== `re.sub()` - Find and Replace
+
+[source,python]
+----
+import re
+
+# Simple replacement
+text = "Hello World"
+result = re.sub(r"World", "Python", text)
+# Result: "Hello Python"
+
+# Using groups in replacement
+text = "John Doe, Jane Smith"
+result = re.sub(r"(\w+)\s+(\w+)", r"\2, \1", text)
+# Result: "Doe, John, Smith, Jane"
+
+# Using a function for replacement
+def double_number(match):
+    num = int(match.group())
+    return str(num * 2)
+
+text = "I have 5 apples and 3 oranges"
+result = re.sub(r"\d+", double_number, text)
+# Result: "I have 10 apples and 6 oranges"
+----
+
+[.notes]
+--
+sub() is powerful for text transformation. You can use backreferences (\1, \2) or even functions for complex replacements.
+--
+
+=== `re.split()` - Split by Pattern
+
+[source,python]
+----
+import re
+
+# Split by multiple delimiters
+text = "apple,banana;cherry:date"
+result = re.split(r"[,;:]", text)
+# Result: ['apple', 'banana', 'cherry', 'date']
+
+# Split and keep delimiters
+text = "Hello, World! How are you?"
+result = re.split(r"([,!?])", text)
+# Result: ['Hello', ',', ' World', '!', ' How are you', '?', '']
+----
+
+[.notes]
+--
+split() is more flexible than the string split() method because you can use patterns instead of fixed strings.
+--
+
+== Raw Strings
+
+[.nobullet.nosubbullet]
+[%step]
+* In Python, backslashes have special meaning in strings
+[%step]
+** `"\n"` is a newline character
+** `"\\"` is a single backslash
+[%step]
+* Regular expressions use backslashes for escaping
+[%step]
+** This creates a conflict!
+
+=== The Problem
+
+[source,python]
+----
+# Without raw strings - confusing!
+pattern = "\\d{3}-\\d{3}-\\d{4}"  # Need double backslashes
+# Pattern actually contains: \d{3}-\d{3}-\d{4}
+
+# What if you want a literal backslash?
+pattern = "\\\\d"  # Four backslashes for one in pattern!
+----
+
+[.notes]
+--
+This is a common source of confusion and errors when working with regex in Python.
+--
+
+=== The Solution: Raw Strings
+
+[.nobullet.nosubbullet]
+[%step]
+* Prefix string with `r` to create a [emph]#raw string#
+[%step]
+* Backslashes are [emph]#not processed# in raw strings
+[%step]
+* Use raw strings for [emph]#all regex patterns#
+
+[source,python]
+----
+# With raw strings - much clearer!
+pattern = r"\d{3}-\d{3}-\d{4}"  # Single backslash
+# Pattern contains: \d{3}-\d{3}-\d{4}
+
+# Literal backslash is easy
+pattern = r"\\d"  # Two backslashes for one in pattern
+----
+
+[.notes]
+--
+Raw strings make regex patterns much more readable and less error-prone. Always use them for regex patterns.
+--
+
+== Compiling Patterns
+
+[.nobullet.nosubbullet]
+[%step]
+* `re.compile()` creates a [emph]#pattern object#
+[%step]
+* More [emph]#efficient# when using the same pattern multiple times
+[%step]
+* Pattern object has same methods as `re` module
+
+[source,python]
+----
+import re
+
+# Compile once
+pattern = re.compile(r"\d{3}-\d{3}-\d{4}")
+
+# Use multiple times
+text1 = "Call 301-555-1234"
+text2 = "Call 202-555-5678"
+
+match1 = pattern.search(text1)
+match2 = pattern.search(text2)
+----
+
+[.notes]
+--
+Compiling patterns is a performance optimization. If you're using the same pattern many times, compile it once and reuse it.
+--
+
+== Match Objects
+
+[.nobullet.nosubbullet]
+[%step]
+* `search()`, `match()`, and `finditer()` return [emph]#Match objects#
+[%step]
+* Match objects have useful methods and attributes
+
+[frame=none,grid=cols,cols="a,a",noheader]
+|===
+| Method/Attribute | Description
+| `match.group()` | The matched string
+| `match.group(n)` | The nth captured group
+| `match.groups()` | All captured groups as tuple
+| `match.start()` | Start position of match
+| `match.end()` | End position of match
+| `match.span()` | (start, end) tuple
+|===
+
+=== Match Object Example
+
+[source,python]
+----
+import re
+
+pattern = r"(\d{3})-(\d{3})-(\d{4})"
+text = "Call me at 301-555-1234"
+match = re.search(pattern, text)
+
+if match:
+    print(match.group())      # "301-555-1234"
+    print(match.group(1))     # "301"
+    print(match.group(2))     # "555"
+    print(match.group(3))     # "1234"
+    print(match.start())      # 12
+    print(match.end())        # 24
+    print(match.span())       # (12, 24)
+----
+
+[.notes]
+--
+Match objects provide detailed information about where and what was matched. Always check if a match exists before using these methods.
+--
+
+== Flags
+
+[.nobullet.nosubbullet]
+[%step]
+* Flags modify how patterns are matched
+[%step]
+* Pass flags as optional argument to functions
+[%step]
+* Or use inline flags in pattern: `(?i)` for case-insensitive
+
+[frame=none,grid=cols,cols="a,a",noheader]
+|===
+| Flag | Description
+| `re.IGNORECASE` or `re.I` | Case-insensitive matching
+| `re.MULTILINE` or `re.M` | `^` and `$` match line boundaries
+| `re.DOTALL` or `re.S` | `.` matches newline too
+| `re.VERBOSE` or `re.X` | Allow comments and whitespace in pattern
+|===
+
+=== Flag Examples
+
+[source,python]
+----
+import re
+
+# Case-insensitive
+text = "Hello WORLD"
+match = re.search(r"world", text, re.IGNORECASE)
+# Matches: "WORLD"
+
+# Multiline
+text = "Line 1\nLine 2\nLine 3"
+matches = re.findall(r"^Line", text, re.MULTILINE)
+# Matches: ['Line', 'Line', 'Line']
+
+# Verbose (allows comments)
+pattern = re.compile(r"""
+    \d{3}      # Area code
+    -           # Dash
+    \d{3}       # Exchange
+    -           # Dash
+    \d{4}       # Number
+""", re.VERBOSE)
+----
+
+[.notes]
+--
+Flags make patterns more flexible. VERBOSE is especially useful for complex patterns as it allows comments and formatting.
+--
+
+== Common Patterns
+
+=== Email Address
+
+[source,python]
+----
+import re
+
+# Simple email pattern
+pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+email = "user@example.com"
+match = re.search(pattern, email)
+----
+
+[.notes]
+--
+This is a simplified email pattern. Real email validation is much more complex, but this covers most common cases.
+--
+
+=== Phone Number
+
+[source,python]
+----
+import re
+
+# US phone number (flexible format)
+pattern = r"\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"
+text = "Call (301) 555-1234 or 301.555.5678"
+matches = re.findall(pattern, text)
+# Matches: ['(301) 555-1234', '301.555.5678']
+----
+
+[.notes]
+--
+Phone numbers come in many formats. This pattern handles parentheses, dashes, dots, and spaces.
+--
+
+=== Date Pattern
+
+[source,python]
+----
+import re
+
+# Date in MM/DD/YYYY format
+pattern = r"\d{2}/\d{2}/\d{4}"
+text = "Today is 12/25/2023"
+match = re.search(pattern, text)
+----
+
+=== URL Pattern
+
+[source,python]
+----
+import re
+
+# Simple URL pattern
+pattern = r"https?://[^\s]+"
+text = "Visit https://example.com for more info"
+match = re.search(pattern, text)
+----
+
+== Best Practices
+
+[.nobullet.nosubbullet]
+[%step]
+* Always use [emph]#raw strings# (`r"..."`) for patterns
+[%step]
+* [emph]#Test# your patterns with various inputs
+[%step]
+* Use [emph]#verbose mode# for complex patterns
+[%step]
+* [emph]#Compile# patterns if using them multiple times
+[%step]
+* Consider [emph]#readability# - sometimes simple string methods are better
+[%step]
+* [emph]#Document# complex patterns with comments
+
+[.notes]
+--
+Regex is powerful but can become unreadable. Balance power with clarity, and don't overuse regex when simpler solutions exist.
+--
+
+== Summary
+
+[.nobullet.nosubbullet]
+[%step]
+* Regular expressions are [emph]#patterns# for matching text
+[%step]
+* Character classes (`\d`, `\w`, `\s`) match types of characters
+[%step]
+* Quantifiers (`+`, `*`, `?`, `{n,m}`) control repetition
+[%step]
+* Groups `(...)` capture parts of matches
+[%step]
+* The `re` module provides functions for pattern matching
+[%step]
+* Always use [emph]#raw strings# (`r"..."`) for regex patterns
+[%step]
+* Compile patterns for better performance when reused
+
+== Practice Tips
+
+[.nobullet.nosubbullet]
+[%step]
+* Start with [emph]#simple patterns# and build complexity
+[%step]
+* Use [emph]#online regex testers# to experiment
+[%step]
+* Read patterns [emph]#left to right#
+[%step]
+* Test with [emph]#edge cases# (empty strings, special characters)
+[%step]
+* Remember: regex is a [emph]#tool#, not always the best solution
+
+[.notes]
+--
+Regular expressions take practice. Start simple, test thoroughly, and don't be afraid to break complex patterns into smaller parts.
+--
+
