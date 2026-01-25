@@ -6,7 +6,7 @@
 :highlightjsdir: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1
 :highlightjs-theme: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/tomorrow-night.min.css
 :customcss: ../../css/default.css
-:revealjs_theme: black
+:revealjs_theme: white
 :revealjs_width: 1400
 :revealjs_height: 800
 :revealjs_slideNumber: true

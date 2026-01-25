@@ -1,33 +1,49 @@
 /**
- * After Dark Theme for INST326 Slides
- * Inspired by the After Dark VS Code theme
- * Dark background with vibrant neon accents
+ * University of Maryland Theme for INST326 Slides
+ * Light mode with UMD brand colors
+ * https://brand.umd.edu/colors
  */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
 /*********************************************
- * CSS CUSTOM PROPERTIES (Theme Colors)
+ * CSS CUSTOM PROPERTIES (UMD Brand Colors)
  *********************************************/
 :root {
-    --bg-primary: #0d1117;
-    --bg-secondary: #161b22;
-    --bg-tertiary: #21262d;
-    --text-primary: #e6edf3;
-    --text-secondary: #8b949e;
-    --text-muted: #6e7681;
-    --accent-pink: #ff79c6;
-    --accent-cyan: #8be9fd;
-    --accent-purple: #bd93f9;
-    --accent-green: #50fa7b;
-    --accent-orange: #ffb86c;
-    --accent-yellow: #f1fa8c;
-    --accent-red: #ff5555;
-    --link-color: #58a6ff;
-    --link-hover: #79c0ff;
-    --code-bg: #1a1f29;
-    --border-color: #30363d;
-    --shadow-color: rgba(0, 0, 0, 0.5);
+    /* UMD Core Colors */
+    --umd-red: #e21833;
+    --umd-gold: #ffd200;
+    --umd-white: #ffffff;
+    --umd-black: #000000;
+    
+    /* UMD Neutral Colors */
+    --umd-dark-gray: #454545;
+    --umd-medium-gray: #7f7f7f;
+    --umd-light-gray: #e6e6e6;
+    --umd-bronze: #ad7231;
+    
+    /* Theme mappings */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --bg-tertiary: var(--umd-light-gray);
+    --text-primary: var(--umd-black);
+    --text-secondary: var(--umd-dark-gray);
+    --text-muted: var(--umd-medium-gray);
+    
+    /* Accent colors using UMD palette */
+    --accent-primary: var(--umd-red);
+    --accent-secondary: var(--umd-gold);
+    --accent-tertiary: var(--umd-bronze);
+    
+    /* Links */
+    --link-color: var(--umd-red);
+    --link-hover: #b01229;
+    
+    /* Code blocks (keep dark for contrast) */
+    --code-bg: #1e1e1e;
+    --code-text: #d4d4d4;
+    --border-color: var(--umd-light-gray);
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 /*********************************************
@@ -35,14 +51,11 @@
  *********************************************/
 body {
     background: var(--bg-primary);
-    background-image: 
-        radial-gradient(ellipse at top left, rgba(189, 147, 249, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(255, 121, 198, 0.08) 0%, transparent 50%);
     background-color: var(--bg-primary);
 }
 
 .reveal {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 38px;
     font-weight: 400;
     color: var(--text-primary);
@@ -53,14 +66,14 @@ body {
 }
 
 ::selection {
-    color: var(--bg-primary);
-    background: var(--accent-cyan);
+    color: var(--umd-white);
+    background: var(--umd-red);
     text-shadow: none;
 }
 
 ::-moz-selection {
-    color: var(--bg-primary);
-    background: var(--accent-cyan);
+    color: var(--umd-white);
+    background: var(--umd-red);
     text-shadow: none;
 }
 
@@ -80,7 +93,7 @@ body {
 .reveal h5,
 .reveal h6 {
     margin: 0 0 20px 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -91,34 +104,32 @@ body {
 
 .reveal h1 {
     font-size: 2.2em;
-    color: var(--accent-pink);
-    text-shadow: 0 0 40px rgba(255, 121, 198, 0.3);
+    color: var(--umd-red);
 }
 
 .reveal h2 {
     font-size: 1.6em;
-    color: var(--accent-cyan);
-    text-shadow: 0 0 30px rgba(139, 233, 253, 0.2);
+    color: var(--umd-red);
 }
 
 .reveal h3 {
     font-size: 1.3em;
-    color: var(--accent-purple);
+    color: var(--umd-dark-gray);
 }
 
 .reveal h4 {
     font-size: 1.1em;
-    color: var(--accent-green);
+    color: var(--umd-dark-gray);
 }
 
 .reveal h5, .reveal h6 {
     font-size: 1em;
-    color: var(--accent-orange);
+    color: var(--umd-medium-gray);
 }
 
 /* Title slide styling */
 .title h1, .title h2 {
-    text-shadow: 0 0 60px rgba(255, 121, 198, 0.5), 2px 2px 10px rgba(0, 0, 0, 0.8);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /*********************************************
@@ -132,12 +143,12 @@ body {
 .reveal strong,
 .reveal b {
     font-weight: 700;
-    color: var(--accent-yellow);
+    color: var(--umd-red);
 }
 
 .reveal em {
     font-style: italic;
-    color: var(--accent-cyan);
+    color: var(--umd-dark-gray);
 }
 
 /*********************************************
@@ -181,7 +192,7 @@ body {
 }
 
 .reveal li::marker {
-    color: var(--accent-pink);
+    color: var(--umd-red);
 }
 
 li li {
@@ -189,7 +200,7 @@ li li {
 }
 
 /*********************************************
- * CODE BLOCKS
+ * CODE BLOCKS (Keep dark theme)
  *********************************************/
 .reveal pre {
     display: block;
@@ -201,10 +212,9 @@ li li {
     font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
     word-wrap: break-word;
     background: var(--code-bg);
-    border: 1px solid var(--border-color);
+    border: 1px solid #333;
     border-radius: 8px;
-    box-shadow: 0 8px 32px var(--shadow-color),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 16px var(--shadow-color);
     overflow: hidden;
 }
 
@@ -215,7 +225,7 @@ li li {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+    background: linear-gradient(90deg, var(--umd-red), var(--umd-gold));
 }
 
 .reveal code {
@@ -223,9 +233,9 @@ li li {
     text-transform: none;
     font-size: 0.9em;
     padding: 2px 6px;
-    background: var(--bg-tertiary);
+    background: var(--umd-light-gray);
     border-radius: 4px;
-    color: var(--accent-purple);
+    color: var(--umd-red);
 }
 
 .reveal pre code {
@@ -237,27 +247,29 @@ li li {
     background: transparent;
     border-radius: 0;
     line-height: 1.5;
+    color: var(--code-text);
 }
 
 p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
-    color: var(--accent-purple);
+    color: var(--umd-red);
     font-size: 85%;
 }
 
 /*********************************************
  * SYNTAX HIGHLIGHTING (highlight.js)
+ * Keep dark theme for code blocks
  *********************************************/
 
 /* Base code text */
 .hljs {
-    color: var(--text-primary);
+    color: #d4d4d4;
     background: transparent;
 }
 
 /* Comments */
 .hljs-comment,
 .hljs-quote {
-    color: #6a737d;
+    color: #6a9955;
     font-style: italic;
 }
 
@@ -265,7 +277,7 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-addition {
-    color: var(--accent-pink);
+    color: #c586c0;
     font-weight: 600;
 }
 
@@ -274,32 +286,31 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .hljs-class .hljs-title,
 .hljs-title.class_.inherited__,
 .hljs-type {
-    color: #50fa7b;
+    color: #4ec9b0;
     font-weight: 700;
-    text-shadow: 0 0 10px rgba(80, 250, 123, 0.3);
 }
 
 /* Function names in definitions and calls */
 .hljs-title.function_,
 .hljs-function .hljs-title {
-    color: #8be9fd;
+    color: #dcdcaa;
     font-weight: 600;
 }
 
 /* Generic title fallback (lower priority) */
 .hljs-title:not(.class_):not(.function_) {
-    color: #8be9fd;
+    color: #dcdcaa;
     font-weight: 600;
 }
 
 /* Built-in functions (print, len, range, etc.) */
 .hljs-built_in {
-    color: #8be9fd;
+    color: #dcdcaa;
 }
 
 /* Property/method access - highlight method names after dots */
 .hljs-property {
-    color: #8be9fd;
+    color: #9cdcfe;
     font-weight: 500;
 }
 
@@ -309,84 +320,81 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .hljs-regexp,
 .hljs-template-variable,
 .hljs-template-tag {
-    color: #f1fa8c;
+    color: #ce9178;
 }
 
 /* Numbers */
 .hljs-number,
 .hljs-literal {
-    color: #bd93f9;
+    color: #b5cea8;
 }
 
 /* Variables and parameters */
 .hljs-variable,
 .hljs-params {
-    color: #ffb86c;
+    color: #9cdcfe;
 }
 
 /* Attributes and properties (self.name, obj.attr) */
 .hljs-attr,
-.hljs-attribute,
-.hljs-property {
-    color: #ff79c6;
+.hljs-attribute {
+    color: #9cdcfe;
     font-weight: 500;
 }
 
-/* Self/this keyword - highlighted prominently */
+/* Self/this keyword - highlighted prominently in UMD Red */
 .hljs-variable.language_,
 .hljs-this {
-    color: #ff5555;
+    color: #e21833;
     font-style: italic;
     font-weight: 700;
-    text-shadow: 0 0 8px rgba(255, 85, 85, 0.5);
 }
 
 /* F-string curly braces (substitution blocks) */
 .hljs-subst {
-    color: #8be9fd;
+    color: #9cdcfe;
 }
 
 /* Highlight curly brackets specifically in f-strings */
 .hljs-subst .hljs-punctuation,
 .hljs-template-variable {
-    color: #50fa7b;
+    color: #ffd200;
     font-weight: 700;
-    text-shadow: 0 0 6px rgba(80, 250, 123, 0.5);
 }
 
 /* Punctuation and operators */
 .hljs-punctuation {
-    color: var(--text-secondary);
+    color: #d4d4d4;
 }
 
-/* Curly brackets highlighted distinctly */
+/* Curly brackets highlighted distinctly in UMD Gold */
 .hljs-punctuation.hljs-curly-brace,
 .reveal pre code .curly-brace {
-    color: #50fa7b;
+    color: #ffd200;
     font-weight: 700;
 }
 
 /* Boolean values */
 .hljs-literal {
-    color: #bd93f9;
+    color: #569cd6;
 }
 
 /* Decorators (@property, @staticmethod) */
 .hljs-meta,
 .hljs-decorator {
-    color: #50fa7b;
+    color: #dcdcaa;
 }
 
 /* Deletion (diff) */
 .hljs-deletion {
-    color: #ff5555;
-    background: rgba(255, 85, 85, 0.1);
+    color: #f44747;
+    background: rgba(244, 71, 71, 0.1);
 }
 
 /* Addition (diff) */
 .hljs-addition {
-    color: #50fa7b;
-    background: rgba(80, 250, 123, 0.1);
+    color: #4ec9b0;
+    background: rgba(78, 201, 176, 0.1);
 }
 
 /* Emphasis */
@@ -401,25 +409,25 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 
 /* Section headers */
 .hljs-section {
-    color: var(--accent-cyan);
+    color: #569cd6;
     font-weight: bold;
 }
 
 /* Selector (CSS) */
 .hljs-selector-class,
 .hljs-selector-id {
-    color: #50fa7b;
+    color: #d7ba7d;
 }
 
 /* Symbol */
 .hljs-symbol,
 .hljs-bullet {
-    color: #8be9fd;
+    color: #569cd6;
 }
 
 /* Link */
 .hljs-link {
-    color: var(--link-color);
+    color: #569cd6;
     text-decoration: underline;
 }
 
@@ -436,7 +444,6 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .reveal a:hover {
     color: var(--link-hover);
     border-bottom-color: var(--link-hover);
-    text-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
 }
 
 /*********************************************
@@ -445,13 +452,13 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .reveal section img {
     margin: 15px 0;
     border-radius: 8px;
-    box-shadow: 0 10px 40px var(--shadow-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .reveal section img:hover {
     transform: scale(1.02);
-    box-shadow: 0 15px 50px var(--shadow-color);
+    box-shadow: 0 8px 30px var(--shadow-color);
 }
 
 .reveal section img.plain {
@@ -478,16 +485,16 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     margin: auto;
     border-collapse: collapse;
     border-spacing: 0;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 20px var(--shadow-color);
+    box-shadow: 0 2px 10px var(--shadow-color);
 }
 
 .reveal table th {
     font-weight: 700;
-    background: var(--bg-tertiary);
-    color: var(--accent-cyan);
+    background: var(--umd-red);
+    color: var(--umd-white);
     text-transform: uppercase;
     font-size: 0.85em;
     letter-spacing: 0.05em;
@@ -506,7 +513,7 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 }
 
 .reveal table tbody tr:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
 }
 
 /*********************************************
@@ -520,9 +527,9 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     padding: 20px 30px;
     font-style: italic;
     background: var(--bg-secondary);
-    border-left: 4px solid var(--accent-pink);
+    border-left: 4px solid var(--umd-red);
     border-radius: 0 8px 8px 0;
-    box-shadow: 0 4px 20px var(--shadow-color);
+    box-shadow: 0 2px 10px var(--shadow-color);
 }
 
 .reveal blockquote::before {
@@ -531,8 +538,8 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     top: -10px;
     left: 15px;
     font-size: 4em;
-    color: var(--accent-pink);
-    opacity: 0.3;
+    color: var(--umd-red);
+    opacity: 0.2;
     font-family: Georgia, serif;
 }
 
@@ -540,7 +547,7 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
  * NAVIGATION & CONTROLS
  *********************************************/
 .reveal .controls {
-    color: var(--accent-pink);
+    color: var(--umd-red);
 }
 
 .reveal .controls button {
@@ -548,7 +555,7 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 }
 
 .reveal .controls button:hover {
-    color: var(--accent-cyan);
+    color: var(--umd-gold);
     transform: scale(1.1);
 }
 
@@ -556,12 +563,12 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
  * PROGRESS BAR
  *********************************************/
 .reveal .progress {
-    background: var(--bg-tertiary);
+    background: var(--umd-light-gray);
     height: 4px;
 }
 
 .reveal .progress span {
-    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+    background: linear-gradient(90deg, var(--umd-red), var(--umd-gold));
     transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
 }
 
@@ -569,13 +576,19 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
  * SLIDE NUMBER
  *********************************************/
 .reveal .slide-number {
-    background: var(--bg-secondary);
+    background: rgba(245, 245, 245, 0.7);
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
     padding: 5px 10px;
     border-radius: 4px;
     border: 1px solid var(--border-color);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.reveal .slide-number:hover {
+    opacity: 1;
 }
 
 /*********************************************
@@ -601,7 +614,7 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 }
 
 .reveal .slides section .fragment.highlight-current-blue.current-fragment {
-    color: var(--accent-cyan);
+    color: var(--umd-red);
 }
 
 /*********************************************
@@ -618,23 +631,24 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 
 /* Text emphasis */
 .emph {
-    color: var(--accent-orange) !important;
+    color: var(--umd-red) !important;
     font-weight: 700;
 }
 
 .slot {
-    color: var(--accent-yellow);
+    color: var(--umd-bronze);
     font-variant: small-caps;
     font-weight: bold;
 }
 
 .output {
-    color: var(--accent-green);
+    color: var(--umd-dark-gray);
     padding-bottom: 0.1ex;
+    font-style: italic;
 }
 
 .filelisting {
-    color: var(--accent-cyan);
+    color: var(--umd-red);
 }
 
 /* List styling */
@@ -833,21 +847,20 @@ p code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
  * HIGHLIGHT EFFECTS
  *********************************************/
 .reveal .slides section .highlight-box {
-    background: linear-gradient(135deg, rgba(255, 121, 198, 0.1), rgba(139, 233, 253, 0.1));
-    border: 1px solid var(--accent-purple);
+    background: rgba(226, 24, 51, 0.05);
+    border: 2px solid var(--umd-red);
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
 }
 
 .reveal .slides section .glow-text {
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    text-shadow: 0 0 10px currentColor;
 }
 
 .reveal .slides section .gradient-text {
-    background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));
+    background: linear-gradient(90deg, var(--umd-red), var(--umd-gold));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-
