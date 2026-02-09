@@ -18,111 +18,997 @@
 :third-width: width='33%'
 :quarter-width: width='25%'
 
-== !
+== Today's Goals
+
+By the end of this session, you'll be able to:
+
+* Explain how computers store and process data
+* Describe what an operating system does and why it matters
+* Navigate a file system using the command line
+* Understand the difference between absolute and relative paths
+* Use essential terminal commands for your Python workflow
+
+[.notes]
+--
+These foundational concepts will help you understand what happens "under the hood" when you write and run Python programs.
+
+Ask: "How many of you have used the command line or terminal before?"
+--
+
+== What Is a Computer?
+
 [quote, Merriam-Webster]
 ____
 a programmable usually electronic device that can store, retrieve, and process data
 ____
 
+Three key capabilities:
+
+* *Store* — remember information (memory, disk)
+* *Retrieve* — access stored information
+* *Process* — transform data according to instructions
+
 [.notes]
 --
-Definition of 'computer' according to Merriam-Webster.
+This definition captures what makes computers special: they can be programmed to do different tasks, unlike a calculator that only does math.
+
+When you write Python code, you're giving the computer instructions for how to process data.
+--
+
+=== 🔮 Predict: What Makes a Computer a "Computer"?
+
+Which of these are computers? Discuss with a neighbor.
+
+* A smartphone
+* A microwave oven
+* A digital thermostat
+* A basic calculator
+* A car's engine control unit
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+*All of them!* Each can store, retrieve, and process data according to programmable instructions—though some are more general-purpose than others.
+
+[.notes]
+--
+This helps students see that "computer" is broader than just laptops/desktops.
+
+The key distinction is programmability. A basic calculator is actually a simple computer—it processes input according to stored instructions.
+
+Modern cars have dozens of computers controlling different systems. Your phone is more powerful than the computers that sent astronauts to the moon.
 --
 
 == Computer Architecture
 
-=== von Neumann Archicture
+=== von Neumann Architecture
 
-At a high level, von Neumann architecture diagrams represent the most essential components of an electronic computer.
+Most modern computers follow a design from 1945 called *von Neumann architecture*.
 
 .von Neumann Architecture
 [link=https://en.wikipedia.org/wiki/Von_Neumann_architecture#/media/File:Von_Neumann_Architecture.svg]
 image::von_neumann.png[{half-width}]
 
-=== The Early Days
+[.notes]
+--
+John von Neumann described this architecture in 1945, and it's still the basis for virtually all computers today.
+
+Point to each component as you explain:
+- CPU: The "brain" that executes instructions
+- Memory: Stores both programs AND data (this was revolutionary)
+- Input/Output: How we interact with the computer
+--
+
+=== The Four Essential Components
+
+[cols="1,2", frame=none]
+|===
+| *CPU* | Central Processing Unit — executes instructions
+| *Memory* | RAM — fast, temporary storage
+| *Storage* | Disk/SSD — persistent data
+| *I/O* | Input/Output — keyboard, screen, network
+|===
+
+When you run a Python program:
+
+1. Your code loads from *storage* into *memory*
+2. The *CPU* executes each instruction
+3. Results display via *I/O* (your screen)
+
+[.notes]
+--
+Connect this to what students will experience:
+- When you save a .py file, it goes to storage
+- When you run it, Python loads it into memory
+- The CPU executes your instructions line by line
+- print() sends output to your screen (I/O)
+
+This is why your program is gone when you close your editor without saving—it only existed in memory!
+--
+
+=== The Early Days: Room-Sized Computers
 
 Individual computers were large, analog devices that required teams of people to manage.
 
-.Image of the IBM System 360 Model 91 operator's console
+.IBM System 360 Model 91 operator's console
 [link=https://en.wikipedia.org/wiki/File:360-91-panel.jpg]
 image::ibm.jpg[{half-width}]
 
-=== !
+[.notes]
+--
+In the 1960s, a single computer might fill an entire room and cost millions of dollars.
 
-And might have required large complex peripherals to load in data.
+Teams of trained operators were needed to run programs. You couldn't just sit down and type—you'd submit your program on punch cards and wait hours or days for results.
+
+The computing power in your smartphone today exceeds what's shown in this image by many orders of magnitude.
+--
+
+=== Input: Punch Cards and Tape
+
+Early computers used physical media for input—no keyboards!
 
 .IBM 2314 disk drives and IBM 2540 card reader/punch at the University of Michigan
 [link=https://en.wikipedia.org/wiki/IBM_System/360#/media/File:IBM_2314_DiskDrives_and_IBM_2540_CardReader_Punch.jpg]
 image::reader_ibm.jpg[{half-width}]
 
-== Increasing Complexity
+[.notes]
+--
+Programs were encoded on punch cards—pieces of cardboard with holes punched in specific patterns.
 
-=== Operating Systems
+If you dropped your stack of cards... you had to put them back in order manually. Some programmers wrote numbers on the edges of their card stacks so they could reassemble them.
 
-As complexity of these electronic computers increased (and price decreased), Operating Systems (OS) were created more institutions started to get their hands on them.
+This is why some early programming conventions (like 80-character line limits) exist—punch cards were 80 columns wide!
+--
 
-Some problems started to arise:
+== Operating Systems
 
-- How do we keep people from accessing data they should not have access to?
-- How do we create a system in which users can execute multiple programs at once?
-- How do we let multiple people have access to this fancy new machine at once?
+=== Why Do We Need Operating Systems?
 
-=== Early Operating Systems
+As computers became more complex, problems arose:
 
-Added multitasking/security as a core component of the operating system by being clever about input and output devices.
+* How do we run *multiple programs* at once?
+* How do we let *multiple users* share one machine?
+* How do we *protect data* from unauthorized access?
+* How do we *manage hardware* so programs don't conflict?
 
-.IBM 1403 line printer
-[link=https://en.wikipedia.org/wiki/IBM_System/360#/media/File:IBM_line_printer_1403.JPG]
-image::line_printer.jpeg[{quarter-width}]
+The *operating system (OS)* solves all of these problems.
 
-Which brings up a different issue, how do we keep track of memory, IO, etc?
+[.notes]
+--
+Without an operating system, each program would need to know exactly how to talk to every piece of hardware. Every programmer would need to be a hardware expert.
 
-=== Core Functionality of Operating Systems
+The OS creates an abstraction layer—programs make requests to the OS, and the OS handles the hardware details.
+--
 
-- Memory management
-- Input and Output
-- Security
-- Command Interpreter (more on this later)
+=== What Does an OS Actually Do?
 
-Later on...
+[cols="1,2", frame=none]
+|===
+| *Memory Management* | Allocates RAM to programs, prevents conflicts
+| *Process Management* | Runs multiple programs, shares CPU time
+| *File System* | Organizes data on disk, controls access
+| *Security* | Authenticates users, enforces permissions
+| *I/O Management* | Handles keyboards, displays, networks
+| *Command Interface* | Lets you interact (GUI or command line)
+|===
 
-- File Management (more on this later)
-- Resource Management
+[.notes]
+--
+When you run Python:
+- Memory management gives Python RAM for your variables
+- Process management lets Python run alongside your browser
+- The file system lets you save and load .py files
+- Security controls who can read your files
+- I/O management handles your keyboard input and screen output
+--
 
-=== Modern Day OS
+=== Modern Operating Systems
 
-- Windows (Home PCs, Servers, Workstations)
-- Mac OS (Home PCs, Portable PCs, Workstations)
-- Linux (Servers, Workstations)
+[cols="1,2", frame=none]
+|===
+| *Windows* | Most common for personal computers, gaming
+| *macOS* | Apple computers, popular with developers
+| *Linux* | Servers, cloud computing, development
+| *iOS/Android* | Mobile devices
+|===
 
-== Terminals
+*Fun fact:* macOS and Linux are both based on Unix, which is why their terminals are similar!
 
-- Terminals were used in conjunction with time sharing systems. 
-- Typically, did not have computing power and required a mainframe computer to perform operations. Used to interact with the mainframe, run programs, etc.
+[.notes]
+--
+For this course:
+- Windows users will use PowerShell or Git Bash
+- Mac users will use Terminal (Unix-based)
+- Commands are similar but not identical
 
-.The DEC VT100, a widely emulated computer terminal. Still lives in spirit on modern OS.
+Linux runs most of the internet's servers. When you visit a website, you're probably talking to a Linux machine.
+
+Android is based on Linux. iOS is based on Unix (like macOS).
+--
+
+=== 🔮 Predict: What's the OS Doing?
+
+When you double-click a Python file to run it, what does the OS do?
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+1. Finds the file on disk (file system)
+2. Loads Python interpreter into memory (memory management)
+3. Loads your script into memory
+4. Gives Python CPU time to run (process management)
+5. Sends output to your terminal (I/O management)
+--
+
+[.notes]
+--
+This helps students see that "running a program" involves many OS operations.
+
+The OS is constantly working behind the scenes. Even a simple `print("Hello")` involves the OS managing the terminal output.
+--
+
+== The Terminal
+
+=== What Is a Terminal?
+
+A *text-based interface* for interacting with your computer.
+
+.The DEC VT100, a widely emulated computer terminal
 [link=https://en.wikipedia.org/wiki/Computer_terminal#/media/File:DEC_VT100_terminal_transparent.png]
 image::terminal.png[{quarter-width}]
 
-[%notitle]
-=== Terminal Cheat Sheets
+Originally, terminals were physical devices connected to mainframes. Today, we use *terminal emulators*—software that provides the same text interface.
 
-image::commands_cheat_sheet.png[background, {half-width}]
+[.notes]
+--
+The VT100 from 1978 set standards still used today. When you open Terminal on Mac or PowerShell on Windows, you're using a "virtual" version of this.
 
-== Files
+Why use text when we have GUIs? Text interfaces are:
+- Faster for many tasks once you learn them
+- Scriptable (automate repetitive tasks)
+- Available on servers without displays
+- Required for many development workflows
+--
 
-- `Packaged data`
-- Typically have a format to which they adhere.
+=== Why Learn the Terminal?
 
-=== TXT files
+As a Python developer, you'll use the terminal to:
 
-- Raw text data, made up of ASCII characters.
-- Python scripts are essentially TXT files.
+* *Run Python scripts:* `python my_script.py`
+* *Install packages:* `pip install pandas`
+* *Manage files:* Create, move, delete files and folders
+* *Use version control:* `git commit`, `git push`
+* *Access remote servers:* Work on cloud machines
+
+*The terminal is your power tool.*
+
+[.notes]
+--
+GUIs are fine for basic tasks, but the terminal unlocks capabilities that GUIs can't match.
+
+Most professional Python work involves the terminal. Learning it now will pay dividends throughout your career.
+--
+
+=== Opening Your Terminal
+
+[cols="1,2", frame=none]
+|===
+| *Windows* | Search for "PowerShell" or "Command Prompt"
+| *macOS* | Applications → Utilities → Terminal
+| *Linux* | Usually Ctrl+Alt+T, or search "Terminal"
+|===
+
+When you open it, you'll see a *prompt* waiting for your command:
+
+[source,bash]
+----
+# Mac/Linux might look like:
+username@computer ~ $
+
+# Windows might look like:
+PS C:\Users\username>
+----
+
+[.notes]
+--
+The prompt tells you:
+- Who you are (username)
+- Where you are (current directory)
+- That the system is ready for input ($ or >)
+
+The `~` symbol means your home directory—we'll explain that soon.
+--
+
+=== Anatomy of a Command
+
+[source,bash]
+----
+command -options arguments
+----
+
+[source,bash]
+----
+ls -la /home/user/documents
+----
+
+[cols="1,2", frame=none]
+|===
+| `ls` | The command (list files)
+| `-la` | Options (l=long format, a=show hidden)
+| `/home/user/documents` | Argument (which directory to list)
+|===
+
+[.notes]
+--
+Most commands follow this pattern:
+1. The command name (what to do)
+2. Options/flags that modify behavior (usually start with -)
+3. Arguments (what to do it to)
+
+Not all commands need options or arguments. Just `ls` by itself lists the current directory.
+--
+
+=== Essential Commands: Navigation
+
+[cols="1,1,2", frame=none]
+|===
+| Mac/Linux | Windows | What it does
+
+| `pwd`
+| `cd` (no args)
+| Print Working Directory (where am I?)
+
+| `ls`
+| `dir`
+| List files in current directory
+
+| `cd folder`
+| `cd folder`
+| Change Directory (move to folder)
+
+| `cd ..`
+| `cd ..`
+| Go up one level (parent directory)
+
+| `cd ~`
+| `cd %USERPROFILE%`
+| Go to home directory
+|===
+
+NOTE: PowerShell supports both `ls` and `dir`, and `cd ~` works too!
+
+[.notes]
+--
+These four commands are the foundation of terminal navigation:
+- pwd: "Where am I?"
+- ls: "What's here?"
+- cd: "Take me somewhere"
+- cd ..: "Go back up"
+
+Think of it like navigating folders in a file browser, but with text commands.
+--
+
+=== Essential Commands: File Operations
+
+[cols="1,1,2", frame=none]
+|===
+| Mac/Linux | Windows | What it does
+
+| `mkdir folder`
+| `mkdir folder`
+| Make a new directory
+
+| `touch file.txt`
+| `New-Item file.txt`
+| Create an empty file
+
+| `cp src dest`
+| `copy src dest`
+| Copy a file
+
+| `mv src dest`
+| `move src dest`
+| Move or rename a file
+
+| `rm file`
+| `del file`
+| Remove (delete) a file
+
+| `cat file`
+| `type file`
+| Display file contents
+|===
+
+[.notes]
+--
+These let you manage files without a graphical interface.
+
+WARNING about `rm`/`del`: There's no Trash/Recycle Bin in the terminal! Deleted files are gone immediately and permanently. Be careful.
+
+PowerShell alternative commands: `Remove-Item` (rm), `Copy-Item` (cp), `Move-Item` (mv), `Get-Content` (cat).
+--
+
+=== Common Mistake: rm Is Permanent!
+
+[source,bash]
+----
+rm important_file.txt    # Gone forever!
+rm -r entire_folder/     # Deletes folder AND everything in it!
+----
+
+*There is no Trash or Recycle Bin in the terminal.* Deleted files are gone immediately.
+
+*Tips:*
+
+* Double-check your command before pressing Enter
+* Use `ls` first to see what you're about to delete
+* Consider `mv file.txt ~/.trash/` as a safer alternative
+
+[.notes]
+--
+This is the most dangerous command for beginners. Horror stories abound of people accidentally deleting important files.
+
+Some people alias `rm` to `rm -i` which asks for confirmation, but this can create bad habits if you later work on a system without that alias.
+
+Best practice: Be very careful with `rm`, especially with `-r` (recursive) flag.
+--
+
+=== Try It: Terminal Navigation
+
+Open your terminal and try these commands:
+
+[source,bash]
+----
+pwd                    # Where are you?
+ls                     # What's here?
+cd Desktop             # Go to Desktop (or another folder)
+pwd                    # Confirm you moved
+ls                     # What's on your Desktop?
+cd ..                  # Go back up
+pwd                    # Confirm you're back
+----
+
+*Work through these with a partner. Help each other!*
+
+[.notes]
+--
+Give students 3-4 minutes to try this. Walk around and help those who get stuck.
+
+Common issues:
+- Windows users may need to use different commands
+- Case sensitivity matters on Mac/Linux
+- Tab completion can help (press Tab to auto-complete)
+
+Encourage students to experiment. They can't break anything with these navigation commands.
+--
 
 == File Systems
 
-- Operating systems handle file management differently. 
-- The common denominator is that:
- ** There is always a root directory (the topmost location).
- ** Everything lies beneath the root in a path through the folders.
-- Folders within folders structure creates a 'directory tree'.
+=== The Directory Tree
+
+Files are organized in a *hierarchical structure*—folders within folders.
+
+[source]
+----
+/                        ← Root (top of the tree)
+├── home/
+│   └── alice/           ← Alice's home directory
+│       ├── Documents/
+│       │   └── essay.txt
+│       ├── Downloads/
+│       └── projects/
+│           └── inst326/
+│               └── hw1.py
+├── usr/
+│   └── bin/
+└── etc/
+----
+
+[.notes]
+--
+Draw this on the board or walk through it visually.
+
+Every file has a unique location specified by its path through this tree.
+
+The "root" is the topmost directory—there's nothing above it.
+
+On Windows, each drive (C:, D:) is a separate tree with its own root.
+--
+
+=== Important: Root vs. Home Directory
+
+[cols="1,2", frame=none]
+|===
+| *Root Directory* | The topmost level of the entire file system
+| *Home Directory* | Your personal folder (where your files live)
+|===
+
+[source,bash]
+----
+# Root directory
+/                    # Mac/Linux
+C:\                  # Windows
+
+# Home directory
+/home/username       # Linux
+/Users/username      # Mac
+C:\Users\username    # Windows
+----
+
+The `~` symbol is a shortcut for your home directory.
+
+[.notes]
+--
+This distinction confuses many beginners.
+
+Root is the top of the entire file system—it contains system files you usually shouldn't touch.
+
+Home is YOUR space within the file system. Your Documents, Downloads, Desktop, etc. are inside your home directory.
+
+When you open a terminal, you usually start in your home directory.
+--
+
+=== Paths: Finding Your Files
+
+A *path* is the address of a file in the file system.
+
+*Absolute path:* Full address from root
+[source,bash]
+----
+/home/alice/projects/inst326/hw1.py   # Mac/Linux
+C:\Users\Alice\projects\inst326\hw1.py # Windows
+----
+
+*Relative path:* Address from current location
+[source,bash]
+----
+projects/inst326/hw1.py    # If you're in /home/alice
+../Documents/essay.txt     # Go up one level, then into Documents
+----
+
+[.notes]
+--
+Absolute paths always start from root (/ or C:\). They work from anywhere because they're complete addresses.
+
+Relative paths depend on where you currently are. They're shorter but only work from the right starting location.
+
+The `..` means "parent directory" (go up one level).
+The `.` means "current directory" (often used in scripts).
+--
+
+=== 🔮 Predict: Where Do These Paths Lead?
+
+You are in `/home/alice/projects`. Where do these paths point?
+
+[source,bash]
+----
+./hw1.py
+../Documents
+../../bob
+/home/alice
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+[source,bash]
+----
+./hw1.py           # /home/alice/projects/hw1.py
+../Documents       # /home/alice/Documents
+../../bob          # /home/bob
+/home/alice        # /home/alice (absolute, ignores current location)
+----
+--
+
+[.notes]
+--
+Walk through each:
+- ./hw1.py: "current directory / hw1.py"
+- ../Documents: "up one level / Documents"
+- ../../bob: "up two levels / bob"
+- /home/alice: absolute path, starts from root
+
+This is a crucial skill for Python file handling. When you write `open("data.txt")`, Python looks in the current working directory.
+--
+
+=== Why Paths Matter for Python
+
+When you work with files in Python, you need correct paths:
+
+[source,python]
+----
+# This only works if data.txt is in the current directory
+with open("data.txt", "r") as f:
+    content = f.read()
+
+# This works from anywhere (absolute path)
+with open("/home/alice/projects/data.txt", "r") as f:
+    content = f.read()
+
+# This works if you're in the project's parent directory
+with open("my_project/data.txt", "r") as f:
+    content = f.read()
+----
+
+*Tip:* Use `pwd` to check where Python thinks you are!
+
+[.notes]
+--
+This is one of the most common sources of "FileNotFoundError" for beginners.
+
+When you run a Python script, the "current directory" is wherever you ran the command from—NOT necessarily where the script is located.
+
+If you double-click a .py file, the current directory is often your home directory, not the script's folder.
+--
+
+=== Try It: Path Practice
+
+From your home directory, figure out:
+
+1. The absolute path to your Desktop
+2. The relative path from Desktop to Documents
+3. What `cd ~/Documents/../Downloads` would do
+
+[%step]
+--
+[source,bash]
+----
+# 1. Absolute path to Desktop
+/Users/yourname/Desktop        # Mac
+/home/yourname/Desktop         # Linux
+C:\Users\yourname\Desktop      # Windows
+
+# 2. Relative from Desktop to Documents
+../Documents
+
+# 3. cd ~/Documents/../Downloads
+# Goes to home, then Documents, then up, then Downloads
+# Ends up in ~/Downloads (the long way!)
+----
+--
+
+[.notes]
+--
+Give students 2-3 minutes to work through this.
+
+The third one is tricky—it goes into Documents then back out and into Downloads. The net effect is just going to Downloads.
+
+This kind of "roundabout" path sometimes appears in file systems due to how paths get constructed in programs.
+--
+
+== Files and Formats
+
+=== What Is a File?
+
+A file is *packaged data* with:
+
+* A *name* (including extension)
+* A *format* that determines how to interpret the data
+* A *location* in the file system
+
+[source,bash]
+----
+my_script.py      # Python source code (text)
+data.csv          # Comma-separated values (text)
+photo.jpg         # Image (binary)
+document.pdf      # Portable Document Format (binary)
+----
+
+[.notes]
+--
+The extension (part after the dot) hints at the format, but it's just a convention—you could name a Python file .txt and it would still work (though it's confusing).
+
+Text files contain human-readable characters. Binary files contain data that needs special programs to interpret.
+--
+
+=== Text Files vs. Binary Files
+
+[cols="1,1", frame=none]
+|===
+| *Text Files* | *Binary Files*
+
+| Human-readable
+| Not human-readable
+
+| Open in any text editor
+| Need specific programs
+
+| Line-based (usually)
+| Various structures
+
+| .txt, .py, .csv, .html, .json
+| .jpg, .pdf, .exe, .zip, .mp3
+|===
+
+[source,bash]
+----
+cat script.py     # Shows readable Python code
+cat photo.jpg     # Shows garbage characters!
+----
+
+[.notes]
+--
+When you open a binary file in a text editor, you see nonsense because the data isn't meant to be interpreted as characters.
+
+In this course, we'll mostly work with text files. Python makes it easy to read and write text.
+
+Binary files require special handling—libraries like PIL for images, PyPDF for PDFs, etc.
+--
+
+=== Python Files Are Text Files
+
+Your `.py` files are just text files with Python code:
+
+[source,bash]
+----
+$ cat hello.py
+print("Hello, world!")
+
+$ python hello.py
+Hello, world!
+----
+
+This means you can:
+
+* Edit them in any text editor
+* View them with `cat` or `type`
+* Create them with `touch` or `echo`
+
+[.notes]
+--
+There's nothing magical about .py files—they're just text that Python knows how to interpret.
+
+This is different from languages like Java or C that compile to binary executables.
+
+You could write Python code in Notepad if you wanted (though you'd miss syntax highlighting and other helpful features).
+--
+
+=== Try It: Create and Run a Python File
+
+Use the terminal to create and run a simple Python script:
+
+[source,bash]
+----
+# Navigate to a good location
+cd ~/Desktop
+
+# Create a new file
+echo 'print("Hello from the terminal!")' > hello.py
+
+# Verify it was created
+cat hello.py
+
+# Run it
+python hello.py
+----
+
+*Work through this with a partner!*
+
+[.notes]
+--
+Give students 3-4 minutes.
+
+The `echo '...' > file` syntax creates a file with that content. The `>` redirects output to a file.
+
+Common issues:
+- Windows might need `python3` or just `py`
+- Make sure Python is installed and in PATH
+- Quote handling differs between shells
+
+This demonstrates the terminal workflow: navigate, create, verify, run.
+--
+
+== Putting It All Together
+
+=== A Typical Python Workflow
+
+[source,bash]
+----
+# 1. Navigate to your project
+cd ~/projects/inst326
+
+# 2. Check what's there
+ls
+
+# 3. Create a new directory for today's work
+mkdir week2
+
+# 4. Move into it
+cd week2
+
+# 5. Create a new Python file
+touch exercise.py
+
+# 6. Edit it (opens your editor)
+code exercise.py    # or nano, vim, etc.
+
+# 7. Run your script
+python exercise.py
+----
+
+[.notes]
+--
+This is the workflow you'll use repeatedly in this course.
+
+Different editors have different commands:
+- `code` for VS Code
+- `nano` for a simple terminal editor
+- `vim` or `emacs` for power users
+
+The key is being comfortable navigating to the right place, creating files, and running them.
+--
+
+=== Common Workflow Mistakes
+
+[cols="1,2", frame=none]
+|===
+| *Problem* | *Solution*
+
+| "File not found" when running Python
+| Check you're in the right directory (`pwd`, `ls`)
+
+| Created file in wrong location
+| Use `mv` to move it, or delete and recreate
+
+| Forgot where you saved something
+| Use `find . -name "filename"` to search
+
+| Typed wrong command
+| Press Up arrow to recall previous commands
+|===
+
+[.notes]
+--
+These are the issues students encounter most often.
+
+The Up arrow is your friend—you can scroll through command history and edit previous commands.
+
+Tab completion helps prevent typos: type the first few letters and press Tab to auto-complete.
+--
+
+== Terminal Commands Reference
+
+=== Mac/Linux Commands
+
+[cols="1,1,1", frame=none]
+|===
+| *Navigation* | *Files* | *Info*
+
+| `pwd` - where am I
+| `touch` - create file
+| `cat` - show contents
+
+| `ls` - list files
+| `mkdir` - create folder
+| `head` - show start
+
+| `cd` - change dir
+| `cp` - copy
+| `tail` - show end
+
+| `cd ..` - go up
+| `mv` - move/rename
+| `wc` - word count
+
+| `cd ~` - go home
+| `rm` - delete
+| `man` - manual
+|===
+
+=== Windows Commands
+
+[cols="1,1,1", frame=none]
+|===
+| *Navigation* | *Files* | *Info*
+
+| `cd` - where am I
+| `New-Item` - create file
+| `type` - show contents
+
+| `dir` - list files
+| `mkdir` - create folder
+| `more` - page through
+
+| `cd` - change dir
+| `copy` - copy
+| `Get-Content`
+
+| `cd ..` - go up
+| `move` - move/rename
+| `help` - manual
+
+| `cd %USERPROFILE%`
+| `del` - delete
+| `--help` flag
+|===
+
+[.notes]
+--
+Keep this slide as a reference. Students can screenshot it or refer back to it.
+
+On Mac/Linux: `man` (manual) shows documentation for any command: `man ls` explains all the options for ls.
+
+On Windows PowerShell: Use `Get-Help` or add `--help` flag to commands: `Get-Help dir`.
+
+PowerShell tip: Many Unix commands work in PowerShell too (ls, cd, cat, rm, cp, mv) because they're aliased!
+--
+
+== 📋 Key Takeaways
+
+[cols="1,1", frame=none]
+|===
+| Computer Architecture | CPU + Memory + Storage + I/O
+| Operating System | Manages hardware, runs programs, controls access
+| Terminal | Text interface for controlling your computer
+| File System | Hierarchical tree of directories and files
+| Paths | Absolute (from root) vs. Relative (from current)
+| Python Files | Just text files that Python interprets
+|===
+
+== Practice Challenge
+
+Using only the terminal:
+
+1. Create a new directory called `practice` on your Desktop
+2. Navigate into it
+3. Create a file called `greeting.py`
+4. Use `echo` to write `print("Hello, INST326!")` into it
+5. Run the script with Python
+6. Verify it worked!
+
+*Work with a partner. Help each other debug!*
+
+[.notes]
+--
+This integrative exercise combines:
+- Directory creation (mkdir)
+- Navigation (cd)
+- File creation (touch or echo)
+- File writing (echo with >)
+- Running Python (python)
+- Verification (ls, cat)
+
+Give 5-7 minutes. Walk around and help.
+
+Sample solution on next slide.
+--
+
+=== Practice Challenge: Solution
+
+[source,bash]
+----
+# 1. Create directory
+mkdir ~/Desktop/practice
+
+# 2. Navigate into it
+cd ~/Desktop/practice
+
+# 3. Create file (touch creates empty, but we'll write directly)
+# 4. Write the print statement
+echo 'print("Hello, INST326!")' > greeting.py
+
+# 5. Run it
+python greeting.py
+
+# 6. Verify
+ls                 # Should show greeting.py
+cat greeting.py    # Should show the print statement
+----
+
+Output:
+----
+Hello, INST326!
+----
+
+== Questions?
+
+🔗 *Resources:*
+
+* Terminal Cheat Sheet: https://www.git-tower.com/blog/command-line-cheat-sheet/
+* Explain Shell (breaks down commands): https://explainshell.com/
+* Linux Command Library: https://linuxcommandlibrary.com/

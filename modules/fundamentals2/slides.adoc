@@ -16,844 +16,1406 @@
 :revealjs_transitionSpeed: default
 :title-slide-background-image: 1280px-Violin_strings_in_close-up_Unsplash.jpg
 
+== Today's Goals
+
+By the end of this session, you'll be able to:
+
+* Access and slice strings and lists by index
+* Use common string methods for text processing
+* Build and modify lists
+* Understand mutability and its implications
+* Read from and write to text files
+* Use `with` statements for safe file handling
+
 [.notes]
 --
-If we want to do data science, we're going to need to be able to read, write, store, and output data. This week's videos are going to cover a basic but important set of concepts that will allow us to start working with interesting data sets. You'll use these concepts throughout the semester and throughout your Python career.
+These skills are foundational for data science and any real-world Python work. You'll use them constantly.
+
+Quick poll: "Who has worked with files in any programming language before?"
 --
 
 == Strings
 
-[%step]
-[.nobullet.nosubbullet]
-* Strings contain [emph]#text#
-* Strings are a [emph]#container data type#
-** A given string may contain multiple characters (strings of length 1)
-* Strings are [emph]#ordered sequences#
-** The characters in a string have a fixed order
-* Python strings use [emph]#Unicode#
+Strings are *ordered sequences* of characters
 
-=== String literals
-
-[%step]
-[.nobullet.nosubbullet]
-* A literal is a fixed value in a program
-* Ways to create a string literal in Python:
-[%step]
-** Single quotes: `'this is a string literal'`
-** Double quotes: `"this is a string literal"`
-** Triple single quotes: `'''this is a string literal'''`
-** Triple double quotes: `"""this is a string literal"""`
-* Triple-quoted string literals can contain literal line breaks:
-
-[%step]
-[source,python]
-----
-"""This string
-spans two lines."""
-----
-
-=== String concatenation
-
-[%step]
-The `+` operator concatenates strings
-
-[%step]
-[source, python]
-----
->>> "Hello" + " " + "world!"
-'Hello world!'
-----
-
-[.columns]
-=== Accessing individual characters
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Each character in a string has an [emph]#index#
-* The index of the first character is `0`
-* We can access individual characters using square brackets `[]` after the string
-** We call this the [emph]#index operator#
---
-
-[.column]
---
-[%step]
-[source,python]
-----
-name = "Chelsea"
-initial = name[0]
-----
-
-[%step]
-[.nobullet.nosubbullet]
-* An index can be negative
-** `-1` means the last character
-** `-2` means the next-to-last character, etc.
-
-[%step]
-[source,python]
-----
-name = "Chelsea"
-last_letter = name[-1]
-----
---
-
-=== Accessing ranges of characters (slices)
-
-[%step]
-[.nobullet.nosubbullet]
-* We can also use the index operator to "slice" strings
-* Two flavors of slice:
-[%step]
-** `str[`[slot]#start#`:`[slot]#stop#`]`
-** `str[`[slot]#start#`:`[slot]#stop#`:`[slot]#step#`]`
-* [slot]#start# is the index of the first character in the slice
-* [slot]#stop# is the index of the character after the last character in the slice
-** (in other words, the slice includes [slot]#start# but excludes [slot]#stop#)
-* [slot]#step# indicates how to get from the start to the stop (default value is 1)
-
-=== Slice examples
-
-[%step]
-[source,python]
-----
-course = "INST 326"
-----
-
-[%step]
-[source,python]
-----
-dept = course[0:4]       # evaluates to "INST"
-# equivalent:
-dept = course[:4]
-----
-
-[%step]
-[source,python]
-----
-num = course[5:8]        # evaluates to "326"
-# equivalent:
-num = course[5:]
-# equivalent:
-num = course[-3:]
-----
-
-[%step]
-[source,python]
-----
-nt3 = course[1:6:2]      # evaluates to "NT3"
-backwards = course[::-1] # evaluates to "632 TSNI"
-copy = course[:]         # evaluates to "INST 326"
-# equivalent:
-copy = course[::]
-----
-
-== Formatted string literals (f-strings)
-
-[%step]
-[.nobullet]
-* A way to plug values into string literals
-
-[%step]
-[source, python]
-----
->>> name = "Angela"
->>> job = "pilot"
->>> f"{name} is a {job}"
-'Angela is a pilot'
-----
-
-[%step]
-[.nobullet]
-* F-strings always start with `f`
-* Expressions in curly braces `{}` are evaluated and converted to strings
-
-[%step]
-[source, python]
-----
->>> x = 5
->>> y = 4
->>> print(f'{x} + {y} = {x + y}')
-5 + 4 = 9
-----
-
-== Some important string methods (1 of 3)
-
-[frame=none,grid=none,cols="30%a,70%a",noheader]
+[cols="1,1", frame=none]
 |===
-|
---
-[slot]#string#`.find(`[slot]#substring#`)`
-
-[slot]#string#`.index(`[slot]#substring#`)`
---
-|
-[source, python]
-----
->>> s = "aardvark"
->>> s.find("rdv")
-2
->>> s.index("rdv")
-2
->>> s.find("xyz")
--1
->>> s.index("xyz")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-ValueError: substring not found
-----
-
-|
---
-[slot]#string#`.startswith(`[slot]#prefix#`)`
-
-[slot]#string#`.endswith(`[slot]#suffix#`)`
---
-|
-[source, python]
-----
->>> s = "corner"
->>> s.startswith("corn")
-True
-----
+| *Container* | Holds multiple characters
+| *Ordered* | Characters have fixed positions
+| *Immutable* | Cannot be changed after creation
+| *Unicode* | Supports international text 🌍
 |===
 
-=== Some important string methods (2 of 3)
-
-[frame=none,grid=none,cols="a,~a",noheader]
-|===
-|[slot]#string#`.splitlines()`
-|
-[source, python]
+[source,python]
 ----
->>> data = """Line 1
-... Line 2
-... Line 3
-... """
->>> data.splitlines()
-['Line 1', 'Line 2', 'Line 3']
+name = "Python"   # 6 characters
+emoji = "🐍"      # 1 character (Unicode!)
 ----
 
-|[slot]#string#`.split(`[slot]#sep#`)`
-|
-[source, python]
-----
->>> pet_str = "dog/cat/parakeet/gerbil"
->>> pet_str.split("/")
-['dog', 'cat', 'parakeet', 'gerbil']
-----
-
-|[slot]#string#`.join(`[slot]#list_of_strings#`)`
-|
-[source, python]
-----
->>> pets = ["dog", "cat", "parakeet", "gerbil"]
->>> "/".join(pets)
-'dog/cat/parakeet/gerbil'
-----
-
-|===
-
-=== Some important string methods (3 of 3)
-
-[frame=none,grid=none,cols="~a,~a",noheader]
-|===
-|[slot]#string#`.strip(`{empty}[[slot]#chars#]`)`
-|
-[source, python]
-----
->>> s = "\thi!\n"
->>> s.strip()
-'hi!'
->>> t = "Mississippi"
->>> t.strip("Mip")
-'ssiss'
-----
-
-|
+[.notes]
 --
-[slot]#string#`.lower()`
+If we want to do data science, we need to work with text data constantly.
 
-[slot]#string#`.upper()`
+Strings are a container type—they contain characters. Characters have positions (indices). And critically, strings are IMMUTABLE—you cannot change a string after creating it.
+
+Python uses Unicode, so you can work with text from any language, plus emojis!
 --
-|
-[source, python]
+
+=== Creating String Literals
+
+Four ways to create strings:
+
+[source,python]
 ----
->>> s = "MiXed CaSe StRiNg"
->>> s.lower()
-'mixed case string'
->>> s.upper()
-'MIXED CASE STRING'
+single = 'Hello'
+double = "Hello"
+triple_single = '''Hello'''
+triple_double = """Hello"""
 ----
 
-|[slot]#string#`.replace(`[slot]#old#`,` [slot]#new#`)`
-|
-[source, python]
+*Triple quotes* allow multi-line strings:
+
+[source,python]
 ----
->>> s = "bassoon"
->>> s.replace("s", "l")
-'balloon'
+poem = """Roses are red,
+Violets are blue,
+Python is awesome,
+And so are you."""
 ----
-|===
 
-// === Summary
+[.notes]
+--
+Single and double quotes are interchangeable for single-line strings.
 
-// [%step]
-// [.nobullet]
-// * [slot]#string#`.find(`[slot]#substring#`)` / [slot]#string#`.index(`[slot]#substring#`)`
-// * [slot]#string#`.startswith(`[slot]#prefix#`)` / [slot]#string#`.endswith(`[slot]#suffix#`)`
-// * [slot]#string#`.join(`[slot]#list_of_strings#`)`
-// * [slot]#string#`.split(`[slot]#sep#`)`
-// * [slot]#string#`.splitlines()`
-// * [slot]#string#`.strip(`{empty}[[slot]#chars#]`)`
-// * [slot]#string#`.lower()` / [slot]#string#`.upper()`
-// * [slot]#string#`.replace(`[slot]#old#`,` [slot]#new#`)`
+Triple quotes are used for:
+1. Multi-line strings (preserves line breaks)
+2. Docstrings in functions
 
-=== Summary
+Use whichever makes your code more readable. If your string contains apostrophes, use double quotes, and vice versa.
+--
+
+=== Indexing: Accessing Individual Characters
+
+Every character has a position number (index)
+
+[source,python]
+----
+name = "Python"
+first = name[0]    # 'P'
+last = name[5]     # 'n'
+also_last = name[-1]  # 'n' (negative = from end)
+----
+
+*Indexing starts at 0, not 1!*
+
+[.notes]
+--
+Each character in a string has an index. The FIRST character is at index 0 (not 1!).
+
+Negative indices count from the end: -1 is the last character, -2 is second-to-last, etc.
+
+Why zero-based? Historical reasons (memory addresses), but also mathematically elegant for ranges.
+
+This is one of the most common sources of off-by-one errors. Practice until it's second nature.
+--
+
+=== 🔮 Predict: Indexing
+
+[source,python]
+----
+word = "University"
+
+word[0]      # ___
+word[4]      # ___
+word[-1]     # ___
+word[-3]     # ___
+word[10]     # ___
+----
 
 [%step]
-[.nosubbullet]
-* Strings are [emph]#ordered sequences of Unicode characters#
-* String literals are made with [emph]#quotation marks# (single, double, triple)
-* The `+` operator [emph]#concatenates# strings
-* We can access parts of strings by [emph]#index# or [emph]#slice#
-* [emph]#F-strings# let us plug values into string literals
-* Strings have a lot of useful [emph]#methods#
+*Turn to a neighbor and discuss for 60 seconds.*
 
-[.columns]
+[%step]
+--
+[source,python]
+----
+word[0]      # 'U'
+word[4]      # 'e'
+word[-1]     # 'y'
+word[-3]     # 'i'
+word[10]     # IndexError! (only indices 0-9 exist)
+----
+
+*Remember:* A string of length n has indices 0 to n-1
+--
+
+[.notes]
+--
+Have students predict first (30 seconds), then reveal.
+
+Key insight: "University" has 10 characters, so valid indices are 0-9. Index 10 is out of range.
+
+Draw the string with indices on the board if needed:
+U n i v e r s i t y
+0 1 2 3 4 5 6 7 8 9
+--
+
+=== Slicing: Accessing Ranges
+
+*Pattern:* `string[start:stop]` or `string[start:stop:step]`
+
+[source,python]
+----
+course = "INST326"
+
+course[0:4]     # "INST" (indices 0, 1, 2, 3)
+course[:4]      # "INST" (same - start defaults to 0)
+course[4:]      # "326"  (stop defaults to end)
+course[4:7]     # "326"  (indices 4, 5, 6)
+course[-3:]     # "326"  (last 3 characters)
+----
+
+*The stop index is EXCLUDED!* Think: "up to but not including"
+
+[.notes]
+--
+Slicing lets you extract portions of a string.
+
+KEY RULE: The stop index is NOT included. `course[0:4]` gives you indices 0, 1, 2, 3—NOT 4.
+
+This "exclusive end" design is intentional:
+- `course[:4] + course[4:]` gives you the whole string
+- The length of `course[a:b]` is `b - a`
+
+Omitting start means "from the beginning"
+Omitting stop means "to the end"
+--
+
+=== Slicing with Step
+
+[source,python]
+----
+alphabet = "ABCDEFGHIJ"
+
+alphabet[::2]     # "ACEGI" (every 2nd character)
+alphabet[1::2]    # "BDFHJ" (every 2nd, starting at 1)
+alphabet[::-1]    # "JIHGFEDCBA" (reversed!)
+----
+
+*Pattern:* `string[start:stop:step]`
+
+- Positive step: left to right
+- Negative step: right to left
+
+[.notes]
+--
+The step parameter lets you skip characters or reverse.
+
+Step of 2: every other character
+Step of -1: reverse the string
+Step of -2: every other character, reversed
+
+Reversing with `[::-1]` is a Python idiom you'll see frequently.
+--
+
+=== Try It: Slicing Practice
+
+Given `s = "INST326"`, write slices to extract:
+
+1. The department code: `"INST"`
+2. The course number: `"326"`
+3. The string reversed: `"623TSNI"`
+4. Every other character: `"IT26"` or `"NS3"`
+
+[%step]
+[source,python]
+----
+s = "INST326"
+
+s[:4]      # "INST"
+s[4:]      # "326"
+s[::-1]    # "623TSNI"
+s[::2]     # "IT26"
+s[1::2]    # "NS3"
+----
+
+[.notes]
+--
+Give students 3 minutes. Walk around and check.
+
+The last one has two valid answers depending on where you start.
+
+Extension for fast finishers: How would you get just the digits reversed? (`"623"`)
+Answer: `s[4:][::-1]` or `s[-1:-4:-1]`
+--
+
+=== String Concatenation with `+`
+
+[source,python]
+----
+first = "Hello"
+second = "World"
+combined = first + " " + second  # "Hello World"
+----
+
+*Strings are immutable!* Concatenation creates a NEW string.
+
+[source,python]
+----
+greeting = "Hello"
+greeting = greeting + "!"  # Creates NEW string, rebinds variable
+----
+
+[.notes]
+--
+The + operator joins strings together.
+
+Important: Because strings are immutable, concatenation doesn't modify the original string—it creates a brand new one.
+
+When you do `greeting = greeting + "!"`, you're:
+1. Creating a new string "Hello!"
+2. Pointing the variable `greeting` to this new string
+3. The old "Hello" string still exists (until garbage collected)
+
+For building long strings in loops, this can be inefficient. We'll see better approaches.
+--
+
+=== F-Strings: Modern String Formatting
+
+*F-strings* let you embed expressions directly in strings
+
+[source,python]
+----
+name = "Alice"
+age = 25
+
+# Old way (clunky):
+"My name is " + name + " and I am " + str(age)
+
+# F-string (clean!):
+f"My name is {name} and I am {age}"
+
+# Expressions work too:
+f"Next year I'll be {age + 1}"
+f"Name uppercase: {name.upper()}"
+----
+
+*Always prefix with `f`!*
+
+[.notes]
+--
+F-strings (formatted string literals) are the modern Python way to build strings with values.
+
+The `f` prefix is required. Inside curly braces, you can put any expression—Python evaluates it and inserts the result.
+
+F-strings are:
+- More readable than concatenation
+- Less error-prone than % formatting
+- More concise than .format()
+
+Use f-strings whenever you need to build strings with variables or expressions.
+--
+
+=== Essential String Methods (1/3)
+
+*Finding and checking:*
+
+[source,python]
+----
+s = "hello world"
+
+s.find("world")      # 6 (index where found)
+s.find("xyz")        # -1 (not found)
+s.index("world")     # 6 (same, but raises error if not found)
+
+s.startswith("hello")  # True
+s.endswith("!")        # False
+"world" in s           # True (membership test)
+----
+
+[.notes]
+--
+FIND vs INDEX: Both locate a substring.
+- find() returns -1 if not found
+- index() raises ValueError if not found
+
+Use find() when "not found" is a normal case. Use index() when you expect it to always be there.
+
+The `in` operator is the simplest way to check if a substring exists.
+--
+
+=== Essential String Methods (2/3)
+
+*Splitting and joining:*
+
+[source,python]
+----
+# Split: string → list
+"apple,banana,cherry".split(",")
+# ['apple', 'banana', 'cherry']
+
+"hello world".split()  # Split on whitespace
+# ['hello', 'world']
+
+# Join: list → string
+",".join(['apple', 'banana', 'cherry'])
+# 'apple,banana,cherry'
+
+"\n".join(['line1', 'line2', 'line3'])
+# 'line1\nline2\nline3'
+----
+
+[.notes]
+--
+SPLIT: Breaks a string into a list of substrings. The argument is the delimiter.
+- With no argument, splits on any whitespace and removes empty strings.
+
+JOIN: The opposite—combines a list of strings with a separator.
+- Note: The separator is what you call .join() ON.
+- Common pattern: `", ".join(items)` for comma-separated lists.
+
+These two methods are incredibly useful for parsing data!
+--
+
+=== Essential String Methods (3/3)
+
+*Cleaning and transforming:*
+
+[source,python]
+----
+s = "  Hello World!  "
+
+s.strip()       # "Hello World!" (remove whitespace)
+s.lower()       # "  hello world!  "
+s.upper()       # "  HELLO WORLD!  "
+s.replace("World", "Python")  # "  Hello Python!  "
+
+# Chaining methods:
+s.strip().lower()  # "hello world!"
+----
+
+*Remember: Strings are immutable!* Methods return NEW strings.
+
+[.notes]
+--
+STRIP: Removes whitespace from both ends. Very common when reading files.
+- lstrip(): left side only
+- rstrip(): right side only
+- strip(chars): remove specific characters
+
+LOWER/UPPER: Case conversion. Useful for case-insensitive comparison.
+
+REPLACE: Substitute all occurrences of a substring.
+
+You can chain methods because each returns a new string.
+
+Critical point: These methods don't modify the original! They return a NEW string. If you want to "change" a variable, you must reassign:
+`s = s.strip()` — not just `s.strip()`
+--
+
+=== Try It: String Processing
+
+Given this messy data:
+[source,python]
+----
+raw_input = "   John Smith, 25, Engineer   "
+----
+
+Clean it up to extract:
+1. The name: `"John Smith"`
+2. The age as an integer: `25`
+3. The job: `"Engineer"`
+
+[%step]
+[source,python]
+----
+raw_input = "   John Smith, 25, Engineer   "
+
+# Step 1: Clean whitespace
+clean = raw_input.strip()
+
+# Step 2: Split on comma
+parts = clean.split(", ")
+
+# Step 3: Extract each piece
+name = parts[0]           # "John Smith"
+age = int(parts[1])       # 25
+job = parts[2]            # "Engineer"
+----
+
+[.notes]
+--
+Give students 4 minutes. This simulates real data cleaning.
+
+Walk through the solution:
+1. strip() removes leading/trailing whitespace
+2. split(", ") breaks on comma-space into a list
+3. We access each element by index and convert as needed
+
+Common mistake: Forgetting to strip first, or splitting on just "," without the space.
+--
+
+=== Strings: Summary
+
+* Strings are *ordered, immutable* sequences of characters
+* *Index* with `[]`: `s[0]`, `s[-1]`
+* *Slice* with `[start:stop:step]`: `s[1:4]`, `s[::-1]`
+* *F-strings* for formatting: `f"Hello {name}"`
+* Key methods: `split()`, `join()`, `strip()`, `find()`, `replace()`
+
+[.notes]
+--
+Transition: "Now let's look at lists—they're similar to strings in some ways, but with crucial differences."
+--
+
 == Lists
 
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Lists are a [emph]#container data type#
-[%step]
-** Lists contain [emph]#objects#
-* Lists are [emph]#ordered sequences#
-** The items in a list have a fixed order
---
+Lists are *ordered sequences* of any objects
 
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Items in lists can be accessed by [emph]#index#
-** `mylist[0]`
-* [emph]#Slice# notation also works for lists
-** `mylist[1:3]`
---
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Unlike strings, lists are [emph]#mutable#
---
-
-[.columns]
-=== Building lists
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Empty list:
-** `list()` or `[]`
-* List with items in it:
-** `+++[+++`[slot]#item#+++[+++`,` [slot]#item#...]`]`
-* Convert another container into a list:
-** `list(`[slot]#container#`)`
---
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Concatenate two lists:
-** [slot]#list1# `+` [slot]#list2#
-* Add an item to the end:
-** [slot]#list#`.append(`[slot]#item#`)`
-* Add several items to the end:
-** [slot]#list#`.extend(`[slot]#otherlist#`)`
---
-
-=== Example code: basic list operations
-
-[%step]
-[source, python]
-----
-l1 = list()
-l1.append("pencil")
-l1.extend(["chalk", "marker"])
-l2 = ["crayon", "pen"]
-l3 = l1 + l2
-----
-
-=== Some important list methods/techniques (1 of 3)
-[frame=none,grid=none,cols="~a,~a",noheader]
+[cols="1,1", frame=none]
 |===
-|[slot]#list#`.insert(`[slot]#index#`,` [slot]#item#`)`
-|
-[source, python]
-----
->>> l = ["hello"]
->>> l.insert(0, "oh")
->>> print(l)
-['oh', 'hello']
-----
-
-|[slot]#list#`++[++`[slot]#index#`+++] = +++`[slot]#item#
-|
-[source, python]
-----
->>> l = ["a", "b", "c"]
->>> l[1] = "x"
->>> print(l)
-['a', 'x', 'c']
-----
-
-|[slot]#list#`++[++`[slot]#slice#`+++] = +++`[slot]#list2#
-|
-[source, python]
-----
->>> l = ["one", "two", "three"]
->>> l[1:2] = ["eight", "six", "four"]
->>> print(l)
-['one', 'eight', 'six', 'four', 'three']
-----
+| *Container* | Holds any Python objects
+| *Ordered* | Items have fixed positions
+| *Mutable* | CAN be changed after creation
+| *Heterogeneous* | Can mix types (but usually don't)
 |===
 
-=== Some important list methods/techniques (2 of 3)
-
-[frame=none,grid=none,cols="~a,~a",noheader]
-|===
-|[slot]#list#`.remove(`[slot]#item#`)`
-|
-[source, python]
+[source,python]
 ----
->>> l = [1, 3, 5, 7]
->>> l.remove(3)
->>> print(l)
-[1, 5, 7]
+numbers = [1, 2, 3, 4, 5]
+names = ["Alice", "Bob", "Carol"]
+mixed = [1, "hello", 3.14, True]  # Legal but unusual
 ----
 
-|`del` [slot]#list#`++[++`[slot]#index#`++]++`
-|
-[source, python]
+[.notes]
+--
+Lists are like strings in that they're ordered sequences with indices. But unlike strings, lists:
+1. Can hold any type of object, not just characters
+2. Are MUTABLE—you can change them!
+
+The mutability is both powerful and dangerous. We'll explore both.
+
+In practice, lists usually contain items of the same type (all strings, all numbers, etc.) for consistency.
+--
+
+=== Creating Lists
+
+[source,python]
 ----
->>> l = ["apple", "basket", "chair"]
->>> del l[1]
->>> print(l)
-['apple', 'chair']
+# Empty list
+empty = []
+also_empty = list()
+
+# List with items
+fruits = ["apple", "banana", "cherry"]
+
+# From other sequences
+letters = list("hello")  # ['h', 'e', 'l', 'l', 'o']
+nums = list(range(5))    # [0, 1, 2, 3, 4]
 ----
 
-|[slot]#list#`.pop(`[slot]#index#`)`
-|
-[source, python]
-----
->>> l = ["Jackson", "Rhonda", "Alfred"]
->>> l.pop()
-'Alfred'
->>> print(l)
-['Jackson', 'Rhonda']
-----
-|===
+[.notes]
+--
+Multiple ways to create lists:
+- Square brackets with items (most common)
+- list() function to convert other sequences
+- Empty list with [] or list()
 
-=== Some important list methods/techniques (3 of 3)
+The list() function is particularly useful for converting ranges, strings, or other iterables into lists.
+--
 
-[frame=none,grid=none,cols="~a,~a",noheader]
-|===
-|[slot]#list#`.index(`[slot]#item#`)`
-|
-[source, python]
-----
->>> l = ["red", "blue", "green", "pink"]
->>> l.index("green")
-2
->>> l.index("purple")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-ValueError: 'purple' is not in list
-----
-|===
+=== Indexing and Slicing (Same as Strings!)
 
-== Mutability
+[source,python]
+----
+fruits = ["apple", "banana", "cherry", "date"]
+
+fruits[0]       # "apple"
+fruits[-1]      # "date"
+fruits[1:3]     # ["banana", "cherry"]
+fruits[::-1]    # ["date", "cherry", "banana", "apple"]
+----
+
+*Everything you learned about string indexing applies to lists!*
+
+[.notes]
+--
+Good news: Indexing and slicing work exactly the same way as strings!
+
+- Zero-based indexing
+- Negative indices from end
+- Slice notation [start:stop:step]
+- Stop index is excluded
+
+The main difference: You get list elements instead of characters.
+--
+
+=== Modifying Lists: The Big Difference
+
+*Strings are immutable. Lists are mutable.*
+
+[source,python]
+----
+# Strings: Can't modify in place
+s = "hello"
+s[0] = "J"  # TypeError! Strings are immutable
+
+# Lists: Can modify in place
+fruits = ["apple", "banana", "cherry"]
+fruits[0] = "apricot"  # Works! List is now modified
+print(fruits)  # ["apricot", "banana", "cherry"]
+----
+
+[.notes]
+--
+This is the crucial difference between strings and lists.
+
+With strings, you cannot change individual characters—you have to create a new string.
+
+With lists, you CAN change individual elements directly. The list object itself is modified.
+
+This has major implications for how we think about lists, especially when passing them to functions.
+--
+
+=== Adding to Lists
+
+[source,python]
+----
+fruits = ["apple", "banana"]
+
+# Add one item to end
+fruits.append("cherry")
+# ["apple", "banana", "cherry"]
+
+# Add multiple items to end
+fruits.extend(["date", "elderberry"])
+# ["apple", "banana", "cherry", "date", "elderberry"]
+
+# Insert at specific position
+fruits.insert(1, "blueberry")
+# ["apple", "blueberry", "banana", "cherry", "date", "elderberry"]
+
+# Concatenation (creates NEW list)
+new_list = fruits + ["fig"]
+----
+
+[.notes]
+--
+APPEND: Add one item to the end. Modifies the list in place.
+
+EXTEND: Add multiple items to the end. Like appending each item.
+
+INSERT: Add at a specific index. Items shift right to make room.
+
+Concatenation with + creates a NEW list (doesn't modify either original).
+
+Common mistake: Using append() when you mean extend()
+`fruits.append(["a", "b"])` adds ONE item (the list itself!)
+`fruits.extend(["a", "b"])` adds TWO items (a and b)
+--
+
+=== Common Mistake: append vs. extend
+
+[source,python]
+----
+numbers = [1, 2, 3]
+
+# What you probably want:
+numbers.extend([4, 5])
+print(numbers)  # [1, 2, 3, 4, 5]
+
+# What you might accidentally do:
+numbers = [1, 2, 3]
+numbers.append([4, 5])
+print(numbers)  # [1, 2, 3, [4, 5]] ← Nested list!
+----
+
+*`append()` adds ONE item. `extend()` adds EACH item.*
+
+[.notes]
+--
+This trips up beginners constantly!
+
+append() takes whatever you give it and adds it as a single item—even if that item is a list.
+
+extend() iterates over its argument and adds each element individually.
+
+Rule of thumb:
+- Adding one thing? Use append()
+- Adding multiple things from another list? Use extend()
+--
+
+=== Removing from Lists
+
+[source,python]
+----
+fruits = ["apple", "banana", "cherry", "banana"]
+
+# Remove by value (first occurrence only)
+fruits.remove("banana")
+# ["apple", "cherry", "banana"]
+
+# Remove by index
+del fruits[0]
+# ["cherry", "banana"]
+
+# Remove and return last item
+last = fruits.pop()    # Returns "banana"
+# ["cherry"]
+
+# Remove and return item at index
+first = fruits.pop(0)  # Returns "cherry"
+# []
+----
+
+[.notes]
+--
+REMOVE: Finds the value and removes first occurrence. Raises ValueError if not found.
+
+DEL: Removes by index. Also works with slices: `del fruits[1:3]`
+
+POP: Removes and returns. Default is last item. Useful when you need the removed value.
+
+Common pattern: `while items: item = items.pop()` to process and empty a list.
+--
+
+=== 🔮 Predict: List Operations
+
+[source,python]
+----
+nums = [1, 2, 3]
+nums.append(4)
+nums.extend([5, 6])
+nums.insert(0, 0)
+nums.pop()
+nums.remove(2)
+
+print(nums)  # What prints?
+----
 
 [%step]
-[.nobullet]
-* Mutable objects can [emph]#change#
-* This [emph]#isn't# mutability:
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+Trace step by step:
+[source,python]
+----
+nums = [1, 2, 3]     # [1, 2, 3]
+nums.append(4)       # [1, 2, 3, 4]
+nums.extend([5, 6])  # [1, 2, 3, 4, 5, 6]
+nums.insert(0, 0)    # [0, 1, 2, 3, 4, 5, 6]
+nums.pop()           # [0, 1, 2, 3, 4, 5] (removed 6)
+nums.remove(2)       # [0, 1, 3, 4, 5] (removed first 2)
+
+print(nums)          # [0, 1, 3, 4, 5]
+----
+--
+
+[.notes]
+--
+Have students trace this on paper (60 seconds), then reveal.
+
+This exercises their understanding of each operation.
+
+Consider showing this in Python Tutor for visual confirmation.
+--
+
+== Mutability: A Critical Concept
+
+Mutability means objects can *change after creation*.
+
+[cols="1,1", frame=none]
+|===
+| *Immutable* | *Mutable*
+
+| Numbers, strings, tuples
+| Lists, dictionaries, sets
+
+| Cannot change in place
+| CAN change in place
+
+| Safe to share
+| Sharing can cause surprises!
+|===
+
+[.notes]
+--
+Understanding mutability is crucial for avoiding subtle bugs.
+
+Immutable objects (like strings and numbers) cannot be changed. Operations on them always create new objects.
+
+Mutable objects (like lists) CAN be changed. This is powerful but requires care.
+
+The danger comes when multiple variables refer to the same mutable object...
+--
+
+=== Important: The Aliasing Problem
+
+[source,python]
+----
+# Creating an alias (not a copy!)
+original = [1, 2, 3]
+alias = original       # Both point to SAME list!
+
+alias.append(4)
+print(original)        # [1, 2, 3, 4] ← Surprise!
+----
+
+*When two variables point to the same mutable object, changes through one affect the other!*
+
+This is the same "labels, not boxes" concept from variables. When you assign `alias = original`, you're not copying the list—you're making another label that points to the same object.
+
+[.notes]
+--
+This is one of the most important concepts for avoiding bugs.
+
+When you do `alias = original`, you're NOT copying the list. You're making another label that points to the SAME list object in memory.
+
+Any changes through either variable affect the same underlying list.
+
+This catches beginners off guard because it doesn't work this way with immutable types like strings and numbers.
+
+Draw a diagram showing two arrows pointing to one box.
+
+Consider showing this in Python Tutor: https://pythontutor.com/
+--
+
+=== 🔮 Predict: Aliasing
+
+[source,python]
+----
+a = [1, 2, 3]
+b = a
+a.append(4)
+b.append(5)
+print(a)
+print(b)
+----
+
+*What do a and b contain? Are they the same?*
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+[source,python]
+----
+print(a)  # [1, 2, 3, 4, 5]
+print(b)  # [1, 2, 3, 4, 5]
+print(a is b)  # True (same object!)
+----
+
+*They're the same list! Both variables point to one object.*
+--
+
+[.notes]
+--
+Give students 30 seconds to predict.
+
+Walk through what happens:
+1. Create list [1, 2, 3], label it 'a'
+2. Make 'b' point to the same list
+3. Append 4 through 'a' → list is now [1, 2, 3, 4]
+4. Append 5 through 'b' → list is now [1, 2, 3, 4, 5]
+5. Both a and b still point to this same list
+
+The `is` operator confirms they're the exact same object in memory.
+--
+
+=== How to Actually Copy a List
+
+[source,python]
+----
+original = [1, 2, 3]
+
+# Method 1: .copy() method
+copy1 = original.copy()
+
+# Method 2: slice the whole list
+copy2 = original[:]
+
+# Method 3: list() constructor
+copy3 = list(original)
+
+# Now they're independent!
+copy1.append(4)
+print(original)  # [1, 2, 3] ← unchanged!
+print(copy1)     # [1, 2, 3, 4]
+----
+
+[.notes]
+--
+Three ways to create a true copy:
+1. .copy() method—most explicit and readable
+2. [:] slice—common idiom, creates copy of entire list
+3. list() constructor—less common but works
+
+Now changes to the copy don't affect the original.
+
+CAVEAT: These are "shallow" copies. If your list contains mutable objects (like nested lists), those inner objects are still shared. For deep copies, use `import copy; copy.deepcopy(original)`.
+--
+
+=== Try It: Aliasing vs. Copying
+
+Predict the output, then verify:
+
+[source,python]
+----
+# Scenario 1
+x = [1, 2, 3]
+y = x
+x[0] = 99
+print(y[0])   # ???
+
+# Scenario 2
+x = [1, 2, 3]
+y = x.copy()
+x[0] = 99
+print(y[0])   # ???
+
+# Scenario 3
+x = [1, 2, 3]
+y = x
+x = [4, 5, 6]
+print(y)      # ???
+----
+
+[%step]
+Answers: `99`, `1`, `[1, 2, 3]`
+
+[.notes]
+--
+Give students 3 minutes. Walk around and check understanding.
+
+Scenario 1: y is an alias, so changing x[0] affects y too → 99
+
+Scenario 2: y is a copy (independent), so changing x doesn't affect y → 1
+
+Scenario 3: This is tricky! `x = [4, 5, 6]` rebinds x to a NEW list. It doesn't modify the original list that y still points to → [1, 2, 3]
+
+Scenario 3 is the key insight: assignment creates new bindings, it doesn't modify objects.
+--
+
+=== Lists: Summary
+
+* Lists are *ordered, mutable* sequences
+* Same indexing/slicing as strings
+* Add: `append()`, `extend()`, `insert()`
+* Remove: `remove()`, `del`, `pop()`
+* *Aliasing warning:* Assignment doesn't copy!
+* To copy: `.copy()`, `[:]`, or `list()`
+
+[.notes]
+--
+Transition: "Now let's look at how to iterate over lists with for loops."
+--
+
+== `for` Loops with Lists
+
+Iterate over each item in a sequence:
+
+[source,python]
+----
+fruits = ["apple", "banana", "cherry"]
+
+for fruit in fruits:
+    print(f"I love {fruit}!")
+----
+
+Output:
+[source,python]
+----
+I love apple!
+I love banana!
+I love cherry!
+----
+
+[.notes]
+--
+The for loop is the natural way to process each item in a list.
+
+Pattern: `for item in collection:`
+
+On each iteration, `item` takes on the next value from the collection.
+
+You can use any variable name—`fruit`, `x`, `item`—but descriptive names make code readable.
+--
+
+=== Common Pattern: Accumulator
+
+*Build up a result by processing each item:*
+
+[source,python]
+----
+# Sum all numbers
+numbers = [10, 20, 30, 40]
+total = 0                 # Initialize accumulator
+for num in numbers:
+    total += num          # Update accumulator
+print(total)              # 100
+
+# Count items matching a condition
+words = ["apple", "ant", "banana", "avocado"]
+a_count = 0
+for word in words:
+    if word.startswith("a"):
+        a_count += 1
+print(a_count)            # 3
+----
+
+[.notes]
+--
+The accumulator pattern is fundamental:
+1. Initialize a variable before the loop
+2. Update it inside the loop
+3. Use the final value after the loop
+
+This works for:
+- Summing (start at 0, add each)
+- Counting (start at 0, increment when condition met)
+- Building strings (start at "", concatenate each)
+- Building lists (start at [], append each)
+
+The key is identifying what you're accumulating and how to initialize it.
+--
+
+=== 🔮 Predict: Building a List
+
+[source,python]
+----
+words = ["Hello", "World", "Python"]
+lengths = []
+
+for word in words:
+    lengths.append(len(word))
+
+print(lengths)
+----
+
+*What does `lengths` contain?*
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`[5, 5, 6]`
+
+[.notes]
+--
+This is the accumulator pattern for building a list.
+
+Trace through:
+- Start with empty list []
+- "Hello" has length 5 → [5]
+- "World" has length 5 → [5, 5]
+- "Python" has length 6 → [5, 5, 6]
+--
+
+=== Try It: Loop Practice
+
+Given a list of numbers, write code to create a NEW list containing only the even numbers:
+
+[source,python]
+----
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# Your code here...
+print(evens)  # Should print [2, 4, 6, 8, 10]
+----
 
 [%step]
 [source,python]
 ----
-x = 5
-x += 1
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+evens = []                  # Initialize
+for num in numbers:
+    if num % 2 == 0:        # Filter condition
+        evens.append(num)   # Accumulate
+print(evens)  # [2, 4, 6, 8, 10]
 ----
 
-[%step]
-[.nobullet]
-* But this [emph]#is#:
-
-[%step]
-[source,python]
-----
-l = ["alpha", "beta", "gamma"]
-l.append("delta")
-----
-
-[%step]
-[.nobullet]
-* Mutability is [emph]#useful# but [emph]#dangerous#
-
-[.columns]
-=== Aliasing
-
-[.column]
+[.notes]
 --
-[%step]
-[.nobullet]
-* Aliasing occurs when there are [emph]#multiple references# to a single object
+Give students 4 minutes. Walk around and help.
 
-[%step]
-[source, python]
-----
->>> people = ["Linda", "Daryl", "Stacey"]
->>> persons = people
-----
+This is the filter pattern:
+1. Initialize empty result list
+2. Loop through items
+3. Check condition
+4. Append if condition is true
 
-[%step]
-[source, python]
-----
->>> persons.append("Amanda")
->>> print(persons)
-['Linda', 'Daryl', 'Stacey', 'Amanda']
-----
-
-[%step]
-[source, python]
-----
->>> print(people)
-['Linda', 'Daryl', 'Stacey', 'Amanda']
-----
+Extension for fast finishers: Also compute the sum of the even numbers.
 --
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* Be careful when [emph]#passing# mutable objects to functions
-* If you need two different lists, [emph]#copy# your data:
-[%step]
-** `l2 = l1.copy()`
-** `l2 = l1[:]`
---
-
-=== Summary
-
-[%step]
-[.nosubbullet]
-* Lists are [emph]#ordered sequences of objects#
-* List literals are surrounded by [emph]#square brackets# `[]`
-* Parts of lists can be accessed by [emph]#index# or [emph]#slice#
-* There are several ways to add and remove elements
-* Lists are [emph]#mutable#
-* Watch out for [emph]#aliasing#; avoid it by making a [emph]#copy# of your list
-
-== `for` loops
-
-[%step]
-[.nobullet.nosubbullet]
-* Useful when you need to perform the same operation on a sequence of values
-
-[%step]
---
-`for` [slot]#varname# `in` [slot]#iterable#: +
-``    ``[slot]#body#
---
-
-[%step]
-[source, python]
-----
->>> polygon_sides = [5, 3, 4, 6, 2]
->>> perimeter = 0
->>> for side in polygon_sides:
-...    perimeter += side
->>> print(f"The perimeter of a polygon with sides {polygon_sides} is {perimeter}")
-----
-
-[%step]
-[source, python]
-----
-The perimeter of a polygon with sides [5, 3, 4, 6, 2] is 20
-----
 
 == Files
 
-[%step]
-[.nobullet.nosubbullet]
-* Files allow us to write data to [emph]#persistent storage# and read that data back in at a later time
-* All files can be put into one of two categories: binary or text
-[%step]
-** We mostly only care about text files
+Reading and writing data that persists beyond your program
 
-=== Encoding
-
-[%step]
-[.nobullet.nosubbullet]
-* Computers don't understand text, only numbers
-* Today, the standard used to represent text in a computer is called [emph]#Unicode#
-* There are multiple ways to encode Unicode to disk
-[%step]
-** The de facto standard is called UTF-8
+[cols="1,1", frame=none]
+|===
+| *Why files?* | Store data permanently
+| *Two types* | Text files (human-readable) vs. Binary (not)
+| *Key concept* | Files must be opened, used, then closed
+|===
 
 [.notes]
 --
-It's easy to forget that computers don't understand writing, but at a fundamental level, in order for a computer to handle text, it has to translate that text into numbers. A lot of different systems have been devised over the years to encode text as numbers. Many early systems were incompatible with each other. None of them could support text in more than one or maybe two writing systems. Computing in non-roman scripts posed serious challenges. In the 1990s, a group of people interested in fixing this problem formed the Unicode consortium. They came up with a standard (called Unicode) for representing text in most of the world's current and historical writing systems.
+Files allow us to:
+- Save data to use later
+- Read data from external sources
+- Process data too large to type manually
 
-Even though Unicode is a single standard, there are multiple encoding schemes for storing Unicode data. The de facto standard is called UTF-8; most text files created today follow this standard. When you create text files, you should always use UTF-8. When you read in text files that were created in the last couple of decades, you can usually assume they are UTF-8 unless someone tells you otherwise, but be aware that other encodings exist.
+We'll focus on text files—files you could open in a text editor and read.
+
+Critical concept: Files are resources that must be managed. Open, use, close—always.
 --
 
-=== Paths
+=== Paths: Finding Files
 
-[%step]
-[.nobullet.nosubbullet]
-* Files exist in a [emph]#file system# structured like a tree
-[%step]
-** The [emph]#root# of the tree is "/" on Mac/Unix and a drive name (e.g., "C:/") on Windows
-** Non-terminal nodes are called [emph]#directories#; terminal nodes are called [emph]#files#
-* All files have a [emph]#path#; two kinds of paths
-[%step]
-** Absolute: `/home/aric/INST326/myscript.py`
-** Relative: `myscript.py`, `INST326/myscript.py`
-*** Relative paths are relative to the [emph]#current working directory#
-* Python expects forward slashes (`/`) in paths, even on Windows
-
-== File objects
-
-[%step]
-[.nobullet.nosubbullet]
-* All interactions with files in Python are mediated through [emph]#file objects#
-* File objects are created by the `open()` function
-* File objects follow the [emph]#principle of least privilege#
-* File objects have to be [emph]#closed# when you are done with them
-
-[.fragment]
-[source, python]
+*Absolute paths:* Full path from root
+[source]
 ----
-f = open("myfile.txt", "w", encoding="utf-8")
-
-# do things with the file here...
-
-f.close()
+/Users/alice/Documents/data.txt      # Mac/Linux
+C:/Users/Alice/Documents/data.txt    # Windows
 ----
 
-=== Writing to files
-
-Option 1: `print()` function
-
-[.fragment]
-[source, python]
+*Relative paths:* From current working directory
+[source]
 ----
-f = open("myfile.txt", "w", encoding="utf-8")
-print("Hello, world!", file=f)
-print("Created by Python", file=f)
-f.close()
+data.txt                             # Same directory
+data/input.txt                       # Subdirectory
+../other/file.txt                    # Parent directory
 ----
 
-[%step]
-* Very similar to how `print()` works with the console; adds newlines to the end of each line
-* (The console is a special file-like object called `sys.stdout`)
-* Specify file object as a keyword argument to `print()`
+*Python uses forward slashes `/` even on Windows!*
 
-=== Writing to files
-
-Option 2: `write()` method
-
-[.fragment]
-[source, python]
-----
-f = open("myfile.txt", "w", encoding="utf-8")
-f.write("Hello, world!\n")
-f.write("Created by Python\n")
-f.close()
-----
-
-[.nosubbullet]
-[%step]
-* `write()` is a method of the file object whereas `print()` is a function
-* Doesn't add newlines to the end of lines; you have to do that yourself
-
-=== Reading from files
-
-Option 1: Read the whole file into a single string
-
-[.fragment]
-[source, python]
-----
-f = open("myfile.txt", "r", encoding="utf-8")
-contents = f.read()
-f.close()
-----
-
-=== Reading from files
-
-Option 2: Read one line
-
-[.fragment]
-[source, python]
-----
-f = open("myfile.txt", "r", encoding="utf-8")
-line = f.readline()
-f.close()
-----
-
-=== Reading from files
-
-Option 3: Read all lines, one at a time
-
-[%step]
-* Uses file object as an iterator
-* Very Pythonic
-
-[.fragment]
-[source, python]
-----
-f = open("myfile.txt", "r", encoding="utf-8")
-for line in f:
-    # do something with line here...
-f.close()
-----
-
-=== Working with data read from a text file
-
-[.nobullet.nosubbullet]
-[%step]
-* Lines read from a text file usually end in newline characters (`"\n"`)
-[%step]
-** You can remove these with the `strip()` or `rstrip()` methods of strings
-
-[.fragment]
-[source, python]
-----
-for line in f:
-    line = line.rstrip()
-----
-
-[.nobullet.nosubbullet]
-[%step]
-* Data in text files is often delimited (e.g., `value1,value2,value3`)
-** You can break up delimited strings with the `split()` method of strings
-
-[.fragment]
-[source, python]
-----
-line = "name,age,profession"
-values = line.split(",")
-----
-
-[.columns]
-== `with` statements and context managers
-
-[.column]
+[.notes]
 --
-[.nosubbullet.nobullet]
-[%step]
-* `with` statements let you use [emph]#context managers#
-* [emph]#File objects# can be used as context managers
-[%step]
-** File objects used as context managers will close themselves
+ABSOLUTE: Specifies the complete location from the root of the filesystem. Unambiguous but long and not portable.
+
+RELATIVE: Relative to where your Python script is running from (current working directory). Shorter and more portable, but you must know where you're running from.
+
+Python convention: Use forward slashes `/` even on Windows. Python converts them automatically.
+
+Common gotcha: Your current working directory might not be where your script is located!
 --
 
-[.column]
---
-[.fragment]
-`with` [slot]#context_expr# `as` [slot]#varname#`:` +
-``    ``[slot]#body#
+=== Opening Files
 
-[.fragment.bigcode.fullwidth]
-[source, python]
+[source,python]
 ----
-with open("myfile.txt", "r", encoding="utf-8") as f:
+# Open for reading (default)
+f = open("data.txt", "r", encoding="utf-8")
+
+# Open for writing (creates/overwrites)
+f = open("output.txt", "w", encoding="utf-8")
+
+# Open for appending
+f = open("log.txt", "a", encoding="utf-8")
+----
+
+[cols="1,3", frame=none]
+|===
+| `"r"` | Read (file must exist)
+| `"w"` | Write (creates new or overwrites!)
+| `"a"` | Append (adds to end)
+|===
+
+*Always specify `encoding="utf-8"`!*
+
+[.notes]
+--
+The open() function returns a file object that you use to read/write.
+
+MODES:
+- "r" (read): File must exist. You can only read, not write.
+- "w" (write): Creates file if it doesn't exist. OVERWRITES if it does! Be careful!
+- "a" (append): Creates file if it doesn't exist. Adds to the end if it does.
+
+ENCODING: Always specify utf-8 for text files. This ensures consistent handling of international characters.
+
+The file object must be closed when you're done—we'll see how.
+--
+
+=== Critical: Always Close Files!
+
+[source,python]
+----
+# The old (risky) way:
+f = open("data.txt", "r", encoding="utf-8")
+content = f.read()
+f.close()  # Easy to forget! What if an error occurs first?
+
+# The right way: with statement
+with open("data.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+# File automatically closes when the block ends!
+----
+
+*The `with` statement guarantees the file closes, even if an error occurs.*
+
+[.notes]
+--
+File objects use system resources. If you don't close them:
+- Resources leak
+- Data might not be written
+- Other programs might not be able to access the file
+
+The `with` statement is a "context manager" that guarantees cleanup.
+
+When the with block ends (normally or due to an exception), the file is automatically closed.
+
+ALWAYS use `with` for files. It's safer and cleaner.
+--
+
+=== Reading Files
+
+*Three approaches:*
+
+[source,python]
+----
+with open("data.txt", "r", encoding="utf-8") as f:
+    # 1. Read entire file as one string
+    content = f.read()
+    
+    # 2. Read one line at a time (returns with \n)
+    line = f.readline()
+    
+    # 3. Iterate line by line (most common)
     for line in f:
-        # do something with line here...
-# file closes itself at the
-# end of the with statement
+        print(line)
 ----
-
-[%step]
-[.nobullet]
-* Use `with` statements whenever you open files
---
 
 [.notes]
 --
-Context managers are special objects that can set up a specific environment when they are created, and safely tear down that environment when they are destroyed. Context managers can be used for safe allocation and deallocation of resources.
+READ ALL: Loads entire file into memory. Fine for small files. For large files, this could crash your program.
+
+READLINE: Reads one line, including the newline character at the end.
+
+ITERATE: The most "Pythonic" way. Reads one line at a time, efficient for any size file.
+
+The iteration approach is usually what you want—it's memory-efficient and clean.
 --
 
-=== Two files at once in a `with` statement
+=== Processing Lines from a File
 
-[.fragment]
-[source, python]
+[source,python]
 ----
-with open("myfile.txt", "r", encoding="utf-8") as f_in, \
-    open("myfile2.txt", "w", encoding="utf-8") as f_out:
-    for line in f_in:
-        if " " in line:
-            word1 = line.split(" ")[0]
-            f_out.write(word1)
+with open("names.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        # Lines usually end with \n - strip it!
+        name = line.strip()
+        
+        # Skip empty lines
+        if not name:
+            continue
+            
+        # Skip comment lines
+        if name.startswith("#"):
+            continue
+            
+        print(f"Hello, {name}!")
 ----
 
-=== Summary
+[.notes]
+--
+Common file processing pattern:
+1. Open with `with`
+2. Loop through lines
+3. Strip whitespace (especially the trailing newline)
+4. Skip unwanted lines (empty, comments)
+5. Process the rest
+
+The strip() call is almost always needed—files have newlines at the end of each line.
+--
+
+=== Writing to Files
+
+[source,python]
+----
+# Using print() with file parameter
+with open("output.txt", "w", encoding="utf-8") as f:
+    print("Line 1", file=f)
+    print("Line 2", file=f)
+
+# Using write() method (no automatic newline!)
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("Line 1\n")    # Must add \n yourself
+    f.write("Line 2\n")
+----
+
+[cols="1,2", frame=none]
+|===
+| `print(..., file=f)` | Adds newline automatically
+| `f.write(text)` | Does NOT add newline
+|===
+
+[.notes]
+--
+Two ways to write:
+
+PRINT: Works just like printing to screen, but with `file=f` parameter. Automatically adds newlines.
+
+WRITE: Lower-level method. Does NOT add newlines—you must include them yourself.
+
+print() is usually more convenient unless you need precise control over what's written.
+
+Remember: "w" mode OVERWRITES the file! Use "a" to append.
+--
+
+=== Try It: File Processing
+
+Create a file `numbers.txt` with some integers (one per line). Then write code to:
+1. Read all numbers from the file
+2. Calculate and print their sum
+
+*Hint:* Lines from files are strings—you'll need `int()`!
 
 [%step]
-[.nosubbullet]
-* Two kinds of file: [emph]#text# and [emph]#binary#
-* Two kinds of path: [emph]#absolute# and [emph]#relative#
-* Reading from/writing to a file requires a [emph]#file object#
-** `open()` creates file objects
-* There are several ways to write to and read from a file object
-* When reading text files, `strip()` and `split()` come in handy
-* When used with file objects, `with` statements close files for us
-
-[.columns]
-== Example script
-
-[.column]
---
-[%step]
-[.nobullet.nosubbullet]
-* You run a store called [emph]#Sprocket Emporium#
-* [emph]#Customer orders# are stored in files where each line contains
-** part name
-** quantity
-** unit price
---
-
-[%step]
-[.column]
---
-Example [emph]#data#:
-
-[.filelisting]
+[source,python]
 ----
-medium widget,1,5.25
-bevel gear,3,10.90
-titanium axle,4,43.08
-#3 oblong cog,2,0.76
+with open("numbers.txt", "r", encoding="utf-8") as f:
+    total = 0
+    for line in f:
+        num = int(line.strip())
+        total += num
+    print(f"Sum: {total}")
 ----
 
-[%step]
-[.nobullet]
-* Goal: write a [emph]#function# to calculate the [emph]#total cost# of the order
+[.notes]
+--
+Give students 5 minutes. They'll need to create the file first.
+
+Steps:
+1. Create numbers.txt (in the same directory) with numbers like:
+   10
+   20
+   30
+
+2. Write the reading code
+
+Common mistakes:
+- Forgetting strip() (int(" 10\n") fails!)
+- Forgetting encoding parameter
+- Not using with statement
 --
 
-=== Example script
-[source, python]
-[.bigcode]
+=== Example: Processing CSV-like Data
+
+[source,python]
 ----
-include::files/order_cost.py[]
+# File: orders.txt
+# medium widget,1,5.25
+# bevel gear,3,10.90
+
+def calculate_total(filename):
+    """Calculate total cost from an order file."""
+    total = 0
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:          # Skip empty lines
+                continue
+            parts = line.split(",")
+            quantity = int(parts[1])
+            price = float(parts[2])
+            total += quantity * price
+    return total
+
+order_total = calculate_total("orders.txt")
+print(f"Total: ${order_total:.2f}")
 ----
+
+[.notes]
+--
+This is a realistic example of file processing:
+1. Open the file
+2. Loop through lines
+3. Strip and skip empty lines
+4. Split on delimiter
+5. Convert types as needed
+6. Accumulate result
+7. Return the total
+
+For real CSV files, you'd use the `csv` module, but understanding this pattern is fundamental.
+
+Note the f-string formatting: `:.2f` means "2 decimal places, floating point"
+--
+
+=== Files: Summary
+
+* Two types: text (human-readable) vs. binary
+* Paths: absolute vs. relative
+* *Always* use `with` statements!
+* Reading: `for line in f:` is most common
+* Writing: `print(..., file=f)` or `f.write(...)`
+* *Always* strip lines and handle empty/comment lines
+
+== 📋 Key Takeaways
+
+[cols="1,1", frame=none]
+|===
+| Strings | Ordered, *immutable* sequences of characters
+| Lists | Ordered, *mutable* sequences of any objects
+| Indexing | `seq[0]`, `seq[-1]` (zero-based!)
+| Slicing | `seq[start:stop:step]` (stop excluded!)
+| Mutability | Lists can change; aliasing causes surprises
+| Files | Open with `with`, iterate lines, always strip
+|===
+
+== Practice Challenge
+
+Write a program that:
+
+1. Reads a file containing names (one per line)
+2. Cleans up each name (strip whitespace, title case)
+3. Filters out any names shorter than 3 characters
+4. Writes the cleaned names to a new file
+5. Prints how many names were processed
+
+*Work with a partner. Test with your own file!*
+
+[.notes]
+--
+This integrative exercise combines:
+- File reading and writing
+- String methods (strip, title)
+- List building (accumulator pattern)
+- Conditionals (filtering)
+- For loops
+
+Give 10+ minutes. Walk around and help.
+--
+
+=== Practice Challenge: Solution
+
+[source,python]
+----
+def clean_names(input_file, output_file):
+    """Read names, clean them, write valid ones."""
+    cleaned = []
+    
+    with open(input_file, "r", encoding="utf-8") as f_in:
+        for line in f_in:
+            name = line.strip().title()
+            if len(name) >= 3:
+                cleaned.append(name)
+    
+    with open(output_file, "w", encoding="utf-8") as f_out:
+        for name in cleaned:
+            print(name, file=f_out)
+    
+    return len(cleaned)
+
+count = clean_names("names_raw.txt", "names_clean.txt")
+print(f"Processed {count} names")
+----
+
+== Questions?
+
+🔗 *Resources:*
+
+* Python Tutor: https://pythontutor.com/python-compiler.html#mode=edit (visualize mutability!)
+* Python String Methods: https://docs.python.org/3/library/stdtypes.html#string-methods
+* Python List Methods: https://docs.python.org/3/tutorial/datastructures.html

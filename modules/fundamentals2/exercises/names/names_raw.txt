@@ -1,0 +1,31 @@
+alice
+  BOB
+charlie
+Ed
+
+Jo
+  frank
+GRACE
+hi
+  IVY
+julia
+kate
+
+
+  LEO
+max
+  nina
+  oscar
+paul
+  QUINN
+
+  
+  rita
+sam
+  TOM
+  uma
+  VERA
+will
+  XENA
+  yuki
+  ZARA
