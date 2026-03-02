@@ -1,0 +1,27 @@
+<svg width="350" height="180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circle A filled -->
+  <circle cx="120" cy="95" r="70" fill="#e74c3c" fill-opacity="0.6" stroke="#c0392b" stroke-width="3"/>
+  <!-- Circle B outline only (to show subtraction) -->
+  <circle cx="230" cy="95" r="70" fill="#ffffff" stroke="#bdc3c7" stroke-width="3"/>
+  <!-- Cover the intersection with white to show A - B -->
+  <defs>
+    <clipPath id="clipB">
+      <circle cx="230" cy="95" r="70"/>
+    </clipPath>
+  </defs>
+  <circle cx="120" cy="95" r="70" fill="#ffffff" clip-path="url(#clipB)"/>
+  <!-- Re-draw A's left part -->
+  <circle cx="120" cy="95" r="70" fill="#e74c3c" fill-opacity="0.6" stroke="none"/>
+  <circle cx="230" cy="95" r="70" fill="#ffffff" stroke="#bdc3c7" stroke-width="3"/>
+  <!-- Labels -->
+  <text x="70" y="60" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" font-weight="bold">A</text>
+  <text x="270" y="60" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" font-weight="bold">B</text>
+  <!-- Values in A only (highlighted) -->
+  <text x="70" y="95" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" font-weight="bold">1, 2</text>
+  <!-- Values in both (grayed) -->
+  <text x="160" y="95" font-family="Arial, sans-serif" font-size="16" fill="#95a5a6">3, 4</text>
+  <!-- Values in B only -->
+  <text x="255" y="95" font-family="Arial, sans-serif" font-size="16" fill="#95a5a6">5, 6</text>
+  <!-- Title -->
+  <text x="175" y="25" font-family="Arial, sans-serif" font-size="16" fill="#2c3e50" text-anchor="middle" font-weight="bold">Difference: A - B = {1, 2}</text>
+</svg>

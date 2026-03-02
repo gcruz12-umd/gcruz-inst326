@@ -1,0 +1,50 @@
+<svg width="550" height="180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="275" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">How Hash Function Works</text>
+  
+  <!-- Key input -->
+  <rect x="30" y="60" width="100" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+  <text x="80" y="85" font-family="monospace" font-size="14" fill="white" text-anchor="middle">"apple"</text>
+  <text x="80" y="115" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d" text-anchor="middle">Key</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="135" y1="80" x2="175" y2="80" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Hash function box -->
+  <rect x="180" y="55" width="120" height="50" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+  <text x="240" y="80" font-family="monospace" font-size="12" fill="white" text-anchor="middle">hash(key)</text>
+  <text x="240" y="95" font-family="Arial, sans-serif" font-size="10" fill="#d7bde2" text-anchor="middle">Python built-in</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="305" y1="80" x2="345" y2="80" stroke="#7f8c8d" stroke-width="2"/>
+  
+  <!-- Large hash number -->
+  <rect x="350" y="55" width="80" height="50" fill="#e8daef" stroke="#9b59b6" stroke-width="2" rx="5"/>
+  <text x="390" y="85" font-family="monospace" font-size="11" fill="#6c3483" text-anchor="middle">8729...</text>
+  <text x="390" y="120" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d" text-anchor="middle">Large int</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="435" y1="80" x2="455" y2="80" stroke="#7f8c8d" stroke-width="2"/>
+  
+  <!-- Modulo operation -->
+  <text x="470" y="75" font-family="monospace" font-size="14" fill="#e74c3c">% 3</text>
+  <text x="470" y="95" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">(size)</text>
+  
+  <!-- Arrow 4 -->
+  <line x1="490" y1="80" x2="505" y2="80" stroke="#7f8c8d" stroke-width="2"/>
+  
+  <!-- Final index -->
+  <circle cx="525" cy="80" r="20" fill="#27ae60" stroke="#1e8449" stroke-width="2"/>
+  <text x="525" y="85" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" font-weight="bold">1</text>
+  <text x="525" y="120" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d" text-anchor="middle">Index</text>
+  
+  <!-- Summary -->
+  <text x="275" y="160" font-family="monospace" font-size="12" fill="#2c3e50" text-anchor="middle">hash("apple") % 3 = 1  →  Store in bucket 1</text>
+  
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+</svg>

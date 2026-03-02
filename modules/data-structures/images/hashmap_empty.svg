@@ -1,0 +1,24 @@
+<svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">Empty Hash Table (size=3)</text>
+  
+  <!-- Index labels -->
+  <text x="50" y="75" font-family="monospace" font-size="14" fill="#7f8c8d">Index 0:</text>
+  <text x="50" y="115" font-family="monospace" font-size="14" fill="#7f8c8d">Index 1:</text>
+  <text x="50" y="155" font-family="monospace" font-size="14" fill="#7f8c8d">Index 2:</text>
+  
+  <!-- Bucket 0 (empty) -->
+  <rect x="130" y="55" width="350" height="30" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="5"/>
+  <text x="305" y="75" font-family="monospace" font-size="14" fill="#95a5a6" text-anchor="middle">[ empty ]</text>
+  
+  <!-- Bucket 1 (empty) -->
+  <rect x="130" y="95" width="350" height="30" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="5"/>
+  <text x="305" y="115" font-family="monospace" font-size="14" fill="#95a5a6" text-anchor="middle">[ empty ]</text>
+  
+  <!-- Bucket 2 (empty) -->
+  <rect x="130" y="135" width="350" height="30" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="5"/>
+  <text x="305" y="155" font-family="monospace" font-size="14" fill="#95a5a6" text-anchor="middle">[ empty ]</text>
+  
+  <!-- Code representation -->
+  <text x="250" y="185" font-family="monospace" font-size="12" fill="#7f8c8d" text-anchor="middle">self.hash_table = [ [], [], [] ]</text>
+</svg>

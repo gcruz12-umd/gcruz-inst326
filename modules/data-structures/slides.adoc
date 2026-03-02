@@ -30,7 +30,7 @@ By the end of this session, you'll be able to:
 
 [.notes]
 --
-This module deepens your understanding of Python's built-in data structures. Knowing which structure to use for a given problem is a key programming skill.
+This module deepens your understanding of Python's built-in data structures. Knowing which structure to use for a given problem is a key programming skill.s
 
 Ask: "What data structures have you used so far?" (Expect: lists, strings, maybe dictionaries)
 --
@@ -455,7 +455,7 @@ a | b              # {1, 2, 3, 4, 5, 6}
 a.union(b)         # Same thing
 ----
 
-image::set_union.png[Set Union, 300]
+image::set_union.svg[Set Union, 350]
 
 Think: "Everything in either A *or* B (or both)"
 
@@ -482,7 +482,7 @@ a & b              # {3, 4}
 a.intersection(b)  # Same thing
 ----
 
-image::set_intersection.png[Set Intersection, 300]
+image::set_intersection.svg[Set Intersection, 350]
 
 Think: "Only things in *both* A *and* B"
 
@@ -510,7 +510,7 @@ a.difference(b)    # Same thing
 b - a              # {5, 6}
 ----
 
-image::set_difference.png[Set Difference, 300]
+image::set_difference.svg[Set Difference, 350]
 
 Think: "Things in A that *aren't* in B"
 
@@ -535,7 +535,7 @@ a ^ b              # {1, 2, 5, 6}
 a.symmetric_difference(b)
 ----
 
-image::set_symmetric_diff.png[Symmetric Difference, 300]
+image::set_symmetric_diff.svg[Symmetric Difference, 350]
 
 Think: "Things in A *or* B, but *not* in both"
 
@@ -717,34 +717,14 @@ The key insight: the last item added is the first one removed.
 
 === Stack Visualization
 
-[source]
-----
-Operation         Stack State
----------         -----------
-stack = []        []
-
-append("A")       ["A"]
-                      ↑ top
-
-append("B")       ["A", "B"]
-                           ↑ top
-
-append("C")       ["A", "B", "C"]
-                                ↑ top
-
-pop() → "C"       ["A", "B"]
-                          ↑ top
-
-pop() → "B"       ["A"]
-                      ↑ top
-----
+image::stack_visual.svg[Stack Visualization, 450]
 
 [.notes]
 --
 Walk through this visualization:
 - Items are always added to and removed from the top (right side)
-- "C" was added last, so it's removed first
-- "A" was added first, so it would be removed last
+- "third" was added last, so it's removed first
+- "first" was added first, so it would be removed last
 --
 
 === Use Cases for Stacks
@@ -808,6 +788,19 @@ For queues, we use `collections.deque` (double-ended queue) because removing fro
 `deque` is optimized for fast operations at both ends.
 --
 
+=== Queue Visualization
+
+image::queue_visual.svg[Queue Visualization, 500]
+
+[.notes]
+--
+Walk through this visualization:
+- Items enter at the back (right side)
+- Items exit from the front (left side)
+- "first" was added first, so it's removed first
+- This is like a line at a store
+--
+
 === Why Use deque for Queues?
 
 [source,python]
@@ -835,39 +828,6 @@ This is an important efficiency consideration.
 When you remove from the front of a list, every other element must shift left to fill the gap. For a list of 1 million items, that's 1 million shifts!
 
 Deque uses a different internal structure that allows fast operations at both ends.
---
-
-=== Queue Visualization
-
-[source]
-----
-Operation          Queue State
----------          -----------
-queue = deque()    []
-
-append("A")        [A]
-                   front → A ← back
-
-append("B")        [A, B]
-                   front → A   B ← back
-
-append("C")        [A, B, C]
-                   front → A   B   C ← back
-
-popleft() → "A"    [B, C]
-                   front → B   C ← back
-
-popleft() → "B"    [C]
-                   front → C ← back
-----
-
-[.notes]
---
-Walk through this visualization:
-- Items enter at the back (right side)
-- Items exit from the front (left side)
-- "A" was added first, so it's removed first
-- This is like a line at a store
 --
 
 === Use Cases for Queues
@@ -1282,7 +1242,7 @@ This is the basic counting pattern:
 2. If yes, increment the count
 3. If no, initialize to 1
 
-This pattern is so common that Python provides better ways to do it...
+This pattern is so common that there's a cleaner way to write it...
 --
 
 === Counting: Using .get() Method
@@ -1311,65 +1271,34 @@ This is cleaner because we don't need the if/else.
 Then we add 1 and store the result.
 --
 
-=== Counting: Using collections.Counter
-
-[source,python]
-----
-from collections import Counter
-
-# Easiest counting!
-text = "the cat sat on the mat"
-word_counts = Counter(text.split())
-
-print(word_counts)
-# Counter({'the': 2, 'cat': 1, 'sat': 1, 'on': 1, 'mat': 1})
-
-# Most common elements
-print(word_counts.most_common(2))
-# [('the', 2), ('cat', 1)]
-----
-
-*`Counter` is a specialized dictionary for counting.*
-
-[.notes]
---
-`Counter` is purpose-built for counting. It:
-- Automatically counts elements
-- Provides `most_common()` method
-- Supports arithmetic operations between counters
-
-For counting tasks, `Counter` is usually the best choice.
---
-
 === Counting Elements in a Data File
 
 [source,python]
 ----
-from collections import Counter
-
 # Count letter grades in a file
 def count_grades(filename):
     """Count occurrences of each grade in a file."""
-    with open(filename, "r", encoding="utf-8") as f:
-        grades = [line.strip() for line in f if line.strip()]
+    grade_counts = {}
     
-    return Counter(grades)
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            grade = line.strip()
+            if grade:  # Skip empty lines
+                grade_counts[grade] = grade_counts.get(grade, 0) + 1
+    
+    return grade_counts
 
 # Usage
-grade_counts = count_grades("grades.txt")
-print(grade_counts)
-# Counter({'A': 15, 'B': 23, 'C': 12, 'D': 5, 'F': 2})
-
-print(f"Most common: {grade_counts.most_common(1)[0]}")
-# Most common: ('B', 23)
+counts = count_grades("grades.txt")
+print(counts)
+# {'A': 15, 'B': 23, 'C': 12, 'D': 5, 'F': 2}
 ----
 
 [.notes]
 --
-This combines file reading with counting.
+This combines file reading with counting using a regular dictionary.
 
-The list comprehension reads all non-empty lines.
-Counter does the counting automatically.
+Each line is read, stripped, and counted using the `.get()` pattern.
 
 This pattern works for counting any categorical data in files.
 --
@@ -1407,61 +1336,26 @@ This pattern is:
 1. Check if key exists
 2. If not, initialize with empty list
 3. Append to the list
-
-Like counting, this pattern is so common that Python provides a better way...
---
-
-=== Indexing: Using collections.defaultdict
-
-[source,python]
-----
-from collections import defaultdict
-
-# Cleaner indexing with defaultdict
-students = [
-    ("Alice", "A"), ("Bob", "B"), ("Carol", "A"),
-    ("Dave", "C"), ("Eve", "B")
-]
-
-by_grade = defaultdict(list)  # Missing keys auto-create empty lists
-for name, grade in students:
-    by_grade[grade].append(name)
-
-print(dict(by_grade))
-# {'A': ['Alice', 'Carol'], 'B': ['Bob', 'Eve'], 'C': ['Dave']}
-----
-
-*`defaultdict(list)` auto-creates empty lists for missing keys.*
-
-[.notes]
---
-`defaultdict` takes a factory function that creates default values.
-
-`defaultdict(list)` creates an empty list for any missing key.
-`defaultdict(int)` creates 0 for any missing key (useful for counting).
-`defaultdict(set)` creates an empty set for any missing key.
-
-No more checking if the key exists!
 --
 
 === Indexing Elements in a Data File
 
 [source,python]
 ----
-from collections import defaultdict
-
 def index_by_department(filename):
     """Index employees by department from a CSV file."""
-    employees_by_dept = defaultdict(list)
+    employees_by_dept = {}
     
     with open(filename, "r", encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split(",")
             if len(parts) >= 2:
                 name, department = parts[0], parts[1]
+                if department not in employees_by_dept:
+                    employees_by_dept[department] = []
                 employees_by_dept[department].append(name)
     
-    return dict(employees_by_dept)
+    return employees_by_dept
 
 # Usage with file: "Alice,Engineering\nBob,Sales\nCarol,Engineering"
 result = index_by_department("employees.csv")
@@ -1470,11 +1364,11 @@ result = index_by_department("employees.csv")
 
 [.notes]
 --
-This combines file reading with indexing.
+This combines file reading with indexing using a regular dictionary.
 
 Each line is parsed, and employees are grouped by department.
 
-The `defaultdict(list)` handles creating new department entries automatically.
+The if statement handles creating new department entries.
 --
 
 === Try It: Counting and Indexing
@@ -1498,15 +1392,17 @@ items = [
 --
 [source,python]
 ----
-from collections import Counter, defaultdict
-
 # Count colors
-color_counts = Counter(color for item, color in items)
-# Counter({'red': 2, 'yellow': 2, 'purple': 1})
+color_counts = {}
+for item, color in items:
+    color_counts[color] = color_counts.get(color, 0) + 1
+# {'red': 2, 'yellow': 2, 'purple': 1}
 
 # Index by color
-by_color = defaultdict(list)
+by_color = {}
 for item, color in items:
+    if color not in by_color:
+        by_color[color] = []
     by_color[color].append(item)
 # {'red': ['apple', 'cherry'], 'yellow': ['banana', 'lemon'], 'purple': ['grape']}
 ----
@@ -1516,16 +1412,16 @@ for item, color in items:
 --
 Give students 3-4 minutes to work on this.
 
-The counting uses a generator expression inside Counter.
-The indexing uses the standard defaultdict pattern.
+The counting uses the `.get()` pattern.
+The indexing uses the check-and-initialize pattern.
 --
 
 === Dictionaries: Summary
 
 * Keys must be *hashable* (immutable)
 * Values can be *anything*
-* *Counting pattern*: Use `Counter` for frequency counts
-* *Indexing pattern*: Use `defaultdict(list)` for grouping
+* *Counting pattern*: Use `.get(key, 0) + 1`
+* *Indexing pattern*: Check if key exists, initialize list if not
 * Both patterns are common in data processing
 
 [.notes]
@@ -1557,20 +1453,21 @@ Understanding how hash maps work helps you:
 Let's build one from scratch to see how it works.
 --
 
-=== Hash Functions
+=== Hash Functions: The Key to Speed
 
 A *hash function* converts a key into an array index.
+
+image::hash_function.svg[Hash Function, 550]
 
 [source,python]
 ----
 # Python's built-in hash function
-hash("apple")      # Some large integer like 8729374928374
+hash("apple")      # Some large integer
 hash("banana")     # Different integer
-hash(42)           # 42 (small integers hash to themselves)
 
 # To get an array index, use modulo
-size = 5
-index = hash("apple") % size   # 0, 1, 2, 3, or 4
+size = 3
+index = hash("apple") % size   # 0, 1, or 2
 ----
 
 *The same key always produces the same hash.*
@@ -1587,18 +1484,11 @@ Instead of searching through all items, we:
 This is O(1) instead of O(n)!
 --
 
-=== Hash Map Structure
+=== Hash Map Structure: Buckets
 
 A hash map is an array of *buckets*. Each bucket can hold key-value pairs.
 
-[source]
-----
-Hash Table with 3 buckets:
-
-Index 0: [  ]  ← empty bucket
-Index 1: [  ]  ← empty bucket  
-Index 2: [  ]  ← empty bucket
-----
+image::hashmap_empty.svg[Empty Hash Map, 500]
 
 [source,python]
 ----
@@ -1653,19 +1543,9 @@ Walk through each step:
 This is the basic insertion. We'll refine it to handle updates.
 --
 
-=== Inserting Multiple Items
+=== After Inserting Multiple Items
 
-[source]
-----
-Insert "apple": 10    (hash % 3 = 1)
-Insert "banana": 20   (hash % 3 = 2)
-Insert "cherry": 30   (hash % 3 = 0)
-
-Result:
-   Index 0: [("cherry", 30)]
-   Index 1: [("apple", 10)]
-   Index 2: [("banana", 20)]
-----
+image::hashmap_inserted.svg[Hash Map with Data, 500]
 
 Each item lands in a different bucket based on its hash.
 
@@ -1680,16 +1560,7 @@ But what happens when two keys hash to the same index?
 
 === Collisions: When Keys Hash to the Same Index
 
-[source]
-----
-Insert "apple": 10    (hash % 3 = 1)
-Insert "date": 40     (hash % 3 = 1)  ← Same bucket!
-
-Result:
-   Index 0: [("cherry", 30)]
-   Index 1: [("apple", 10), ("date", 40)]  ← Two items!
-   Index 2: [("banana", 20)]
-----
+image::hashmap_collision.svg[Hash Map Collision, 550]
 
 *Collision:* Two keys map to the same bucket.
 
@@ -1735,14 +1606,7 @@ This handles both new insertions and updates.
 
 === Retrieving Values
 
-[source]
-----
-Get value for "date":
-   Step 1: hash("date") % 3 = 1
-   Step 2: Go to bucket 1
-   Step 3: Search bucket: [("apple", 10), ("date", 40)]
-   Step 4: Found "date" → return 40
-----
+image::hashmap_lookup.svg[Hash Map Lookup, 550]
 
 [source,python]
 ----
@@ -1949,73 +1813,104 @@ Transition: "Let's bring everything together with a comprehensive practice probl
 | Stacks | LIFO with `append()`/`pop()`
 | Queues | FIFO with `deque.append()`/`popleft()`
 | List Comprehensions | Concise list creation `[expr for x in iter]`
-| Counting | Use `Counter` for frequency counts
-| Indexing | Use `defaultdict(list)` for grouping
+| Counting | Use `.get(key, 0) + 1` pattern
+| Indexing | Check if key exists, initialize list if not
 | Hash Maps | Fast O(1) lookup using hash functions
 |===
 
 == Practice Challenge
 
-Build a *word analyzer* that reads a text file and produces:
+Build a *course analyzer* that processes student enrollment data and produces:
 
-1. A set of all unique words
-2. A count of each word's frequency (use Counter)
-3. An index of words by their first letter (use defaultdict)
-4. The top 5 most common words
+1. Use *sets* to find:
+   - All unique students across all courses
+   - Students enrolled in BOTH "INST326" and "INST327"
+   - Students in "INST326" who are NOT in "INST327"
 
-Sample input file `words.txt`:
-----
-the quick brown fox jumps over the lazy dog
-the dog barks at the fox
-----
-
-*Work with a partner. Test thoroughly!*
+2. Use a *regular dictionary* (no Counter/defaultdict) to:
+   - Count how many courses each student is taking
+   - Group students by the number of courses they're taking
 
 [.notes]
 --
 This integrative exercise combines:
-- File reading
-- Set operations (unique words)
-- Counter (word frequency)
-- defaultdict (indexing by first letter)
-- List/tuple operations (top 5)
+- Set creation and operations (union, intersection, difference)
+- Dictionary counting with .get() pattern
+- Dictionary indexing with check-and-initialize pattern
 
 Give 10-15 minutes. Walk around and help.
 --
 
-=== Practice Challenge: Solution
+=== Practice Challenge: Data
 
 [source,python]
 ----
-from collections import Counter, defaultdict
+enrollments = {
+    "INST326": ["Alice", "Bob", "Carol", "Dave"],
+    "INST327": ["Bob", "Carol", "Eve", "Frank"],
+    "INST335": ["Alice", "Carol", "Eve"],
+    "INST346": ["Dave", "Frank", "Grace"]
+}
+----
 
-def analyze_words(filename):
-    """Analyze words in a text file."""
-    with open(filename, "r", encoding="utf-8") as f:
-        text = f.read().lower()
-    
-    words = text.split()
-    
-    # 1. Unique words (set)
-    unique = set(words)
-    
-    # 2. Word frequency (Counter)
-    counts = Counter(words)
-    
-    # 3. Index by first letter (defaultdict)
-    by_letter = defaultdict(list)
-    for word in unique:  # Use unique to avoid duplicates in lists
-        by_letter[word[0]].append(word)
-    
-    # 4. Top 5 most common
-    top_5 = counts.most_common(5)
-    
-    return unique, counts, dict(by_letter), top_5
+Use this enrollment data to complete the tasks on the previous slide.
 
-unique, counts, by_letter, top_5 = analyze_words("words.txt")
-print(f"Unique words: {len(unique)}")
-print(f"Top 5: {top_5}")
-print(f"Words starting with 't': {by_letter.get('t', [])}")
+*Work with a partner. Test thoroughly!*
+
+=== Practice Challenge: Solution (Part 1 - Sets)
+
+[source,python]
+----
+enrollments = {
+    "INST326": ["Alice", "Bob", "Carol", "Dave"],
+    "INST327": ["Bob", "Carol", "Eve", "Frank"],
+    "INST335": ["Alice", "Carol", "Eve"],
+    "INST346": ["Dave", "Frank", "Grace"]
+}
+
+# Convert to sets for each course
+inst326 = set(enrollments["INST326"])
+inst327 = set(enrollments["INST327"])
+
+# All unique students (union of all courses)
+all_students = set()
+for students in enrollments.values():
+    all_students = all_students | set(students)
+# {'Alice', 'Bob', 'Carol', 'Dave', 'Eve', 'Frank', 'Grace'}
+
+# Students in BOTH INST326 and INST327 (intersection)
+in_both = inst326 & inst327
+# {'Bob', 'Carol'}
+
+# Students in INST326 but NOT in INST327 (difference)
+only_326 = inst326 - inst327
+# {'Alice', 'Dave'}
+----
+
+=== Practice Challenge: Solution (Part 2 - Dictionaries)
+
+[source,python]
+----
+# Count courses per student (using .get() pattern)
+courses_per_student = {}
+for course, students in enrollments.items():
+    for student in students:
+        courses_per_student[student] = courses_per_student.get(student, 0) + 1
+# {'Alice': 2, 'Bob': 2, 'Carol': 3, 'Dave': 2, 'Eve': 2, 'Frank': 2, 'Grace': 1}
+
+# Group students by number of courses (indexing pattern)
+by_course_count = {}
+for student, count in courses_per_student.items():
+    if count not in by_course_count:
+        by_course_count[count] = []
+    by_course_count[count].append(student)
+# {2: ['Alice', 'Bob', 'Dave', 'Eve', 'Frank'], 3: ['Carol'], 1: ['Grace']}
+
+# Find who's taking the most courses
+max_courses = max(courses_per_student.values())
+busiest = [s for s, c in courses_per_student.items() if c == max_courses]
+print(f"Busiest student(s): {busiest} with {max_courses} courses")
+# Busiest student(s): ['Carol'] with 3 courses
 ----
 
 == Questions?

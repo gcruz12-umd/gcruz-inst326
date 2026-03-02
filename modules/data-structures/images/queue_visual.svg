@@ -1,0 +1,32 @@
+<svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">Queue: First In, First Out (FIFO)</text>
+  
+  <!-- Queue container -->
+  <rect x="80" y="70" width="340" height="60" fill="none" stroke="#34495e" stroke-width="3" rx="5"/>
+  
+  <!-- Queue items -->
+  <rect x="90" y="80" width="100" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="3"/>
+  <text x="140" y="105" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">"first"</text>
+  
+  <rect x="200" y="80" width="100" height="40" fill="#2ecc71" stroke="#27ae60" stroke-width="2" rx="3"/>
+  <text x="250" y="105" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">"second"</text>
+  
+  <rect x="310" y="80" width="100" height="40" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="3"/>
+  <text x="360" y="105" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle" font-weight="bold">"third"</text>
+  
+  <!-- FRONT indicator -->
+  <text x="140" y="150" font-family="Arial, sans-serif" font-size="13" fill="#3498db" text-anchor="middle" font-weight="bold">FRONT</text>
+  <text x="140" y="165" font-family="monospace" font-size="11" fill="#7f8c8d" text-anchor="middle">popleft()</text>
+  <text x="60" y="100" font-family="Arial, sans-serif" font-size="16" fill="#3498db">←</text>
+  <text x="30" y="105" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">exit</text>
+  
+  <!-- BACK indicator -->
+  <text x="360" y="150" font-family="Arial, sans-serif" font-size="13" fill="#e74c3c" text-anchor="middle" font-weight="bold">BACK</text>
+  <text x="360" y="165" font-family="monospace" font-size="11" fill="#7f8c8d" text-anchor="middle">append()</text>
+  <text x="430" y="100" font-family="Arial, sans-serif" font-size="16" fill="#e74c3c">←</text>
+  <text x="450" y="105" font-family="Arial, sans-serif" font-size="10" fill="#7f8c8d">enter</text>
+  
+  <!-- Key insight -->
+  <text x="250" y="190" font-family="Arial, sans-serif" font-size="13" fill="#2c3e50" text-anchor="middle">"first" was added first, removed first</text>
+</svg>

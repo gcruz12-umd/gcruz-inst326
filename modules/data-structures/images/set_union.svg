@@ -1,0 +1,16 @@
+<svg width="350" height="180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Both circles filled to show union -->
+  <circle cx="120" cy="95" r="70" fill="#3498db" fill-opacity="0.6" stroke="#2980b9" stroke-width="3"/>
+  <circle cx="230" cy="95" r="70" fill="#3498db" fill-opacity="0.6" stroke="#2980b9" stroke-width="3"/>
+  <!-- Labels -->
+  <text x="70" y="60" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" font-weight="bold">A</text>
+  <text x="270" y="60" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" font-weight="bold">B</text>
+  <!-- Values in A only -->
+  <text x="70" y="95" font-family="Arial, sans-serif" font-size="16" fill="#ffffff">1, 2</text>
+  <!-- Values in both -->
+  <text x="160" y="95" font-family="Arial, sans-serif" font-size="16" fill="#ffffff">3, 4</text>
+  <!-- Values in B only -->
+  <text x="255" y="95" font-family="Arial, sans-serif" font-size="16" fill="#ffffff">5, 6</text>
+  <!-- Title -->
+  <text x="175" y="25" font-family="Arial, sans-serif" font-size="16" fill="#2c3e50" text-anchor="middle" font-weight="bold">Union: A | B = {1,2,3,4,5,6}</text>
+</svg>
