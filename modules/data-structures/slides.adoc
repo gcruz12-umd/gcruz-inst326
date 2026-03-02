@@ -1,4 +1,4 @@
-= Data Structures
+= Advanced Data Structures
 :imagesdir: images
 :docinfo: shared
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
@@ -8,435 +8,2020 @@
 :customcss: ../../css/default.css
 :revealjs_theme: white
 :revealjs_width: 1400
-:revealjs_height: 810
+:revealjs_height: 800
 :revealjs_slideNumber: true
 :revealjs_transition: slide
 :revealjs_transitionSpeed: default
 :title-slide-background-image: structure.jpg
 
+== Today's Goals
+
+By the end of this session, you'll be able to:
+
+* Identify differences between tuples and other sequence types
+* Create and return tuples from functions
+* Identify differences between sets and other sequence types
+* Use set operations to build and manipulate sets
+* Use lists as stacks and queues
+* Write list comprehensions to synthesize data
+* Create dictionaries for counting and indexing
+* Identify valid dictionary keys and values
+* Understand how hash maps work internally
+
+[.notes]
+--
+This module deepens your understanding of Python's built-in data structures. Knowing which structure to use for a given problem is a key programming skill.
+
+Ask: "What data structures have you used so far?" (Expect: lists, strings, maybe dictionaries)
+--
+
+== Why Different Data Structures?
+
+Each data structure has *strengths* and *trade-offs*:
+
+[cols="1,2,2", frame=none]
+|===
+| Structure | Good For | Trade-off
+
+| List | Ordered, changeable collections | Slow membership testing
+| Tuple | Immutable sequences, dict keys | Can't modify
+| Set | Fast membership, uniqueness | No order, no duplicates
+| Dictionary | Key-value lookups | Keys must be hashable
+|===
+
+*Choosing the right structure makes your code faster and clearer.*
+
+[.notes]
+--
+A common beginner mistake is using lists for everything. Lists are versatile but not always optimal.
+
+Example: Checking if an item is in a list of 1 million items is slow. Checking if it's in a set is nearly instant.
+
+We'll explore each structure's sweet spot.
+--
+
 == Tuples
 
-=== Tuples Structure
+=== What Is a Tuple?
 
-* What we know
-    ** Collection of objects that are ordered and immutable
-    ** Tuples are sequences
-    ** Tuples use parentheses to enclose sequences
+A tuple is an *immutable* ordered sequence.
 
-=== What we know:
-
-[source, python]
+[source,python]
 ----
-my_tuple = tuple([1,2,3])
-my_tuple = (1, “string”, 5.8)
-----
+# Creating tuples
+point = (3, 4)
+person = ("Alice", 25, "Engineer")
+singleton = (42,)      # Note the comma!
+empty = ()
 
-=== What is (probably) New
-
-The commas are what allows python to recognize the tuple.
-
-[source, python]
-[.fragment]
-----
-my_tuple =  1, “string”, 5.8 
-my_tuple = “string”, 
-my_tuple = ()
+# Accessing elements (same as lists)
+x = point[0]           # 3
+name = person[0]       # "Alice"
 ----
 
-=== Accessing Values in a Tuple
+*Like a list, but you can't change it after creation.*
 
-We can use square brackets to slice at the indices just like other sequence datatypes.
+[.notes]
+--
+Tuples use parentheses instead of square brackets.
 
-[source, python]
-[.fragment]
+The comma is what makes a tuple, not the parentheses. `(42)` is just the number 42 in parentheses. `(42,)` is a tuple containing 42.
+
+Why use tuples? They're:
+- Safer (can't accidentally modify)
+- Hashable (can be dictionary keys)
+- Slightly more memory-efficient
+--
+
+=== Tuple vs. List: The Key Difference
+
+[source,python]
 ----
-my_tuple = (1, “string”, 5.8)
+# Lists are mutable
+my_list = [1, 2, 3]
+my_list[0] = 99        # Works!
 
-my_tuple[1]    # "string"
-my_tuple[:1]   # (1,)
-my_tuple[:3]   # (1, “string”, 5.8)
-----
-
-=== Important Tuple Operations
-
-[options="header]
-|=======================================================================
-| Python Expression         | Results                   | Description   
-| len(x)                    | length of x               | Length        
-| (1,2,3) + (4,5,6)         | (1,2,3,4,5,6)             | Concatenation 
-| ("Hi!",) * 4              | ("Hi!","Hi!","Hi!","Hi!") | Repetition    
-| 3 in (1,2,3)              | True                      | Membership    
-| for x in (1,2,3): print x | 1 2 3                     | Iteration  
-|=======================================================================   
-
-=== Recap
-- Tuples are sequences, ordered and immutable collections of objects.
-- Tuples are enclosed with parentheses, items are separated with commas.
-- Items in tuples can be accessed using square bracket notation.
-- We can perform a variety of operations on tuples.
-
-=== Returning Tuples
-
-- Sometimes it might be a good idea to return multiple items using a function.
-- Typically, if these items are different data types its good practice to return a tuple.
-    - For example, a function that returns a list of unique words, and a dictionary of an index of those words to files.
-
-=== Example
-
-[source, python]
-----
-class book:
-    def __init__(self, path):
-        self.f = open(path).read()
-    
-    def meta_data(self):
-        """ Method that will return two variables
-        Returns:
-            unique_words (list): list of unique words in the file
-            word_counts (dict): a dictionary where the keys are 
-            the words and the values are the number of times that 
-            the word appears in the file
-        """
-
-        return unique_words, word_counts
-
-my_path = "my_file.txt"
-results = book(my_path).meta_data()
+# Tuples are immutable
+my_tuple = (1, 2, 3)
+my_tuple[0] = 99       # TypeError!
 ----
 
-=== Tuples are Sequence Datatypes
-This means that we can...
+*Once created, a tuple cannot be changed.*
 
-=== Find Min and Max Values
+This immutability makes tuples:
 
-[source, python]
+* Safer (data won't change unexpectedly)
+* Hashable (usable as dictionary keys)
+* A signal of intent ("this data is fixed")
+
+[.notes]
+--
+This is the fundamental difference. Lists can be modified in place; tuples cannot.
+
+This immutability is actually useful:
+- Guarantees data won't change unexpectedly
+- Makes tuples hashable (usable as dict keys)
+- Signals intent: "This data is fixed"
+--
+
+=== Comparing Tuples to Other Sequences
+
+[cols="1,1,1,1", frame=none]
+|===
+| Feature | Tuple | List | String
+
+| Ordered | Yes | Yes | Yes
+| Indexed | Yes | Yes | Yes
+| Sliceable | Yes | Yes | Yes
+| Mutable | *No* | Yes | No
+| Hashable | Yes | *No* | Yes
+| Element types | Any | Any | Characters only
+|===
+
+[.notes]
+--
+Tuples share many features with lists and strings—they're all sequences.
+
+The key differences:
+- Tuples are immutable like strings, but can hold any type like lists
+- Tuples are hashable, which means they can be dictionary keys (lists cannot)
+--
+
+=== Tuple Packing and Unpacking
+
+[source,python]
 ----
-max(tuple)
-min(tuple)
-----
+# Packing: multiple values into one tuple
+coordinates = 3, 4, 5    # Parentheses optional
 
-=== Perform Sequence Unpacking
+# Unpacking: tuple into multiple variables
+x, y, z = coordinates    # x=3, y=4, z=5
 
-[source, python]
-----
-class book:
-    def __init__(self, path):
-        self.f = open(path).read()
-    
-    def meta_data(self):
-        return unique_words, word_counts
+# Swap values elegantly
+a, b = b, a              # No temp variable needed!
 
-my_path = "my_file.txt"
-words, counts = book(my_path).meta_data()
-----
-
-=== Iterate over the Tuple
-
-[source, python]
-----
-class book:
-    def __init__(self, path):
-        self.f = open(path).read()
-    
-    def meta_data(self):
-        return unique_words, word_counts
-
-my_path = "my_file.txt"
-results = book(my_path).meta_data()
-
-for item in results:
-    print(item)
-----
-
-== Sets 
-
-- Collection of objects that are un-ordered and mutable
-- Contain no duplicate elements
-- Sets use curly braces to enclose sequences
-
-=== Frozen Sets
-
-- Collection of objects that are un-ordered and immutable
-- Contain no duplicate elements
-- Frozensets use curly braces to enclose sequences
-
-=== Recap
-
-- Sets are collections of unique items that are mutable and unordered.
-- Frozen sets are collections of unique items that are immutable and unordered.
-
-=== Creating Sets
-
-[source, python]
-----
-myset = {"a", "b", "c"}
-myset = set(["a", "b", "c"])
-myset = set([ "a", "a" , "b" , "c" , "c" ])
+# Ignore values with underscore
+first, _, third = (1, 2, 3)   # Ignore the middle value
 ----
 
-[source, python]
+[.notes]
+--
+Unpacking is one of the most useful Python features.
+
+The swap idiom `a, b = b, a` works because Python evaluates the right side first (creating a tuple), then unpacks it to the left side.
+
+Using `_` for ignored values is a convention—it's a valid variable name, but signals "I don't care about this value."
+--
+
+=== Creating and Returning Tuples from Functions
+
+[source,python]
 ----
-myset = frozenset({"a", "b", "c"})
-myset = frozenset(["a", "b", "c"])
-myset = frozenset([ "a", "a" , "b" , "c" , "c" ])
-----
+def min_max(numbers):
+    """Return both minimum and maximum."""
+    return min(numbers), max(numbers)
 
-=== Removing Elements from Sets
-
-[source, python]
-----
-myset.remove(“a”)
-----
-
-=== Adding Elements from Sets
-
-[source, python]
-----
-myset.add(“a”)
-----
-
-=== A Note About Sets
-
-* Items in sets must be “hashable” (think immutable) otherwise you will raise an error.
-    ** Frozen sets are immutable and therefor hashable, so frozensets can be items in a set without a problem. 
-
-=== Hash Tables
-
-* In Python, sets and dictionaries are implemented using hash tables
-    ** Hash tables: Data structures where items are passed through a “hash function” to compute a “hash code”. 
-        *** Optimized for data retrieval where we might not care about member order.
-
-=== Why do Hash Tables matter?
-
-* Implimentation helps guide decision making:
-    ** If we care about member order in relation to other members:
-        *** strings, lists, tuples
-    ** If we prioritize membership or value pairing over "order":
-        *** sets, dictionaries
-
-=== Consider the following
-
-* Is "morse" in "the morse code"?
-    ** Yes
-* Are the letters m,o,r,s, and e in "here come the dots"?
-    ** Yes
-* Is "morse" in "here come the dots"?
-    ** No
-
-=== Recap
-
-- We can create sets using set literals ({}) or by using the set() function.
-- We can remove or add items from sets using the add() and remove() methods of set objects.
-- Items in sets must be hashable (immutable).
-
-== Working with sets
-
-=== Set operations
-
-* We can use sets to solve unique challenges
-* In order to do this we need to perform operations using sets.
-* The ones you need to be aware of are…
-    ** in (membership) & not in (membership)
-    ** is subset & is superset 
-    ** union, intersection, difference
-
-=== In & Not In
-
-* Testing for membership
-* Example:
-    ** x in f (where “x” is an item that may or may not be in set “f”)
-    ** x not in f (where “x” is an item that may or may not be in set “f”)
-
-
-
-=== Is Subset & Is Superset
-
-* Testing whether all elements in one set are in another set
-* Example:
-    ** x.issubset(f)  (where “x” is a set that may or may not contain the same elements that are in set “f”)
-        *** Alternative syntax: x <= f
-    ** x.issuperset(f)  (where “f” is a set that may or may not contain the same elements that are in set “x”)
-        *** Alternative syntax: x >= f
-
-
-
-=== Union
-
-**Union, Intersection and Difference all evaluate to new sets.**
-* Union
-    ** New set with elements of two sets
-    ** Example Syntax:
-        *** x.union(f)
-
-
-
-=== Intersection
-
-**Union, Intersection and Difference all evaluate to new sets.**
-
-* Intersection
-    ** New set with elements that are common to both sets
-    ** Example Syntax:
-        *** x.intersection(f)
-
-
-
-=== Difference
-
-**Union, Intersection and Difference all evaluate to new sets.**
-
-* Difference
-    ** New set with elements in the first set but not the second set
-    ** Example Syntax:
-        *** x.difference(f)
-
-=== Example Using Sets
-
-[source, python]
-----
-list1 = [1,1,2,2,3,3,4,5]
-list2 = [3,3,4,4,5,5,6,6,7,8,9]
-
-set1, set2 = set(list1), set(list2)
-set3 = set1.intersection(set2) 
-
-print(len(set3)) #Result = 3
+# Calling it
+data = [3, 1, 4, 1, 5, 9, 2, 6]
+smallest, largest = min_max(data)
+print(f"Range: {smallest} to {largest}")
 ----
 
-=== Compared to No Sets
+Output: `Range: 1 to 9`
 
-[source, python]
+*Functions can return tuples to give back multiple values.*
+
+[.notes]
+--
+This is extremely common in Python. When a function needs to return multiple pieces of information, return a tuple and let the caller unpack it.
+
+Built-in examples:
+- `divmod(7, 3)` returns `(2, 1)` (quotient and remainder)
+- `dict.items()` returns tuples of (key, value)
+--
+
+=== More Examples: Returning Tuples
+
+[source,python]
 ----
-list1 = [1,1,2,2,3,3,4,5]
-list2 = [3,3,4,4,5,5,6,6,7,8,9]
+def analyze_text(text):
+    """Return word count, character count, and average word length."""
+    words = text.split()
+    word_count = len(words)
+    char_count = len(text)
+    avg_length = sum(len(w) for w in words) / word_count if words else 0
+    return word_count, char_count, avg_length
 
-resulting_list = []
-for num in list1:
-    if num in resulting_list:
-        continue
-    else:
-        if num in list2:
-            resulting_list.append(num)
-
-print(len(resulting_list)) #Result = 3
+# Unpack the returned tuple
+words, chars, avg = analyze_text("Hello world from Python")
+print(f"Words: {words}, Chars: {chars}, Avg length: {avg:.2f}")
 ----
 
-== Lists
+Output: `Words: 4, Chars: 23, Avg length: 5.00`
 
-=== Stacks and Queues
+[.notes]
+--
+Returning tuples is a clean way to return related pieces of information without creating a class or dictionary.
 
-- By this point you should feel comfortable using lists in your code.
-- You should also be comfortable in understanding how the way that we think about lists guides the manner in which we utilize those lists in our code. 
+The caller can unpack into meaningfully named variables, making the code readable.
+--
 
-=== Stacks
+=== 🔮 Predict: Tuple Operations
 
-* Lists that contain objects that are added and removed using the LIFO principle (Last in, first out). 
-    ** Theoretically speaking we “push” things to the end/top of a list and then “pop” the items off the end/top of the list.
-    ** Ex. A stack of plates
+[source,python]
+----
+t = (1, 2, 3, 2, 1)
 
-=== Stacks Continued
+len(t)           # ___
+t.count(2)       # ___
+t.index(3)       # ___
+t + (4, 5)       # ___
+t[1:4]           # ___
+----
 
-* We can simulate stacks by using the append and pop methods of list objects
-* Uses:
-    ** Holding and using most recent data elements for use in algorithms where that may be important. 
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
 
-=== Queues
+[%step]
+--
+[source,python]
+----
+len(t)           # 5
+t.count(2)       # 2 (appears twice)
+t.index(3)       # 2 (first occurrence at index 2)
+t + (4, 5)       # (1, 2, 3, 2, 1, 4, 5) - new tuple
+t[1:4]           # (2, 3, 2) - slicing works!
+----
+--
 
-* Lists that contain objects that are added and removed using the FIFO principle (First in, first out). 
-    ** Theoretically speaking we “enqueue” things to the top/end of a list and then “dequeue” the items off the beginning of the list.
-    ** Ex. A line of people waiting at the DMV.
+[.notes]
+--
+Tuples support many list operations: indexing, slicing, concatenation, `len()`, `count()`, `index()`.
 
-=== Queues Continued
+What they DON'T support: `append()`, `remove()`, `pop()`, or any method that would modify the tuple.
 
-* We can simulate stacks by using the append and pop(0) methods of list objects
-* Uses:
-    ** Using collections where the order of the item has something to do with the FIFO principle such as algorithms for determining wait times.
+Note that `t + (4, 5)` creates a NEW tuple; it doesn't modify `t`.
+--
+
+=== When to Use Tuples
+
+Use tuples when:
+
+* Data shouldn't change (coordinates, RGB colors)
+* Returning multiple values from a function
+* Using as dictionary keys (lists can't be keys!)
+* Unpacking in `for` loops: `for name, age in people:`
+
+[source,python]
+----
+# Tuples as dictionary keys
+locations = {
+    (40.7128, -74.0060): "New York",
+    (51.5074, -0.1278): "London"
+}
+
+# Iterating with unpacking
+for coords, city in locations.items():
+    print(f"{city} is at {coords}")
+----
+
+[.notes]
+--
+The dictionary key example is important. You CAN'T use lists as dictionary keys because they're mutable. Tuples work because they're immutable.
+
+The iteration example shows tuple unpacking in a for loop—very common when processing structured data.
+--
+
+=== Tuples: Summary
+
+* Tuples are *immutable* ordered sequences
+* Created with `()` or just commas: `x, y, z`
+* Support indexing, slicing, `count()`, `index()`
+* *Cannot* be modified after creation
+* Great for multiple return values and dict keys
+* Hashable (unlike lists)
+
+[.notes]
+--
+Transition: "Now let's look at sets—a completely different kind of collection."
+--
+
+== Sets
+
+=== What Is a Set?
+
+A set is an *unordered* collection of *unique* elements.
+
+[source,python]
+----
+# Creating sets
+colors = {"red", "green", "blue"}
+numbers = {1, 2, 3, 2, 1}    # Duplicates removed!
+print(numbers)               # {1, 2, 3}
+
+# From other sequences
+letters = set("hello")       # {'h', 'e', 'l', 'o'}
+
+# Empty set (NOT {}, that's an empty dict!)
+empty = set()
+----
+
+[.notes]
+--
+Sets come from mathematics. Key properties:
+- No duplicates (each element appears once)
+- No order (can't index with [0])
+- Very fast membership testing
+
+The `set("hello")` example shows automatic deduplication—'l' only appears once.
+
+IMPORTANT: `{}` creates an empty dictionary, NOT an empty set! Use `set()` for empty sets.
+--
+
+=== Sets vs. Other Sequence Types
+
+[cols="1,1,1,1", frame=none]
+|===
+| Feature | Set | List | Tuple
+
+| Ordered | *No* | Yes | Yes
+| Indexed | *No* | Yes | Yes
+| Duplicates | *No* | Yes | Yes
+| Mutable | Yes | Yes | No
+| Fast `in` | *Yes* | No | No
+|===
+
+[.notes]
+--
+Sets are fundamentally different from lists and tuples:
+- No order means you can't access by index
+- No duplicates means each element appears exactly once
+- Fast membership testing is the key advantage
+
+Sets are optimized for answering "is X in this collection?" quickly.
+--
+
+=== Common Mistake: Empty Set vs. Empty Dict
+
+[source,python]
+----
+# This creates an empty DICTIONARY, not a set!
+wrong = {}
+print(type(wrong))    # <class 'dict'>
+
+# This creates an empty SET
+correct = set()
+print(type(correct))  # <class 'set'>
+----
+
+*Use `set()` to create an empty set. `{}` is always an empty dictionary.*
+
+[.notes]
+--
+This is a historical quirk of Python. Dictionaries came first and got the `{}` syntax. Sets were added later.
+
+When you see `{}`, think "dictionary" unless there are elements inside without colons.
+
+`{1, 2, 3}` is a set. `{1: "a", 2: "b"}` is a dictionary.
+--
+
+=== Use Cases for Sets
+
+Sets are ideal when you need to:
+
+* *Remove duplicates* from a collection
+* *Test membership* quickly ("Is X in this collection?")
+* *Find common elements* between collections
+* *Find differences* between collections
+
+[source,python]
+----
+# Remove duplicates from a list
+names = ["Alice", "Bob", "Alice", "Carol", "Bob"]
+unique_names = list(set(names))  # ["Alice", "Bob", "Carol"]
+
+# Fast membership testing
+valid_users = {"alice", "bob", "carol"}
+if username.lower() in valid_users:
+    print("Access granted")
+----
+
+[.notes]
+--
+These are the four main use cases for sets.
+
+Converting a list to a set and back is the fastest way to remove duplicates (though it loses order).
+
+For membership testing, sets are dramatically faster than lists for large collections.
+--
+
+=== Why Sets Are Fast
+
+Sets use *hashing* for near-instant lookups.
+
+[source,python]
+----
+# Checking membership in a list: O(n) - slow!
+big_list = list(range(1000000))
+999999 in big_list    # Checks each element
+
+# Checking membership in a set: O(1) - fast!
+big_set = set(range(1000000))
+999999 in big_set     # Direct lookup via hash
+----
+
+*For large collections, sets can be 1000x faster for membership testing.*
+
+[.notes]
+--
+The `in` operator is the key operation.
+
+For a list, Python must potentially check every element. For a set, Python computes a hash and jumps directly to the location.
+
+If you're checking membership frequently, convert to a set first!
+--
+
+=== Set Operations: Union
+
+*Union* combines all elements from both sets.
+
+[source,python]
+----
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Union: all elements from both sets
+a | b              # {1, 2, 3, 4, 5, 6}
+a.union(b)         # Same thing
+----
+
+image::set_union.png[Set Union, 300]
+
+Think: "Everything in either A *or* B (or both)"
+
+[.notes]
+--
+Union (|): "Everything in either set"
+
+The method name (`union`) and operator (`|`) do the same thing. Use whichever is clearer in context.
+
+Union creates a new set; it doesn't modify the originals.
+--
+
+=== Set Operations: Intersection
+
+*Intersection* finds elements common to both sets.
+
+[source,python]
+----
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Intersection: elements in both sets
+a & b              # {3, 4}
+a.intersection(b)  # Same thing
+----
+
+image::set_intersection.png[Set Intersection, 300]
+
+Think: "Only things in *both* A *and* B"
+
+[.notes]
+--
+Intersection (&): "Only things in both sets"
+
+This is useful for finding common elements between two collections.
+--
+
+=== Set Operations: Difference
+
+*Difference* finds elements in one set but not the other.
+
+[source,python]
+----
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Difference: elements in a but not in b
+a - b              # {1, 2}
+a.difference(b)    # Same thing
+
+# Note: order matters!
+b - a              # {5, 6}
+----
+
+image::set_difference.png[Set Difference, 300]
+
+Think: "Things in A that *aren't* in B"
+
+[.notes]
+--
+Difference (-): "Things in the first set that aren't in the second"
+
+Important: `a - b` is different from `b - a`! Order matters for difference.
+--
+
+=== Set Operations: Symmetric Difference
+
+*Symmetric difference* finds elements in either set, but not both.
+
+[source,python]
+----
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Symmetric difference: in either but not both
+a ^ b              # {1, 2, 5, 6}
+a.symmetric_difference(b)
+----
+
+image::set_symmetric_diff.png[Symmetric Difference, 300]
+
+Think: "Things in A *or* B, but *not* in both"
+
+[.notes]
+--
+Symmetric difference (^): "Things in one or the other, but not both"
+
+This is like XOR for sets—it excludes the overlap.
+--
+
+=== Building Sets with Operations
+
+[source,python]
+----
+# Start with one set
+languages = {"Python", "Java"}
+
+# Add elements
+languages.add("JavaScript")
+# {"Python", "Java", "JavaScript"}
+
+# Add multiple elements (union in place)
+languages.update(["Ruby", "Go"])
+# {"Python", "Java", "JavaScript", "Ruby", "Go"}
+
+# Remove elements
+languages.remove("Java")      # Raises KeyError if not found
+languages.discard("Rust")     # No error if not found
+----
+
+[.notes]
+--
+Unlike tuples, sets ARE mutable. You can add and remove elements.
+
+`remove()` vs `discard()`: Use `remove()` when the element should exist (error = bug). Use `discard()` when it might not exist (error = annoying).
+--
+
+=== 🔮 Predict: Set Operations
+
+[source,python]
+----
+enrolled = {"Alice", "Bob", "Carol"}
+submitted = {"Bob", "Carol", "Dave"}
+
+# Who submitted but isn't enrolled?
+submitted - enrolled     # ___
+
+# Who is enrolled and submitted?
+enrolled & submitted     # ___
+
+# Who either enrolled or submitted (or both)?
+enrolled | submitted     # ___
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+[source,python]
+----
+submitted - enrolled     # {"Dave"}
+enrolled & submitted     # {"Bob", "Carol"}
+enrolled | submitted     # {"Alice", "Bob", "Carol", "Dave"}
+----
+--
+
+[.notes]
+--
+This is a practical example: tracking course enrollment and assignment submission.
+
+- Difference finds Dave, who submitted but wasn't enrolled
+- Intersection finds who both enrolled AND submitted
+- Union finds everyone involved in either way
+--
+
+=== Try It: Finding Unique Words
+
+Given two sentences, use sets to find:
+
+1. All unique words (combined)
+2. Words that appear in both
+3. Words unique to the first sentence
+
+[source,python]
+----
+s1 = "the quick brown fox"
+s2 = "the lazy brown dog"
+----
+
+[%step]
+--
+[source,python]
+----
+words1 = set(s1.split())  # {"the", "quick", "brown", "fox"}
+words2 = set(s2.split())  # {"the", "lazy", "brown", "dog"}
+
+all_words = words1 | words2      # Union
+common = words1 & words2         # {"the", "brown"}
+only_first = words1 - words2     # {"quick", "fox"}
+----
+--
+
+[.notes]
+--
+Give students 3-4 minutes to work on this.
+
+This demonstrates practical use of set operations for text analysis.
+--
+
+=== Sets: Summary
+
+* Sets are *unordered* collections of *unique* elements
+* No indexing (can't use `[]`)
+* *Fast membership testing* with `in`
+* Set operations: `|` (union), `&` (intersection), `-` (difference), `^` (symmetric difference)
+* Great for removing duplicates and comparing collections
+
+[.notes]
+--
+Transition: "Now let's look at using lists in special ways—as stacks and queues."
+--
+
+== Lists as Stacks and Queues
+
+=== What Are Stacks and Queues?
+
+Two fundamental ways to organize data:
+
+[cols="1,1", frame=none]
+|===
+| *Stack* | *Queue*
+
+| Last In, First Out (LIFO)
+| First In, First Out (FIFO)
+
+| Like a stack of plates
+| Like a line at a store
+
+| Add/remove from *top* only
+| Add at *back*, remove from *front*
+|===
+
+[.notes]
+--
+These are abstract data structures that describe how items are added and removed.
+
+Stack: Think of a stack of plates—you add to the top and take from the top. The last plate you put on is the first one you take off.
+
+Queue: Think of a line at a store—first person in line is first to be served.
+--
+
+=== Stacks: Last In, First Out (LIFO)
+
+[source,python]
+----
+# Using a list as a stack
+stack = []
+
+# Push: add to top
+stack.append("first")
+stack.append("second")
+stack.append("third")
+print(stack)          # ["first", "second", "third"]
+
+# Pop: remove from top
+top = stack.pop()     # "third"
+print(stack)          # ["first", "second"]
+----
+
+*`append()` pushes, `pop()` pops—both operate on the end.*
+
+[.notes]
+--
+Lists make natural stacks because `append()` and `pop()` both work on the end of the list, which is efficient.
+
+The key insight: the last item added is the first one removed.
+--
+
+=== Stack Visualization
+
+[source]
+----
+Operation         Stack State
+---------         -----------
+stack = []        []
+
+append("A")       ["A"]
+                      ↑ top
+
+append("B")       ["A", "B"]
+                           ↑ top
+
+append("C")       ["A", "B", "C"]
+                                ↑ top
+
+pop() → "C"       ["A", "B"]
+                          ↑ top
+
+pop() → "B"       ["A"]
+                      ↑ top
+----
+
+[.notes]
+--
+Walk through this visualization:
+- Items are always added to and removed from the top (right side)
+- "C" was added last, so it's removed first
+- "A" was added first, so it would be removed last
+--
+
+=== Use Cases for Stacks
+
+* *Undo functionality* — Each action goes on the stack; undo pops the most recent
+* *Browser history* — Back button pops the most recent page
+* *Function call stack* — Python tracks function calls this way
+* *Expression evaluation* — Parsing mathematical expressions
+
+[source,python]
+----
+# Simple undo system
+actions = []
+
+def do_action(action):
+    actions.append(action)
+    print(f"Did: {action}")
+
+def undo():
+    if actions:
+        undone = actions.pop()
+        print(f"Undone: {undone}")
+----
+
+[.notes]
+--
+Stacks are used constantly in programming:
+- Your editor's undo is a stack
+- When Python calls a function, it pushes info onto the call stack
+- When the function returns, it pops from the stack
+
+This is why you see "stack trace" in error messages!
+--
+
+=== Queues: First In, First Out (FIFO)
+
+[source,python]
+----
+from collections import deque
+
+# Using deque as a queue (more efficient than list)
+queue = deque()
+
+# Enqueue: add to back
+queue.append("first")
+queue.append("second")
+queue.append("third")
+print(queue)          # deque(['first', 'second', 'third'])
+
+# Dequeue: remove from front
+front = queue.popleft()  # "first"
+print(queue)             # deque(['second', 'third'])
+----
+
+*`append()` adds to back, `popleft()` removes from front.*
+
+[.notes]
+--
+For queues, we use `collections.deque` (double-ended queue) because removing from the front of a list is slow (everything must shift).
+
+`deque` is optimized for fast operations at both ends.
+--
+
+=== Why Use deque for Queues?
+
+[source,python]
+----
+# Using a list as a queue (SLOW!)
+queue = []
+queue.append("a")
+queue.pop(0)        # O(n) - must shift all elements!
+
+# Using deque as a queue (FAST!)
+from collections import deque
+queue = deque()
+queue.append("a")
+queue.popleft()     # O(1) - no shifting needed!
+----
+
+*`list.pop(0)` is O(n) because all elements must shift.*
+
+*`deque.popleft()` is O(1) because it's designed for this.*
+
+[.notes]
+--
+This is an important efficiency consideration.
+
+When you remove from the front of a list, every other element must shift left to fill the gap. For a list of 1 million items, that's 1 million shifts!
+
+Deque uses a different internal structure that allows fast operations at both ends.
+--
+
+=== Queue Visualization
+
+[source]
+----
+Operation          Queue State
+---------          -----------
+queue = deque()    []
+
+append("A")        [A]
+                   front → A ← back
+
+append("B")        [A, B]
+                   front → A   B ← back
+
+append("C")        [A, B, C]
+                   front → A   B   C ← back
+
+popleft() → "A"    [B, C]
+                   front → B   C ← back
+
+popleft() → "B"    [C]
+                   front → C ← back
+----
+
+[.notes]
+--
+Walk through this visualization:
+- Items enter at the back (right side)
+- Items exit from the front (left side)
+- "A" was added first, so it's removed first
+- This is like a line at a store
+--
+
+=== Use Cases for Queues
+
+* *Task scheduling* — Process jobs in the order received
+* *Print queue* — Documents print in submission order
+* *Message queues* — Handle messages in arrival order
+* *Breadth-first search* — Graph traversal algorithm
+
+[source,python]
+----
+from collections import deque
+
+# Simple task processor
+tasks = deque()
+
+def add_task(task):
+    tasks.append(task)
+    print(f"Added: {task}")
+
+def process_next():
+    if tasks:
+        task = tasks.popleft()
+        print(f"Processing: {task}")
+----
+
+[.notes]
+--
+Queues ensure fairness—first come, first served.
+
+This is why your operating system uses queues for scheduling tasks, and printers use queues for print jobs.
+--
+
+=== 🔮 Predict: Stack or Queue?
+
+Which data structure would you use for each scenario?
+
+1. Browser back button
+2. Customer service hotline (hold music)
+3. Redo functionality in a text editor
+4. Processing incoming network requests
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+1. Browser back button → *Stack* (most recent page first)
+2. Customer service → *Queue* (first caller served first)
+3. Redo functionality → *Stack* (most recent undo first)
+4. Network requests → *Queue* (process in order received)
+--
+
+[.notes]
+--
+This helps students think about which structure fits which problem.
+
+The key question: Do you want to handle the most recent item first (stack) or the oldest item first (queue)?
+--
+
+=== Stacks and Queues: Summary
+
+[cols="1,1", frame=none]
+|===
+| *Stack (LIFO)* | *Queue (FIFO)*
+
+| `list.append()` to push
+| `deque.append()` to enqueue
+
+| `list.pop()` to pop
+| `deque.popleft()` to dequeue
+
+| Last in, first out
+| First in, first out
+
+| Undo, back button, call stack
+| Task scheduling, print jobs
+|===
+
+[.notes]
+--
+Transition: "Now let's look at a powerful way to create lists—list comprehensions."
+--
 
 == List Comprehensions
 
-- List comprehensions are expressions that evaluate to lists 
-- Often are faster than iterating over one list to build another list
+=== What Is a List Comprehension?
 
-[source, python]
+A *concise* way to create lists from other sequences.
+
+[source,python]
 ----
-numbers = [1,2,3,4]
-squares = [n**2 for n in numbers]
+# Traditional approach
+squares = []
+for x in range(10):
+    squares.append(x ** 2)
 
-print(squares) # Output: [1,4,9,16]
-----
-
-=== Syntax
-* A list comprehension consists of 
-    ** brackets containing an expression 
-    ** followed by a for clause (iterating over some iterable)
-    ** then zero or more for or if clauses.
-
-[source, python]
-----
-list_a = [1,2,3]
-cube_list = [ [a**2, a**3] for a in list_a]
-
-print(cube_list) # Output: [[1,1], [4,8], [9,27]]
+# List comprehension (same result!)
+squares = [x ** 2 for x in range(10)]
 ----
 
-=== List Comprehensions - Concise Lists
-- List comprehensions can help make code shorter and more concise
-- Consider the following example:
+Both produce: `[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]`
 
-[source, python]
-----
-[(x,y) for x in [1,2,3] for y in [3,1,4] if x != y]
+*One line instead of three!*
 
-combs = []
-for x in [1,2,3]:
-    for y in [3,1,4]:
-        if x != y:
-            combs.append((x,y))
+[.notes]
+--
+List comprehensions are a Python idiom for creating lists concisely.
+
+They're not just shorter—they're often faster because Python can optimize them internally.
+
+Read it as: "Create a list of x squared, for each x in range(10)"
+--
+
+=== Anatomy of a List Comprehension
+
+[source]
 ----
+[expression for item in iterable]
+----
+
+[source,python]
+----
+[x ** 2 for x in range(10)]
+ ↑       ↑    ↑
+ |       |    └── Source of items
+ |       └─────── Loop variable
+ └─────────────── What to put in the list
+----
+
+[.notes]
+--
+Break down the structure:
+1. Expression: What to compute for each item
+2. for item in iterable: Where the items come from
+3. Square brackets: This creates a list
+
+The expression can be any valid Python expression using the loop variable.
+--
+
+=== Adding Conditions (Filtering)
+
+[source,python]
+----
+# Only include even numbers
+evens = [x for x in range(10) if x % 2 == 0]
+# [0, 2, 4, 6, 8]
+
+# Only include words that start with 'a'
+words = ["apple", "banana", "apricot", "cherry"]
+a_words = [w for w in words if w.startswith("a")]
+# ["apple", "apricot"]
+----
+
+*Add `if condition` at the end to filter.*
+
+[.notes]
+--
+The `if` clause acts as a filter—only items that pass the condition are included.
+
+Read it as: "Create a list of x, for each x in range(10), if x is even"
+
+This replaces the pattern:
+```python
+result = []
+for x in items:
+    if condition:
+        result.append(x)
+```
+--
+
+=== Transforming and Filtering Together
+
+[source,python]
+----
+# Get lengths of words longer than 3 characters
+words = ["hi", "hello", "hey", "howdy"]
+lengths = [len(w) for w in words if len(w) > 3]
+# [5, 5]  (lengths of "hello" and "howdy")
+
+# Uppercase only long names
+names = ["Jo", "Alice", "Bob", "Elizabeth"]
+upper_long = [n.upper() for n in names if len(n) > 3]
+# ["ALICE", "ELIZABETH"]
+----
+
+[.notes]
+--
+You can both transform (the expression) and filter (the if clause) in the same comprehension.
+
+The expression `len(w)` transforms each word to its length.
+The condition `len(w) > 3` filters to only include long words.
+--
+
+=== Synthesizing Lists from Multiple Sources
+
+[source,python]
+----
+# Nested loops in comprehensions
+pairs = [(x, y) for x in [1, 2, 3] for y in ['a', 'b']]
+# [(1, 'a'), (1, 'b'), (2, 'a'), (2, 'b'), (3, 'a'), (3, 'b')]
+
+# Equivalent to:
+pairs = []
+for x in [1, 2, 3]:
+    for y in ['a', 'b']:
+        pairs.append((x, y))
+----
+
+*Multiple `for` clauses create nested loops.*
+
+[.notes]
+--
+You can have multiple for clauses in a comprehension.
+
+The order is: outer loop first, inner loop second.
+
+This is useful for combining elements from multiple sources.
+
+Be careful: comprehensions with many nested loops can become hard to read. If it gets complex, use regular loops.
+--
+
+=== 🔮 Predict: List Comprehensions
+
+[source,python]
+----
+nums = [1, 2, 3, 4, 5]
+
+[n * 2 for n in nums]                    # ___
+
+[n for n in nums if n > 2]               # ___
+
+[n ** 2 for n in nums if n % 2 == 0]     # ___
+
+["even" if n % 2 == 0 else "odd" for n in nums]  # ___
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+--
+[source,python]
+----
+[n * 2 for n in nums]                    # [2, 4, 6, 8, 10]
+[n for n in nums if n > 2]               # [3, 4, 5]
+[n ** 2 for n in nums if n % 2 == 0]     # [4, 16]
+["even" if n % 2 == 0 else "odd" for n in nums]  # ["odd", "even", "odd", "even", "odd"]
+----
+--
+
+[.notes]
+--
+The last one is tricky! The conditional expression `"even" if n % 2 == 0 else "odd"` is part of the expression, not a filter. Every element is included; the expression just varies.
+
+Compare:
+- `[x for x in nums if condition]` — filters which items to include
+- `[a if condition else b for x in nums]` — includes all items, but chooses expression
+--
+
+=== Other Comprehensions
+
+Python also has *dict comprehensions* and *set comprehensions*:
+
+[source,python]
+----
+# Dict comprehension
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Set comprehension
+unique_lengths = {len(w) for w in ["hi", "hello", "hey"]}
+# {2, 5, 3}
+
+# Generator expression (lazy evaluation)
+gen = (x**2 for x in range(1000000))  # Doesn't compute yet!
+----
+
+[.notes]
+--
+Dict comprehensions use `{key: value for ...}` syntax.
+
+Set comprehensions use `{value for ...}` syntax—looks like a set literal.
+
+Generator expressions use parentheses—they don't create the whole list in memory, which is useful for large data.
+--
+
+=== List Comprehensions: Summary
+
+* Concise syntax: `[expression for item in iterable]`
+* Add filtering: `[expr for item in iterable if condition]`
+* Can have multiple `for` clauses (nested loops)
+* Also: dict comprehensions `{k: v for ...}` and set comprehensions `{x for ...}`
+* Keep them readable—use regular loops for complex logic
+
+[.notes]
+--
+Transition: "Now let's look at dictionaries in more depth—especially for counting and indexing."
+--
 
 == Dictionaries
 
-* Dictionaries are unordered collections of key/value pairs
-* We can create dictionaries with:
-    ** dict() 
-    ** curly braces
+=== Dictionary Recap
 
-=== We can access data in dictionaries:
-* By referencing the a key
-    ** dictionary[key]
-* Using built in methods
-    ** keys() - returns list of all keys in dictionary
-    ** values() - returns a list of all values in dictionary
-    ** items() - returns a list of tuples containing key value pairs
+Dictionaries store *key-value pairs* for fast lookup.
 
-
-=== We can remove data from the dictionary using:
-* pop() - method
-    ** returns dictionary
-* del() - built in function
-
-
-=== Dictionary Items
-
-* Similar to sets, dictionaries in Python are implemented using hash tables.
-    ** In this case the keys are hashed and those corresponding hash codes then point to an unhashed object (the value)
-* Only hashable (immutable) objects can be keys.
-* Values can be either mutable or immutable.
-
-=== Important Things to Know
-
-* Dictionaries Can Be Values in Other Dictionaries
-    ** Remember that when you use bracket notation to access the value of a key in a dictionary, the expression evaluates to the value itself.
-* One common use for dictionaries is to use them to count unique values in a sequence data type.
-* One common use for dictionaries is to use them to index data.
-
-=== Here is an Example
-
-[source, python]
+[source,python]
 ----
-Dict = { 'Dict1': {"1": 'G', "2": 'F', "3": 'G'},
-         'Dict2': {'Name': 'INST326', "1": ["1", "2"]} }
+# Creating dictionaries
+person = {"name": "Alice", "age": 25}
+empty = {}
+also_empty = dict()
 
-Dict[“Dict1”] #{1: 'G', 2: 'F', 3: 'G'}
-Dict[“Dict1”]["2"] #“F”
+# Accessing values
+name = person["name"]      # "Alice"
+age = person.get("age")    # 25
+missing = person.get("job", "Unknown")  # "Unknown"
 ----
+
+*Keys must be hashable (immutable). Values can be anything.*
+
+[.notes]
+--
+Quick recap of dictionary basics.
+
+The `.get()` method is safer than `[]` because it doesn't raise KeyError for missing keys.
+--
+
+=== Valid Dictionary Keys
+
+*Keys must be hashable* (immutable types):
+
+[cols="1,1", frame=none]
+|===
+| Valid Keys | Invalid Keys
+
+| Strings: `"name"`
+| Lists: `[1, 2, 3]`
+
+| Numbers: `42`, `3.14`
+| Dictionaries: `{"a": 1}`
+
+| Tuples: `(1, 2)`
+| Sets: `{1, 2, 3}`
+
+| Booleans: `True`, `False`
+| Any mutable type
+|===
+
+[source,python]
+----
+valid = {(1, 2): "point", "name": "test", 42: "answer"}
+
+invalid = {[1, 2]: "list"}  # TypeError: unhashable type: 'list'
+----
+
+[.notes]
+--
+Why must keys be hashable? Dictionaries use hashing internally to look up values quickly. If a key could change, its hash would change, and the dictionary couldn't find it anymore.
+
+This is the same reason lists can't be set elements or dictionary keys.
+--
+
+=== Dictionary Values Can Be Anything
+
+[source,python]
+----
+# Values can be any type
+data = {
+    "name": "Alice",           # string
+    "scores": [85, 92, 78],    # list
+    "address": {               # nested dict
+        "city": "Boston",
+        "zip": "02101"
+    },
+    "active": True,            # boolean
+    "process": lambda x: x*2   # even functions!
+}
+----
+
+[.notes]
+--
+While keys must be hashable, values have no restrictions. You can store lists, other dictionaries, functions—anything.
+
+Nested dictionaries are common for representing structured data like JSON.
+--
+
+=== Counting with Dictionaries
+
+One of the most common patterns: counting occurrences.
+
+[source,python]
+----
+# Count word frequencies
+text = "the cat sat on the mat"
+word_counts = {}
+
+for word in text.split():
+    if word in word_counts:
+        word_counts[word] += 1
+    else:
+        word_counts[word] = 1
+
+print(word_counts)
+# {'the': 2, 'cat': 1, 'sat': 1, 'on': 1, 'mat': 1}
+----
+
+[.notes]
+--
+This is the basic counting pattern:
+1. Check if the key exists
+2. If yes, increment the count
+3. If no, initialize to 1
+
+This pattern is so common that Python provides better ways to do it...
+--
+
+=== Counting: Using .get() Method
+
+[source,python]
+----
+# Cleaner counting with .get()
+text = "the cat sat on the mat"
+word_counts = {}
+
+for word in text.split():
+    word_counts[word] = word_counts.get(word, 0) + 1
+
+print(word_counts)
+# {'the': 2, 'cat': 1, 'sat': 1, 'on': 1, 'mat': 1}
+----
+
+*`.get(key, default)` returns the default if key doesn't exist.*
+
+[.notes]
+--
+This is cleaner because we don't need the if/else.
+
+`.get(word, 0)` returns 0 if the word isn't in the dictionary yet.
+
+Then we add 1 and store the result.
+--
+
+=== Counting: Using collections.Counter
+
+[source,python]
+----
+from collections import Counter
+
+# Easiest counting!
+text = "the cat sat on the mat"
+word_counts = Counter(text.split())
+
+print(word_counts)
+# Counter({'the': 2, 'cat': 1, 'sat': 1, 'on': 1, 'mat': 1})
+
+# Most common elements
+print(word_counts.most_common(2))
+# [('the', 2), ('cat', 1)]
+----
+
+*`Counter` is a specialized dictionary for counting.*
+
+[.notes]
+--
+`Counter` is purpose-built for counting. It:
+- Automatically counts elements
+- Provides `most_common()` method
+- Supports arithmetic operations between counters
+
+For counting tasks, `Counter` is usually the best choice.
+--
+
+=== Counting Elements in a Data File
+
+[source,python]
+----
+from collections import Counter
+
+# Count letter grades in a file
+def count_grades(filename):
+    """Count occurrences of each grade in a file."""
+    with open(filename, "r", encoding="utf-8") as f:
+        grades = [line.strip() for line in f if line.strip()]
+    
+    return Counter(grades)
+
+# Usage
+grade_counts = count_grades("grades.txt")
+print(grade_counts)
+# Counter({'A': 15, 'B': 23, 'C': 12, 'D': 5, 'F': 2})
+
+print(f"Most common: {grade_counts.most_common(1)[0]}")
+# Most common: ('B', 23)
+----
+
+[.notes]
+--
+This combines file reading with counting.
+
+The list comprehension reads all non-empty lines.
+Counter does the counting automatically.
+
+This pattern works for counting any categorical data in files.
+--
+
+=== Indexing with Dictionaries
+
+Another common pattern: grouping/indexing data by a key.
+
+[source,python]
+----
+# Index students by their grade
+students = [
+    ("Alice", "A"),
+    ("Bob", "B"),
+    ("Carol", "A"),
+    ("Dave", "C"),
+    ("Eve", "B")
+]
+
+by_grade = {}
+for name, grade in students:
+    if grade not in by_grade:
+        by_grade[grade] = []
+    by_grade[grade].append(name)
+
+print(by_grade)
+# {'A': ['Alice', 'Carol'], 'B': ['Bob', 'Eve'], 'C': ['Dave']}
+----
+
+[.notes]
+--
+Indexing groups items by some key—here, grouping students by grade.
+
+This pattern is:
+1. Check if key exists
+2. If not, initialize with empty list
+3. Append to the list
+
+Like counting, this pattern is so common that Python provides a better way...
+--
+
+=== Indexing: Using collections.defaultdict
+
+[source,python]
+----
+from collections import defaultdict
+
+# Cleaner indexing with defaultdict
+students = [
+    ("Alice", "A"), ("Bob", "B"), ("Carol", "A"),
+    ("Dave", "C"), ("Eve", "B")
+]
+
+by_grade = defaultdict(list)  # Missing keys auto-create empty lists
+for name, grade in students:
+    by_grade[grade].append(name)
+
+print(dict(by_grade))
+# {'A': ['Alice', 'Carol'], 'B': ['Bob', 'Eve'], 'C': ['Dave']}
+----
+
+*`defaultdict(list)` auto-creates empty lists for missing keys.*
+
+[.notes]
+--
+`defaultdict` takes a factory function that creates default values.
+
+`defaultdict(list)` creates an empty list for any missing key.
+`defaultdict(int)` creates 0 for any missing key (useful for counting).
+`defaultdict(set)` creates an empty set for any missing key.
+
+No more checking if the key exists!
+--
+
+=== Indexing Elements in a Data File
+
+[source,python]
+----
+from collections import defaultdict
+
+def index_by_department(filename):
+    """Index employees by department from a CSV file."""
+    employees_by_dept = defaultdict(list)
+    
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            parts = line.strip().split(",")
+            if len(parts) >= 2:
+                name, department = parts[0], parts[1]
+                employees_by_dept[department].append(name)
+    
+    return dict(employees_by_dept)
+
+# Usage with file: "Alice,Engineering\nBob,Sales\nCarol,Engineering"
+result = index_by_department("employees.csv")
+# {'Engineering': ['Alice', 'Carol'], 'Sales': ['Bob']}
+----
+
+[.notes]
+--
+This combines file reading with indexing.
+
+Each line is parsed, and employees are grouped by department.
+
+The `defaultdict(list)` handles creating new department entries automatically.
+--
+
+=== Try It: Counting and Indexing
+
+Given this data, create:
+1. A count of how many times each color appears
+2. An index of items by their color
+
+[source,python]
+----
+items = [
+    ("apple", "red"),
+    ("banana", "yellow"),
+    ("cherry", "red"),
+    ("lemon", "yellow"),
+    ("grape", "purple")
+]
+----
+
+[%step]
+--
+[source,python]
+----
+from collections import Counter, defaultdict
+
+# Count colors
+color_counts = Counter(color for item, color in items)
+# Counter({'red': 2, 'yellow': 2, 'purple': 1})
+
+# Index by color
+by_color = defaultdict(list)
+for item, color in items:
+    by_color[color].append(item)
+# {'red': ['apple', 'cherry'], 'yellow': ['banana', 'lemon'], 'purple': ['grape']}
+----
+--
+
+[.notes]
+--
+Give students 3-4 minutes to work on this.
+
+The counting uses a generator expression inside Counter.
+The indexing uses the standard defaultdict pattern.
+--
+
+=== Dictionaries: Summary
+
+* Keys must be *hashable* (immutable)
+* Values can be *anything*
+* *Counting pattern*: Use `Counter` for frequency counts
+* *Indexing pattern*: Use `defaultdict(list)` for grouping
+* Both patterns are common in data processing
+
+[.notes]
+--
+Transition: "Now let's look under the hood at how dictionaries actually work—hash maps."
+--
+
+== How Hash Maps Work
+
+=== What Is a Hash Map?
+
+A *hash map* (also called a *hash table*) is the data structure underlying Python dictionaries and sets.
+
+*Key features:*
+
+* Stores key-value pairs
+* Allows *fast* access, insertion, and deletion
+* Uses a *hash function* to determine where to store each item
+
+*Python's `dict` is a hash map.*
+
+[.notes]
+--
+Understanding how hash maps work helps you:
+- Understand why keys must be hashable
+- Know when dictionaries are fast vs slow
+- Debug unexpected behavior
+
+Let's build one from scratch to see how it works.
+--
+
+=== Hash Functions
+
+A *hash function* converts a key into an array index.
+
+[source,python]
+----
+# Python's built-in hash function
+hash("apple")      # Some large integer like 8729374928374
+hash("banana")     # Different integer
+hash(42)           # 42 (small integers hash to themselves)
+
+# To get an array index, use modulo
+size = 5
+index = hash("apple") % size   # 0, 1, 2, 3, or 4
+----
+
+*The same key always produces the same hash.*
+
+[.notes]
+--
+The hash function is the key to fast lookups.
+
+Instead of searching through all items, we:
+1. Compute the hash of the key
+2. Use modulo to get an index in our array
+3. Go directly to that index
+
+This is O(1) instead of O(n)!
+--
+
+=== Hash Map Structure
+
+A hash map is an array of *buckets*. Each bucket can hold key-value pairs.
+
+[source]
+----
+Hash Table with 3 buckets:
+
+Index 0: [  ]  ← empty bucket
+Index 1: [  ]  ← empty bucket  
+Index 2: [  ]  ← empty bucket
+----
+
+[source,python]
+----
+class HashTable:
+    def __init__(self, size):
+        self.size = size
+        self.hash_table = [[] for _ in range(size)]
+----
+
+[.notes]
+--
+We create an array of empty lists (buckets).
+
+The size determines how many buckets we have. More buckets = fewer collisions, but more memory.
+
+Each bucket is a list that can hold multiple items (for handling collisions).
+--
+
+=== Inserting: Step by Step
+
+Let's insert `"apple": 10` into a hash table of size 3.
+
+[source]
+----
+Step 1: Compute hash
+   hash("apple") = 8729374928374 (example)
+
+Step 2: Get bucket index
+   8729374928374 % 3 = 1
+
+Step 3: Store in bucket 1
+   Index 0: [  ]
+   Index 1: [("apple", 10)]  ← stored here!
+   Index 2: [  ]
+----
+
+[source,python]
+----
+def set_val(self, key, val):
+    hashed_key = hash(key) % self.size
+    bucket = self.hash_table[hashed_key]
+    bucket.append((key, val))
+----
+
+[.notes]
+--
+Walk through each step:
+1. Hash the key to get a large integer
+2. Use modulo to get an index within our array
+3. Add the key-value pair to that bucket
+
+This is the basic insertion. We'll refine it to handle updates.
+--
+
+=== Inserting Multiple Items
+
+[source]
+----
+Insert "apple": 10    (hash % 3 = 1)
+Insert "banana": 20   (hash % 3 = 2)
+Insert "cherry": 30   (hash % 3 = 0)
+
+Result:
+   Index 0: [("cherry", 30)]
+   Index 1: [("apple", 10)]
+   Index 2: [("banana", 20)]
+----
+
+Each item lands in a different bucket based on its hash.
+
+[.notes]
+--
+When different keys hash to different indices, each bucket has at most one item.
+
+Lookup is fast: hash the key, go directly to the bucket, return the value.
+
+But what happens when two keys hash to the same index?
+--
+
+=== Collisions: When Keys Hash to the Same Index
+
+[source]
+----
+Insert "apple": 10    (hash % 3 = 1)
+Insert "date": 40     (hash % 3 = 1)  ← Same bucket!
+
+Result:
+   Index 0: [("cherry", 30)]
+   Index 1: [("apple", 10), ("date", 40)]  ← Two items!
+   Index 2: [("banana", 20)]
+----
+
+*Collision:* Two keys map to the same bucket.
+
+*Solution:* Store multiple items in each bucket (chaining).
+
+[.notes]
+--
+Collisions are inevitable—we're mapping infinite possible keys to a finite number of buckets.
+
+"Chaining" means we store a list at each bucket. When there's a collision, we add to the list.
+
+To find an item, we hash to the bucket, then search the list.
+--
+
+=== Handling Collisions in Code
+
+[source,python]
+----
+def set_val(self, key, val):
+    hashed_key = hash(key) % self.size
+    bucket = self.hash_table[hashed_key]
+    
+    # Check if key already exists (update)
+    for index, (record_key, _) in enumerate(bucket):
+        if record_key == key:
+            bucket[index] = (key, val)  # Update existing
+            return
+    
+    # Key doesn't exist, add new
+    bucket.append((key, val))
+----
+
+[.notes]
+--
+The full insertion logic:
+1. Find the bucket
+2. Search the bucket for the key
+3. If found, update the value
+4. If not found, append a new pair
+
+This handles both new insertions and updates.
+--
+
+=== Retrieving Values
+
+[source]
+----
+Get value for "date":
+   Step 1: hash("date") % 3 = 1
+   Step 2: Go to bucket 1
+   Step 3: Search bucket: [("apple", 10), ("date", 40)]
+   Step 4: Found "date" → return 40
+----
+
+[source,python]
+----
+def get_val(self, key):
+    hashed_key = hash(key) % self.size
+    bucket = self.hash_table[hashed_key]
+    
+    for record_key, record_val in bucket:
+        if record_key == key:
+            return record_val
+    
+    return "No record found"
+----
+
+[.notes]
+--
+Retrieval is similar:
+1. Hash to find the bucket
+2. Search the bucket for the key
+3. Return the value if found
+
+If there are few collisions, the bucket is small and search is fast.
+--
+
+=== Deleting Values
+
+[source]
+----
+Delete "apple":
+   Step 1: hash("apple") % 3 = 1
+   Step 2: Go to bucket 1: [("apple", 10), ("date", 40)]
+   Step 3: Find "apple", remove it
+   Step 4: Bucket now: [("date", 40)]
+----
+
+[source,python]
+----
+def delete_val(self, key):
+    hashed_key = hash(key) % self.size
+    bucket = self.hash_table[hashed_key]
+    
+    for index, (record_key, _) in enumerate(bucket):
+        if record_key == key:
+            bucket.pop(index)
+            return
+----
+
+[.notes]
+--
+Deletion:
+1. Hash to find the bucket
+2. Search for the key
+3. Remove the item from the bucket
+
+Note: We don't need to shift other items between buckets.
+--
+
+=== Complete HashTable Implementation
+
+[source,python]
+----
+class HashTable:
+    def __init__(self, size):
+        self.size = size
+        self.hash_table = [[] for _ in range(size)]
+
+    def set_val(self, key, val):
+        hashed_key = hash(key) % self.size
+        bucket = self.hash_table[hashed_key]
+        for index, (record_key, _) in enumerate(bucket):
+            if record_key == key:
+                bucket[index] = (key, val)
+                return
+        bucket.append((key, val))
+
+    def get_val(self, key):
+        hashed_key = hash(key) % self.size
+        bucket = self.hash_table[hashed_key]
+        for record_key, record_val in bucket:
+            if record_key == key:
+                return record_val
+        return "No record found"
+
+    def delete_val(self, key):
+        hashed_key = hash(key) % self.size
+        bucket = self.hash_table[hashed_key]
+        for index, (record_key, _) in enumerate(bucket):
+            if record_key == key:
+                bucket.pop(index)
+                return
+----
+
+[.notes]
+--
+This is a complete working hash table.
+
+Python's built-in dict is more sophisticated (dynamic resizing, optimizations), but the core idea is the same.
+--
+
+=== Using Our HashTable
+
+[source,python]
+----
+ht = HashTable(3)
+
+ht.set_val('apple', 10)
+ht.set_val('banana', 20)
+ht.set_val('cherry', 30)
+
+print("Value for 'banana':", ht.get_val('banana'))  # 20
+print("Value for 'apple':", ht.get_val('apple'))    # 10
+
+ht.set_val('apple', 50)  # Update existing key
+print("Updated apple:", ht.get_val('apple'))        # 50
+
+ht.delete_val('banana')
+print("After deletion:", ht.get_val('banana'))      # No record found
+----
+
+[.notes]
+--
+Walk through each operation:
+- Insert three items
+- Retrieve values (direct lookup)
+- Update an existing key
+- Delete a key and verify it's gone
+--
+
+=== Hash Map Performance
+
+[cols="1,1,1", frame=none]
+|===
+| Operation | Average | Worst Case
+
+| Insert | O(1) | O(n)
+| Lookup | O(1) | O(n)
+| Delete | O(1) | O(n)
+|===
+
+*Average case is constant time!* 
+
+Worst case happens when all keys hash to the same bucket (everything in one list).
+
+[.notes]
+--
+This is why dictionaries are so fast—most operations are O(1).
+
+The worst case is rare with a good hash function and enough buckets.
+
+Python's dict handles this by resizing when the table gets too full.
+--
+
+=== Why Keys Must Be Hashable
+
+[source,python]
+----
+# This works
+d = {(1, 2): "tuple key"}
+
+# This fails!
+d = {[1, 2]: "list key"}  # TypeError: unhashable type: 'list'
+----
+
+*If a key could change, its hash would change, and we couldn't find it!*
+
+[source,python]
+----
+# Imagine if this worked (it doesn't!)
+key = [1, 2]
+d = {key: "value"}    # Stored at hash([1, 2]) % size
+key.append(3)         # Now key is [1, 2, 3]
+# d[key] would look at hash([1, 2, 3]) % size — wrong bucket!
+----
+
+[.notes]
+--
+This is the deep reason why dictionary keys must be immutable.
+
+The hash of a key determines where it's stored. If the key changes, the hash changes, and we can't find the value anymore.
+
+Tuples are immutable, so their hash never changes. Lists can change, so they can't be hashed reliably.
+--
+
+=== Hash Maps: Summary
+
+* Hash maps provide *fast key-value storage* (O(1) average)
+* *Hash function* converts keys to array indices
+* *Collisions* handled by chaining (lists in buckets)
+* Keys must be *hashable* (immutable) so their hash doesn't change
+* Python's `dict` and `set` are hash maps internally
+
+[.notes]
+--
+Transition: "Let's bring everything together with a comprehensive practice problem."
+--
+
+== 📋 Key Takeaways
+
+[cols="1,1", frame=none]
+|===
+| Tuples | Immutable sequences; great for multiple returns, dict keys
+| Sets | Unordered, unique elements; fast membership testing
+| Set Operations | Union `\|`, Intersection `&`, Difference `-`
+| Stacks | LIFO with `append()`/`pop()`
+| Queues | FIFO with `deque.append()`/`popleft()`
+| List Comprehensions | Concise list creation `[expr for x in iter]`
+| Counting | Use `Counter` for frequency counts
+| Indexing | Use `defaultdict(list)` for grouping
+| Hash Maps | Fast O(1) lookup using hash functions
+|===
+
+== Practice Challenge
+
+Build a *word analyzer* that reads a text file and produces:
+
+1. A set of all unique words
+2. A count of each word's frequency (use Counter)
+3. An index of words by their first letter (use defaultdict)
+4. The top 5 most common words
+
+Sample input file `words.txt`:
+----
+the quick brown fox jumps over the lazy dog
+the dog barks at the fox
+----
+
+*Work with a partner. Test thoroughly!*
+
+[.notes]
+--
+This integrative exercise combines:
+- File reading
+- Set operations (unique words)
+- Counter (word frequency)
+- defaultdict (indexing by first letter)
+- List/tuple operations (top 5)
+
+Give 10-15 minutes. Walk around and help.
+--
+
+=== Practice Challenge: Solution
+
+[source,python]
+----
+from collections import Counter, defaultdict
+
+def analyze_words(filename):
+    """Analyze words in a text file."""
+    with open(filename, "r", encoding="utf-8") as f:
+        text = f.read().lower()
+    
+    words = text.split()
+    
+    # 1. Unique words (set)
+    unique = set(words)
+    
+    # 2. Word frequency (Counter)
+    counts = Counter(words)
+    
+    # 3. Index by first letter (defaultdict)
+    by_letter = defaultdict(list)
+    for word in unique:  # Use unique to avoid duplicates in lists
+        by_letter[word[0]].append(word)
+    
+    # 4. Top 5 most common
+    top_5 = counts.most_common(5)
+    
+    return unique, counts, dict(by_letter), top_5
+
+unique, counts, by_letter, top_5 = analyze_words("words.txt")
+print(f"Unique words: {len(unique)}")
+print(f"Top 5: {top_5}")
+print(f"Words starting with 't': {by_letter.get('t', [])}")
+----
+
+== Questions?
+
+🔗 *Resources:*
+
+* Python Tutor: https://pythontutor.com/python-compiler.html#mode=edit
+* Python Collections Module: https://docs.python.org/3/library/collections.html
+* Severance, _Python for Everybody_: https://www.py4e.com/html3/10-tuples[Chapter 10: Tuples]
