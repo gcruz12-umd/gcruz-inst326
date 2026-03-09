@@ -1,4 +1,5 @@
-= Inheritance, part 2
+= Inheritance & Composition: Patterns for Code Reuse
+:imagesdir: images
 :imagesdir: images
 :docinfo: shared
 :revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
@@ -8,329 +9,1074 @@
 :customcss: ../../css/default.css
 :revealjs_theme: white
 :revealjs_width: 1400
-:revealjs_height: 810
-:revealjs_history: true
+:revealjs_height: 800
 :revealjs_slideNumber: true
 :revealjs_transition: slide
 :revealjs_transitionSpeed: default
-:title-slide-background-image: images/colorful-containers.jpg
-:stem:
+:title-slide-background-image: david-clode-3YEMFXYBgu8-unsplash.jpg
 
-== Motivation for inheritance
+== Today's Goals
 
-[.nosubbullet]
-[%step]
-* Inheritance is useful when we need two kinds of things with similar behavior and a similar interface
-* We've seen an example of this with the `Counter` class from the `collections` module
-[%step]
-** `Counter` inherits from `dict` and does (almost all) the things a `dict` does, plus some more
-* By default, a subclass inherits (reuses) all the methods of its parent class
-* A subclass can override methods of the parent class
-* An instance of a subclass is also an instance of the parent class
+By the end of this session, you'll be able to:
 
-[.columns]
-=== Liskov Substitution Principle
+* Explain when and why to use inheritance
+* Create subclasses that inherit from parent classes
+* Override methods and use `super()` to call parent methods
+* Understand the Liskov Substitution Principle
+* Explain when and why to use composition
+* Design classes that contain other objects
+* Choose between inheritance and composition for a given problem
 
-[.fragment]
-[.column]
+[.notes]
 --
-image:barbara_liskov.jpg[]
+These are two fundamental patterns for code reuse in object-oriented programming. Understanding when to use each is a key design skill.s
 
-[%hardbreaks]
-Barbara Liskov
-MIT Computer Science Professor
-first woman from U.S. to receive a Ph.D in computer science
+Ask: "Have you ever copied and pasted code between classes? That's a sign you might need one of these patterns."
 --
 
-[.column]
---
-[.nosubbullet]
-[%step]
-* If S is a subclass of C, then instances of C may be replaced with instances of S without breaking the program
-* Instances of a subclass should behave like instances of the parent class
-** Remember, instances of a subclass are also considered instances of the parent class
---
+== Why Code Reuse Matters
 
-=== The simplest subclass
+Imagine you're building a social media app with different post types:
 
-[.noborder.lefttable]
-[cols="2*",frame=none,grid=none]
-|===
-| Parent class
-| Subclass
-
-a|
-[.fragment]
-[source, python]
+[source,python]
 ----
-class Person:
-    def __init__(self, name):
-        self.name = name
-        self.connections = set()
+class Tweet:
+    def __init__(self, creator, content):
+        self.creator = creator
+        self.content = content
+        self.likes = 0
     
-    def connect(self, other):
-        if other not in self.connections:
-            self.connections.add(other)
-            other.connect(self)
-----
-a|
-[.fragment]
-[source, python]
-----
-class SharingPerson(Person):
-    pass
+    def like(self):
+        self.likes += 1
+    
+    def delete(self):
+        print(f"Deleted by {self.creator}")
+
+class InstagramPost:
+    def __init__(self, creator, content):
+        self.creator = creator
+        self.content = content
+        self.likes = 0
+    
+    def like(self):
+        self.likes += 1
+    
+    def delete(self):
+        print(f"Deleted by {self.creator}")
 ----
 
-[%step]
-* You would never really do this; it's not useful
-* The point is that without any meaningful content, `SharingPerson` inherits from `Person`
+*Problem:* Most of this code is duplicated!
 
+[.notes]
+--
+This is a common situation. You have similar classes with overlapping functionality.
+
+Copy-pasting leads to:
+- More code to maintain
+- Bugs fixed in one place but not another
+- Inconsistent behavior over time
+
+We need better patterns for sharing code.
+--
+
+== Two Patterns for Code Reuse
+
+[cols="1,1", frame=none]
+|===
+| *Inheritance* | *Composition*
+
+| "Is-a" relationship
+| "Has-a" relationship
+
+| A Tweet *is a* Post
+| A Pizza *has* Toppings
+
+| Child class inherits from parent
+| Object contains other objects
+
+| Reuse through class hierarchy
+| Reuse through object references
 |===
 
 [.notes]
 --
-Throughout this video, we'll be using as an example the Person class from the simple social network code we wrote in the Git videos. We're going to create a subclass of this class called SharingPerson that does everything a Person does, but also announces to the world every time they make a new connection.
+These are the two main ways to share code between classes.
+
+Inheritance: Create a parent class with shared code, have children inherit it.
+
+Composition: Create separate classes and have objects contain references to other objects.
+
+We'll explore both in depth.
 --
 
-[.columns]
+== Inheritance
+
+=== What Is Inheritance?
+
+*Inheritance* lets a class reuse code from another class.
+
+image::inheritance_diagram.svg[Inheritance Diagram, 500]
+
+[source,python]
+----
+class Post:           # Parent class (superclass)
+    def __init__(self, creator):
+        self.creator = creator
+    
+    def delete(self):
+        print(f"Deleted by {self.creator}")
+
+class Tweet(Post):    # Child class (subclass)
+    pass              # Inherits everything from Post!
+----
+
+[.notes]
+--
+The child class (Tweet) automatically gets all the methods and attributes of the parent class (Post).
+
+The syntax `class Tweet(Post):` declares that Tweet inherits from Post.
+
+Even with `pass` (no new code), Tweet can do everything Post can do.
+--
+
+=== How Inheritance Works
+
+[source,python]
+----
+class Post:
+    def __init__(self, creator):
+        self.creator = creator
+    
+    def delete(self):
+        print(f"Deleted by {self.creator}")
+
+class Tweet(Post):
+    def retweet(self):
+        print(f"Retweeted by {self.creator}")
+
+class Snap(Post):
+    def expire(self):
+        print(f"Snap by {self.creator} expired")
+----
+
+[source,python]
+----
+tweet = Tweet("alice")
+tweet.delete()      # Inherited from Post!
+tweet.retweet()     # Defined in Tweet
+
+snap = Snap("bob")
+snap.delete()       # Inherited from Post!
+snap.expire()       # Defined in Snap
+----
+
+[.notes]
+--
+Key points:
+- Both Tweet and Snap inherit `__init__` and `delete()` from Post
+- Each subclass can add its own methods
+- The parent's code is written once, used by all children
+--
+
+=== 🔮 Predict: What Gets Inherited?
+
+[source,python]
+----
+class Post:
+    def __init__(self, creator):
+        self.creator = creator
+    def delete(self):
+        print("deleted")
+
+class Tweet(Post):
+    def retweet(self):
+        print("retweeted")
+
+class Snap(Post):
+    def expire(self):
+        print("expired")
+
+tweet = Tweet("alice")
+tweet.expire()  # What happens?
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`AttributeError: 'Tweet' object has no attribute 'expire'`
+
+[%step]
+*Siblings don't share methods—only parent methods are inherited.*
+
+[.notes]
+--
+This is a common misconception. Tweet and Snap are siblings (both inherit from Post), but they don't share methods with each other.
+
+Tweet only has access to:
+- Methods defined in Post (inherited)
+- Methods defined in Tweet itself
+
+Not methods from Snap or any other sibling.
+--
+
 === `type()` vs. `isinstance()`
 
-[.column]
---
-[.nosubbullet]
-[%step]
-* `type()` tells you what class an object belongs to
-* `isinstance()` tells you whether an object is an instance of a particular class
-** Remember, instances of a subclass are also considered instances of the parent class
---
+[source,python]
+----
+class Post:
+    pass
 
-[.column.fragment]
---
-[source, python]
+class Tweet(Post):
+    pass
+
+tweet = Tweet()
 ----
->>> s = SharingPerson("Siobhan")
->>> type(s) == Person
-False
->>> isinstance(s, Person)
-True
+
+[source,python]
 ----
---
+type(tweet) == Tweet    # True - exact type
+type(tweet) == Post     # False - not exactly a Post
+
+isinstance(tweet, Tweet)  # True - is a Tweet
+isinstance(tweet, Post)   # True - is ALSO a Post!
+----
+
+*An instance of a subclass is also an instance of the parent class.*
 
 [.notes]
 --
-type() tells us exactly what kind of thing an object is; isinstance() tells us whether a thing has the interface (in other words, the methods and attributes) we are looking for.
+This is important for understanding the "is-a" relationship.
+
+A Tweet IS a Post. It has all the capabilities of a Post.
+
+`type()` checks the exact class.
+`isinstance()` checks if an object is an instance of a class OR any of its parent classes.
+
+Use `isinstance()` when you care about capabilities, not exact type.
 --
 
-== Overriding methods
+=== The Liskov Substitution Principle
 
-* Sometimes we need a subclass to have a method whose inner workings are slightly different from those of the parent class
-* We can override the parent method by defining a method in the child class with the same name as the parent method
-
-=== Overriding methods: a first attempt
-
-[.noborder.lefttable]
-[cols="2*",frame=none,grid=none]
+[cols="1,2", frame=none]
 |===
-| Parent class
-| Subclass
-
+a| image::barbara_liskov.jpg[Barbara Liskov, 200]
 a|
-[source, python]
+*Barbara Liskov*
+
+MIT Professor, first American woman to earn a Ph.D. in computer science
+
+*The Principle:*
+
+If S is a subclass of C, then instances of C may be replaced with instances of S without breaking the program.
+|===
+
+*In other words:* A subclass should be usable anywhere its parent class is expected.
+
+[.notes]
+--
+This is a fundamental principle of good object-oriented design.
+
+If your code expects a Post, it should work correctly with a Tweet (since Tweet is a Post).
+
+Violating this principle leads to bugs and surprises. If a subclass doesn't behave like its parent, something is wrong with your design.
+--
+
+== Overriding Methods
+
+=== Why Override Methods?
+
+Sometimes a subclass needs to *change* how a method works, not just add new methods.
+
+[source,python]
 ----
-class Person:
+class Post:
+    def __init__(self, creator):
+        self.creator = creator
+    
+    def edit(self, new_content):
+        self.content = new_content
+        print("Post edited")
+
+class Tweet(Post):
+    def edit(self, new_content):
+        # Tweets can't be edited!
+        print("Error: Tweets cannot be edited")
+----
+
+*Overriding:* Defining a method in the subclass with the same name as a parent method.
+
+[.notes]
+--
+The subclass method "shadows" the parent method. When you call `tweet.edit()`, Python uses the Tweet version, not the Post version.
+
+This is how subclasses customize behavior while maintaining the same interface.
+--
+
+=== Overriding: A First Attempt
+
+[source,python]
+----
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+    
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrew ${amount}. Balance: ${self.balance}")
+
+class SavingsAccount(BankAccount):
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrew ${amount}. Balance: ${self.balance}")
+        if self.balance < 100:
+            print(f"Warning: balance below $100 minimum!")
+----
+
+*Problem:* We copied all the code from `BankAccount.withdraw()` just to add a warning!
+
+[.notes]
+--
+This defeats the purpose of inheritance. We're duplicating code.
+
+What we really want is to:
+1. Do everything the parent method does
+2. Add our extra behavior
+
+We need a way to call the parent method from within our override.
+--
+
+=== Calling the Parent Method Directly
+
+[source,python]
+----
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+    
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrew ${amount}. Balance: ${self.balance}")
+
+class SavingsAccount(BankAccount):
+    def withdraw(self, amount):
+        BankAccount.withdraw(self, amount)  # Call parent method
+        if self.balance < 100:
+            print(f"Warning: balance below $100 minimum!")
+----
+
+*Better!* But we have to know the parent class name and pass `self` explicitly.
+
+[.notes]
+--
+This works, but it's clunky:
+- We hardcode the parent class name (BankAccount)
+- We have to pass `self` explicitly
+- If we change the parent class, we have to update all these calls
+
+There's a better way...
+--
+
+=== `super()` to the Rescue
+
+[source,python]
+----
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+    
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrew ${amount}. Balance: ${self.balance}")
+
+class SavingsAccount(BankAccount):
+    def withdraw(self, amount):
+        super().withdraw(amount)  # Much cleaner!
+        if self.balance < 100:
+            print(f"Warning: balance below $100 minimum!")
+----
+
+*`super()` returns a proxy to the parent class—no need to name it or pass `self`.*
+
+[.notes]
+--
+`super()` is the Pythonic way to call parent methods.
+
+Benefits:
+- Don't need to hardcode parent class name
+- Don't need to pass `self`
+- Works correctly with multiple inheritance (advanced topic)
+
+Use `super()` whenever you need to call a parent method from an override.
+--
+
+=== Common Pattern: Extending `__init__`
+
+[source,python]
+----
+class Post:
+    def __init__(self, creator):
+        self.creator = creator
+        self.likes = 0
+
+class Tweet(Post):
+    def __init__(self, creator, max_length=280):
+        super().__init__(creator)  # Call parent __init__
+        self.max_length = max_length  # Add new attribute
+----
+
+[source,python]
+----
+tweet = Tweet("alice", max_length=140)
+print(tweet.creator)      # "alice" (from parent)
+print(tweet.likes)        # 0 (from parent)
+print(tweet.max_length)   # 140 (from Tweet)
+----
+
+*Always call `super().__init__()` when overriding `__init__`!*
+
+[.notes]
+--
+This is one of the most common uses of super().
+
+The pattern:
+1. Call super().__init__() to set up parent attributes
+2. Then set up child-specific attributes
+
+If you forget to call super().__init__(), the parent's attributes won't be initialized, leading to AttributeError later.
+--
+
+=== 🔮 Predict: Method Resolution
+
+[source,python]
+----
+class Animal:
+    def speak(self):
+        return "..."
+    
+    def describe(self):
+        return f"I say {self.speak()}"
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+dog = Dog()
+print(dog.describe())  # What prints?
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`I say Woof!`
+
+*Even though `describe()` is defined in Animal, it calls `self.speak()`, which uses Dog's version!*
+
+[.notes]
+--
+This is called "dynamic dispatch" or "polymorphism."
+
+When Animal.describe() calls self.speak(), Python looks up speak() on the actual object (a Dog), not the class where describe() is defined.
+
+This is powerful—parent methods can use child overrides.
+--
+
+=== Abstract Base Classes
+
+Sometimes we want to define an interface without implementing it:
+
+[source,python]
+----
+class Player:
+    """Abstract base class for game players."""
+    
     def __init__(self, name):
         self.name = name
-        self.connections = set()
     
-    def connect(self, other):
-        if other not in self.connections:
-            self.connections.add(other)
-            other.connect(self)
-----
-a|
-[source, python]
-----
-class SharingPerson(Person):
+    def get_move(self, board):
+        raise NotImplementedError("Subclasses must implement get_move")
 
-    # NB: inheriting __init__() from Person
+class HumanPlayer(Player):
+    def get_move(self, board):
+        return input("Enter your move: ")
 
-    def connect(self, other):
-        if other not in self.connections:
-            self.connections.add(other)
-            other.connect(self)
-            print(f"{self.name} connected"
-                  f" with {other.name}!")
+class ComputerPlayer(Player):
+    def get_move(self, board):
+        # AI logic here
+        return self.calculate_best_move(board)
 ----
-|===
+
+*The parent defines WHAT methods exist; children define HOW they work.*
 
 [.notes]
 --
-Not ideal since it re-implements all the code from Person.connect().
+Abstract base classes are useful when:
+- You need several classes with the same interface
+- The implementation differs between classes
+- You want to enforce that subclasses implement certain methods
+
+`NotImplementedError` signals that this method must be overridden.
+
+Both HumanPlayer and ComputerPlayer are "Players" and can be used interchangeably.
 --
 
-=== Invoking parent methods within a subclass
+=== Inheritance: Summary
 
-[%step]
-* It would be nice if we could define subclass methods in terms of parent methods
-* In other words, it would be nice if a subclass method could call the corresponding parent method
-* The problem is that by defining a method in the subclass with the same name as the method in the parent class, we can no longer use that name in the subclass to refer to the parent method
+* Subclasses inherit all methods and attributes from parent classes
+* Use `class Child(Parent):` to declare inheritance
+* Override methods to change behavior
+* Use `super()` to call parent methods from overrides
+* Always call `super().__init__()` when overriding `__init__`
+* An instance of a subclass IS an instance of the parent class
 
-[.columns]
-=== Tangent: instances are shortcuts to classes
-
-[.column.fragment]
+[.notes]
 --
-Consider this code:
+Transition: "Now let's look at another pattern for code reuse—composition."
+--
 
-[source, python]
+== Composition
+
+=== What Is Composition?
+
+*Composition* means objects contain references to other objects.
+
+image::composition_diagram.svg[Composition Diagram, 500]
+
+Instead of "is-a" (inheritance), composition models "has-a" relationships.
+
+[.notes]
+--
+A Pizza HAS Toppings. A Car HAS an Engine. A University HAS Students.
+
+The containing object uses the contained objects to do work.
+
+This is a very common and flexible pattern.
+--
+
+=== Composition in Action
+
+[source,python]
 ----
-class Greeter:
-    def __init__(self, name):
+class Topping:
+    def __init__(self, name, num_pieces):
         self.name = name
+        self.num_pieces = num_pieces
     
-    def greet(self):
-        print(f"Hi, I'm {self.name}!")
+    def __repr__(self):
+        return f"{self.num_pieces} pieces of {self.name}"
 
-g = Greeter("Gretchen")
+class Pizza:
+    def __init__(self):
+        self.toppings = []  # Pizza HAS toppings
+    
+    def add_topping(self, topping):
+        self.toppings.append(topping)
 ----
---
 
-[.column]
---
-[.nosubbullet]
-[%step]
-* The usual way to use the `greet()` method of `g` is
-** `g.greet()`
-* But you can also do this:
-** `Greeter.greet(g)`
-* Most of the time, we should use the first approach above, not the second one. But when trying to call a method we are overriding, the first approach won't work, but the second one will.
---
+[source,python]
+----
+pizza = Pizza()
+pizza.add_topping(Topping("pepperoni", 18))
+pizza.add_topping(Topping("mushrooms", 12))
+print(pizza.toppings)
+# [18 pieces of pepperoni, 12 pieces of mushrooms]
+----
 
 [.notes]
 --
-When we do `Greeter.greet(g)`, we are passing in `g` as the value of `self`. Normally, Python takes care of that for us.
+Pizza doesn't inherit from Topping. Instead, Pizza contains a list of Topping objects.
+
+The relationship is "has-a": A pizza HAS toppings.
+
+Each class is independent and focused on one thing.
 --
 
-=== Overriding methods: a second attempt
+=== Composition: Objects Working Together
 
-[.noborder.lefttable]
-[cols="2*",frame=none,grid=none]
-|===
-| Parent class
-| Subclass
-
-a|
-[source, python]
+[source,python]
 ----
-class Person:
-    def __init__(self, name):
+class Topping:
+    def __init__(self, name, num_pieces):
         self.name = name
-        self.connections = set()
+        self.num_pieces = num_pieces
+
+class Pizza:
+    def __init__(self):
+        self.toppings = []
     
-    def connect(self, other):
-        if other not in self.connections:
-            self.connections.add(other)
-            other.connect(self)
+    def add_topping(self, topping):
+        self.toppings.append(topping)
+    
+    def total_pieces(self):
+        """Count total topping pieces on the pizza."""
+        count = 0
+        for topping in self.toppings:
+            count += topping.num_pieces
+        return count
 ----
+
+[source,python]
+----
+pizza = Pizza()
+pizza.add_topping(Topping("pepperoni", 18))
+pizza.add_topping(Topping("mushrooms", 12))
+print(pizza.total_pieces())  # 30
+----
+
+[.notes]
+--
+The Pizza object "reads" data from its contained Topping objects.
+
+This is composition in action—objects collaborating to achieve functionality.
+
+Pizza doesn't need to know how Topping works internally, just its interface (num_pieces).
+--
+
+=== Real-World Composition Example
+
+[source,python]
+----
+class Engine:
+    def __init__(self, horsepower):
+        self.horsepower = horsepower
+        self.running = False
+    
+    def start(self):
+        self.running = True
+    
+    def stop(self):
+        self.running = False
+
+class Car:
+    def __init__(self, make, model, horsepower):
+        self.make = make
+        self.model = model
+        self.engine = Engine(horsepower)  # Car HAS an Engine
+    
+    def start(self):
+        self.engine.start()
+        print(f"{self.make} {self.model} started!")
+----
+
+[source,python]
+----
+car = Car("Toyota", "Camry", 200)
+car.start()  # "Toyota Camry started!"
+----
+
+[.notes]
+--
+A Car HAS an Engine. The Car delegates engine-related work to the Engine object.
+
+This is cleaner than having Car inherit from Engine (a Car is NOT an Engine).
+
+Each class has a clear, focused responsibility.
+--
+
+=== 🔮 Predict: Composition Behavior
+
+[source,python]
+----
+class Battery:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.charge = capacity
+    
+    def drain(self, amount):
+        self.charge = max(0, self.charge - amount)
+
+class Phone:
+    def __init__(self):
+        self.battery = Battery(100)
+    
+    def use(self, minutes):
+        self.battery.drain(minutes * 2)
+
+phone = Phone()
+phone.use(30)
+print(phone.battery.charge)  # What prints?
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`40` (Started at 100, drained 30 * 2 = 60)
+
+[.notes]
+--
+Walk through the logic:
+1. Phone creates a Battery with capacity 100, charge starts at 100
+2. phone.use(30) calls battery.drain(60)
+3. drain sets charge to max(0, 100 - 60) = 40
+--
+
+=== Composition: Summary
+
+* Composition models "has-a" relationships
+* Objects contain references to other objects
+* Each class has a focused responsibility
+* Objects collaborate by calling each other's methods
+* More flexible than inheritance—can change components at runtime
+
+[.notes]
+--
+Transition: "So when should you use inheritance vs. composition?"
+--
+
+== Inheritance vs. Composition
+
+=== When to Use Inheritance
+
+Use inheritance when:
+
+* There's a clear "is-a" relationship
+* Subclasses genuinely ARE specialized versions of the parent
+* You need polymorphism (treat children as parent type)
+* There's significant shared behavior
+
+[source,python]
+----
+# Good use of inheritance
+class Animal:
+    def eat(self): ...
+
+class Dog(Animal):    # A Dog IS an Animal
+    def bark(self): ...
+
+class Cat(Animal):    # A Cat IS an Animal
+    def meow(self): ...
+----
+
+[.notes]
+--
+Inheritance is best when subclasses really are specialized versions of the parent.
+
+Dogs and Cats are both Animals. They share eating behavior and can be treated as Animals.
+--
+
+=== When to Use Composition
+
+Use composition when:
+
+* There's a "has-a" or "uses-a" relationship
+* You want loose coupling between classes
+* Components might be shared or swapped
+* You're combining unrelated behaviors
+
+[source,python]
+----
+# Good use of composition
+class Car:
+    def __init__(self):
+        self.engine = Engine()    # Car HAS an Engine
+        self.wheels = [Wheel() for _ in range(4)]
+
+class Motorcycle:
+    def __init__(self):
+        self.engine = Engine()    # Motorcycle also HAS an Engine
+        self.wheels = [Wheel() for _ in range(2)]
+----
+
+[.notes]
+--
+Both Car and Motorcycle have engines, but neither IS an engine.
+
+With composition, they can share the Engine class without being related by inheritance.
+
+You could even swap engines at runtime!
+--
+
+=== Common Mistake: Inheritance Abuse
+
+[source,python]
+----
+# BAD: Using inheritance for code reuse when there's no "is-a"
+class Database:
+    def query(self, sql): ...
+
+class UserManager(Database):  # UserManager IS a Database? No!
+    def create_user(self, name): ...
+----
+
+[source,python]
+----
+# GOOD: Use composition instead
+class Database:
+    def query(self, sql): ...
+
+class UserManager:
+    def __init__(self, database):
+        self.db = database  # UserManager HAS a Database
+    
+    def create_user(self, name):
+        self.db.query(f"INSERT INTO users ...")
+----
+
+*Ask yourself: Is this really an "is-a" relationship?*
+
+[.notes]
+--
+A UserManager is NOT a Database. It USES a database.
+
+Using inheritance here is awkward and limits flexibility. What if you want to use different database backends?
+
+With composition, you can pass in any database object.
+--
+
+=== The Design Patterns Perspective
+
+[cols="1,1", frame=none]
+|===
+a| image::design-patterns.jpg[Design Patterns Book, 200]
 a|
-[source, python]
-----
-class SharingPerson(Person):
+*"Favor composition over inheritance."*
 
-    # NB: inheriting __init__() from Person
+— Gang of Four, _Design Patterns_ (1994)
 
-    def connect(self, other):
-        if other not in self.connections:
-            print(f"{self.name} connected"
-                  f" with {other.name}!")
-        Person.connect(self, other)
-----
+Composition is often more flexible because:
+
+* Components can be swapped at runtime
+* Classes are more loosely coupled
+* Changes to one class don't ripple to others
 |===
 
 [.notes]
 --
-Still have to check whether other is in self.connections, but this is better than before.
+This is famous advice from one of the most influential programming books.
+
+It doesn't mean "never use inheritance"—it means default to composition and use inheritance when it genuinely fits.
+
+Inheritance creates tight coupling. Changes to the parent affect all children.
 --
 
-[.columns]
-== `super()`
+=== Quick Decision Guide
 
-[.column]
---
-[.nosubbullet]
-[%step]
-* Calling the parent class works, but is kind of clunky
-[%step]
-** You have to know what the parent class is
-** You have to explicitly pass in a value for `self` (not cool!)
-* If we decide later that we need to inherit from a different parent class, we would have to replace all our calls to the old parent class
---
-
-[.column]
---
-[%step]
-* `super()` evaluates to "a proxy object that delegates method calls to a parent or sibling class"
-* So, `super()` lets us call parent methods without calling the parent class directly and without having to specify a value for `self`.
---
-
-=== Overriding methods: the finished product
-
-[.noborder.lefttable]
-[cols="2*",frame=none,grid=none]
-|===
-| Parent class
-| Subclass
-
-a|
-[source, python]
+[source]
 ----
-class Person:
-    def __init__(self, name):
+Should I use inheritance or composition?
+
+1. Is there a clear "is-a" relationship?
+   - Yes: Consider inheritance
+   - No: Use composition
+
+2. Do I need polymorphism (treat objects as parent type)?
+   - Yes: Consider inheritance
+   - No: Use composition
+
+3. Will the relationship change at runtime?
+   - Yes: Use composition
+   - No: Either could work
+
+4. Am I just trying to reuse some code?
+   - Code reuse alone isn't enough for inheritance
+   - Use composition or other patterns
+----
+
+[.notes]
+--
+This is a simplified guide. Real designs often involve both patterns.
+
+The key insight: Inheritance is about IS-A relationships and polymorphism, not just code reuse.
+--
+
+== 📋 Key Takeaways
+
+[cols="1,1", frame=none]
+|===
+| *Inheritance* | *Composition*
+
+| "Is-a" relationship | "Has-a" relationship
+| `class Child(Parent):` | `self.component = Component()`
+| Subclass inherits all methods | Object contains other objects
+| Override methods to customize | Delegate to contained objects
+| Use `super()` for parent calls | Objects collaborate via methods
+| Tight coupling | Loose coupling
+|===
+
+*Rule of thumb:* Favor composition, use inheritance when there's a genuine "is-a" relationship.
+
+== Practice Challenge
+
+Build a *game character system* that uses BOTH inheritance AND composition.
+
+*Part 1 — Inheritance:*
+
+Create a base `Character` class and two subclasses:
+
+* `Character`: Has `name`, `health`, `take_damage(amount)`, `is_alive()`
+* `Warrior`: Inherits from Character, adds `rage` attribute and `berserk()` method
+* `Mage`: Inherits from Character, adds `mana` attribute and `cast_spell()` method
+
+*Part 2 — Composition:*
+
+Create an `Inventory` class and give characters an inventory:
+
+* `Inventory`: Has `items` list, `add_item(item)`, `remove_item(item)`, `list_items()`
+* Modify `Character` to have an `inventory` attribute (composition)
+
+*Work with a partner. Test thoroughly!*
+
+[.notes]
+--
+This exercise combines both patterns:
+- Inheritance: Warrior and Mage are specialized Characters
+- Composition: Characters HAVE an Inventory
+
+Give 10-15 minutes. Walk around and help.
+--
+
+=== Practice Challenge: Data Classes
+
+[source,python]
+----
+class Item:
+    """Simple item for the inventory."""
+    def __init__(self, name, value):
         self.name = name
-        self.connections = set()
+        self.value = value
     
-    def connect(self, other):
-        if other not in self.connections:
-            self.connections.add(other)
-            other.connect(self)
+    def __repr__(self):
+        return f"{self.name} (${self.value})"
 ----
-a|
-[source, python]
+
+Use this `Item` class for testing your inventory system.
+
+*Test cases to try:*
+
+[source,python]
 ----
-class SharingPerson(Person):
+# Create characters
+warrior = Warrior("Conan", health=100)
+mage = Mage("Gandalf", health=80, mana=50)
 
-    # NB: inheriting __init__() from Person
+# Test inheritance
+warrior.take_damage(30)
+print(warrior.is_alive())  # True
 
-    def connect(self, other):
-        if other not in self.connections:
-            print(f"{self.name} connected"
-                  f" with {other.name}!")
-        super().connect(other)
+# Test composition
+warrior.inventory.add_item(Item("Sword", 100))
+warrior.inventory.add_item(Item("Shield", 50))
+warrior.inventory.list_items()
 ----
-|===
 
-[.notes]
---
-super() lets us use the parent class's connect() method without having to specify the class name or the value of self.
---
+=== Practice Challenge: Solution (Part 1 - Inheritance)
 
-[.columns]
-== Abstract base classes
+[source,python]
+----
+class Character:
+    def __init__(self, name, health=100):
+        self.name = name
+        self.health = health
+        self.inventory = Inventory()  # Composition!
+    
+    def take_damage(self, amount):
+        self.health -= amount
+        if self.health < 0:
+            self.health = 0
+        print(f"{self.name} takes {amount} damage! Health: {self.health}")
+    
+    def is_alive(self):
+        return self.health > 0
 
-[.column]
-[%step]
-* Sometimes we need several classes to have the same interface even though they have important internal differences
-* We can write a parent class that has the method names we need, but where some of them don't actually do anything useful
-* Then we can inherit from this class and flesh out the methods in the subclasses
+class Warrior(Character):
+    def __init__(self, name, health=100):
+        super().__init__(name, health)  # Call parent __init__
+        self.rage = 0
+    
+    def berserk(self):
+        self.rage += 10
+        print(f"{self.name} goes berserk! Rage: {self.rage}")
+----
 
-[.column]
-[%step]
-* Example: a tic tac toe game that can have human players or computer players
-* We can make an abstract `Player` base class with concrete subclasses `HumanPlayer` and `ComputerPlayer`; then `HumanPlayer` and `ComputerPlayer` are considered instances of `Player`
+=== Practice Challenge: Solution (Part 1 continued)
 
-=== Summary
+[source,python]
+----
+class Mage(Character):
+    def __init__(self, name, health=80, mana=100):
+        super().__init__(name, health)  # Call parent __init__
+        self.mana = mana
+    
+    def cast_spell(self, spell_name, mana_cost=10):
+        if self.mana >= mana_cost:
+            self.mana -= mana_cost
+            print(f"{self.name} casts {spell_name}! Mana: {self.mana}")
+        else:
+            print(f"{self.name} doesn't have enough mana!")
+----
 
-* Python classes can inherit (reuse) methods from a parent class
-* A subclass can override parent methods
-* `super()` allows us to invoke a parent method within an overriden method
-* One way to make several related classes with a shared interface is to create an abstract base class and define the concrete classes as subclasses of the base class
+=== Practice Challenge: Solution (Part 2 - Composition)
+
+[source,python]
+----
+class Inventory:
+    def __init__(self):
+        self.items = []
+    
+    def add_item(self, item):
+        self.items.append(item)
+        print(f"Added {item.name} to inventory")
+    
+    def remove_item(self, item_name):
+        for item in self.items:
+            if item.name == item_name:
+                self.items.remove(item)
+                print(f"Removed {item_name} from inventory")
+                return item
+        print(f"{item_name} not found in inventory")
+        return None
+    
+    def list_items(self):
+        if not self.items:
+            print("Inventory is empty")
+        else:
+            print("Inventory:")
+            for item in self.items:
+                print(f"  - {item}")
+----
+
+=== Practice Challenge: Testing the Solution
+
+[source,python]
+----
+# Create characters
+warrior = Warrior("Conan")
+mage = Mage("Gandalf", mana=50)
+
+# Test inheritance - shared methods from Character
+warrior.take_damage(30)  # "Conan takes 30 damage! Health: 70"
+mage.take_damage(20)     # "Gandalf takes 20 damage! Health: 60"
+
+# Test inheritance - subclass-specific methods
+warrior.berserk()        # "Conan goes berserk! Rage: 10"
+mage.cast_spell("Fireball", 15)  # "Gandalf casts Fireball! Mana: 35"
+
+# Test composition - inventory system
+warrior.inventory.add_item(Item("Sword", 100))
+warrior.inventory.add_item(Item("Shield", 50))
+warrior.inventory.list_items()
+# Inventory:
+#   - Sword ($100)
+#   - Shield ($50)
+
+# Verify isinstance works correctly
+print(isinstance(warrior, Character))  # True
+print(isinstance(mage, Character))     # True
+----
+
+== Questions?
+
+🔗 *Resources:*
+
+* _Design Patterns_ by the Gang of Four
+* Python Documentation on Classes: https://docs.python.org/3/tutorial/classes.html
+* Real Python - Inheritance and Composition: https://realpython.com/inheritance-composition-python/

@@ -1,0 +1,30 @@
+<svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">Inheritance: "Is-A" Relationship</text>
+  
+  <!-- Parent class box -->
+  <rect x="175" y="50" width="150" height="70" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+  <text x="250" y="80" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Post</text>
+  <text x="250" y="100" font-family="monospace" font-size="11" fill="#ebf5fb" text-anchor="middle">creator, delete()</text>
+  <text x="250" y="135" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d" text-anchor="middle">Parent Class</text>
+  
+  <!-- Inheritance arrows -->
+  <line x1="200" y1="150" x2="120" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+  <polygon points="120,190 130,185 128,195" fill="#7f8c8d"/>
+  
+  <line x1="300" y1="150" x2="380" y2="190" stroke="#7f8c8d" stroke-width="2"/>
+  <polygon points="380,190 370,185 372,195" fill="#7f8c8d"/>
+  
+  <!-- Child class boxes -->
+  <rect x="45" y="200" width="150" height="70" fill="#27ae60" stroke="#1e8449" stroke-width="2" rx="5"/>
+  <text x="120" y="230" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Tweet</text>
+  <text x="120" y="250" font-family="monospace" font-size="11" fill="#d5f5e3" text-anchor="middle">retweet()</text>
+  
+  <rect x="305" y="200" width="150" height="70" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+  <text x="380" y="230" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Snap</text>
+  <text x="380" y="250" font-family="monospace" font-size="11" fill="#fadbd8" text-anchor="middle">expire()</text>
+  
+  <!-- Labels -->
+  <text x="120" y="285" font-family="Arial, sans-serif" font-size="12" fill="#27ae60" text-anchor="middle">Tweet IS A Post</text>
+  <text x="380" y="285" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c" text-anchor="middle">Snap IS A Post</text>
+</svg>

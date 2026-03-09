@@ -1,0 +1,35 @@
+<svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">Composition: "Has-A" Relationship</text>
+  
+  <!-- Pizza class box -->
+  <rect x="50" y="80" width="180" height="100" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+  <text x="140" y="110" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Pizza</text>
+  <line x1="60" y1="120" x2="220" y2="120" stroke="#fadbd8" stroke-width="1"/>
+  <text x="140" y="140" font-family="monospace" font-size="11" fill="#fadbd8" text-anchor="middle">toppings: list</text>
+  <text x="140" y="160" font-family="monospace" font-size="11" fill="#fadbd8" text-anchor="middle">add_topping()</text>
+  
+  <!-- Composition line with diamond -->
+  <line x1="230" y1="130" x2="270" y2="130" stroke="#34495e" stroke-width="2"/>
+  <polygon points="270,130 280,125 290,130 280,135" fill="#34495e"/>
+  <line x1="290" y1="130" x2="320" y2="130" stroke="#34495e" stroke-width="2"/>
+  
+  <!-- Multiplicity -->
+  <text x="305" y="120" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">0..*</text>
+  
+  <!-- Topping class box -->
+  <rect x="320" y="80" width="150" height="100" fill="#f39c12" stroke="#d68910" stroke-width="2" rx="5"/>
+  <text x="395" y="110" font-family="Arial, sans-serif" font-size="16" fill="white" text-anchor="middle" font-weight="bold">Topping</text>
+  <line x1="330" y1="120" x2="460" y2="120" stroke="#fdebd0" stroke-width="1"/>
+  <text x="395" y="140" font-family="monospace" font-size="11" fill="#fdebd0" text-anchor="middle">name: str</text>
+  <text x="395" y="160" font-family="monospace" font-size="11" fill="#fdebd0" text-anchor="middle">num_pieces: int</text>
+  
+  <!-- Labels -->
+  <text x="140" y="205" font-family="Arial, sans-serif" font-size="13" fill="#c0392b" text-anchor="middle">Container</text>
+  <text x="395" y="205" font-family="Arial, sans-serif" font-size="13" fill="#d68910" text-anchor="middle">Component</text>
+  
+  <!-- Explanation -->
+  <rect x="100" y="230" width="300" height="50" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" rx="5"/>
+  <text x="250" y="255" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50" text-anchor="middle">Pizza HAS Toppings</text>
+  <text x="250" y="272" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d" text-anchor="middle">The filled diamond indicates composition</text>
+</svg>
