@@ -1,0 +1,41 @@
+<svg width="700" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="350" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">The Git Workflow</text>
+  
+  <!-- Step 1: Edit -->
+  <rect x="30" y="60" width="120" height="60" fill="#27ae60" stroke="#1e8449" stroke-width="2" rx="5"/>
+  <text x="90" y="85" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">1. Edit Files</text>
+  <text x="90" y="105" font-family="Arial, sans-serif" font-size="10" fill="#d5f5e3" text-anchor="middle">Working Directory</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="155" y1="90" x2="185" y2="90" stroke="#7f8c8d" stroke-width="2"/>
+  <polygon points="195,90 185,85 185,95" fill="#7f8c8d"/>
+  
+  <!-- Step 2: Add -->
+  <rect x="200" y="60" width="120" height="60" fill="#f39c12" stroke="#d68910" stroke-width="2" rx="5"/>
+  <text x="260" y="85" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">2. git add</text>
+  <text x="260" y="105" font-family="Arial, sans-serif" font-size="10" fill="#fdebd0" text-anchor="middle">Staging Area</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="325" y1="90" x2="355" y2="90" stroke="#7f8c8d" stroke-width="2"/>
+  <polygon points="365,90 355,85 355,95" fill="#7f8c8d"/>
+  
+  <!-- Step 3: Commit -->
+  <rect x="370" y="60" width="120" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+  <text x="430" y="85" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">3. git commit</text>
+  <text x="430" y="105" font-family="Arial, sans-serif" font-size="10" fill="#ebf5fb" text-anchor="middle">Local Repository</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="495" y1="90" x2="525" y2="90" stroke="#7f8c8d" stroke-width="2"/>
+  <polygon points="535,90 525,85 525,95" fill="#7f8c8d"/>
+  
+  <!-- Step 4: Push -->
+  <rect x="540" y="60" width="120" height="60" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+  <text x="600" y="85" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="bold">4. git push</text>
+  <text x="600" y="105" font-family="Arial, sans-serif" font-size="10" fill="#e8daef" text-anchor="middle">Remote (GitHub)</text>
+  
+  <!-- Pull arrow (reverse flow) -->
+  <path d="M 600 135 L 600 155 L 90 155 L 90 135" fill="none" stroke="#27ae60" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="90,125 85,135 95,135" fill="#27ae60"/>
+  <text x="350" y="170" font-family="monospace" font-size="11" fill="#27ae60" text-anchor="middle">git pull (get updates from team)</text>
+</svg>

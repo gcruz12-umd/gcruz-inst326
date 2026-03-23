@@ -14,195 +14,930 @@
 :revealjs_transitionSpeed: default
 :title-slide-background-image: siyuan-aUmHgK9OtXY-unsplash.jpg
 
-== Github Desktop
+== Today's Goals
 
-=== Interface
-    * Cross platform interface for interacting with Github repositories. 
-    * Makes using commands easy. 
-        ** Of course, this is a matter of preference.
+By the end of this session, you'll be able to: 
 
-=== Download
-    * link:https://desktop.github.com/[Github Desktop Download]
+* Explain why version control matters for collaboration 
+* Use Git commands to track, commit, and share changes
+* Understand the difference between local and remote repositories
+* Explain what namespaces are and why they matter
+* Create and organize Python modules and packages
+* Import code using different import styles
+* Choose the right import approach for your situation
 
+[.notes]
+--
+These skills are essential for professional Python development. Git enables collaboration; modules enable code organization and reuse.
 
-== Namespaces
+Ask: "How many of you have accidentally overwritten a file you needed? Or lost track of what changes you made?"
+--
 
-=== Names
-    * We use names in python to identify objects
-        ** These names are also known as identifiers
-        ** Remember, we cannot use keywords as identifiers.
+== Part 1: Version Control with Git
 
-=== Keywords
+=== Why Version Control?
 
-[source, python]
+Without version control:
+
+[source]
 ----
-#end	 -A logical operator
-
-#as	 -To create an alias
-
-#assert	-For debugging
-
-#break	-To break out of a loop
-
-#class	-To define a class
-
-#continue	-To continue to the next iteration of a loop
-
-#def  -To define a function
-
-#del  -To delete an object
-
-#elif     -Used in conditional statements, same as else if
-
-#else	 -Used in conditional statements
-
-#except	 -Used with exceptions, what to do when an exception occurs
-
-#False	 -Boolean value, result of comparison operations
-
-#finally	 -Used with exceptions, a block of code that will be executed 
-#no matter if there is an exception or not
-
-#for	 -To create a for loop
-
-#from	 -To import specific parts of a module
-
-#global	 -To declare a global variable
-
-#if	 -To make a conditional statement
-
-#import	 -To import a module
-
-#in	 -To check if a value is present in a list, tuple, etc.
-
-#is	 -To test if two variables are equal
-
-#lambda	 -To create an anonymous function
-
-#None	 -Represents a null value
-
-#nonlocal	 -To declare a non-local variable
-
-#not	 -A logical operator
-
-#or	 -A logical operator
-
-#pass	 -A null statement, a statement that will do nothing
-
-#raise	 -To raise an exception
-
-#return	 -To exit a function and return a value
-
-#True	 -Boolean value, result of comparison operations
-
-#try	 -To make a try...except statement
-
-#while	 -To create a while loop
-
-#with	 -Used to simplify exception handling
-
-#yield	 -To end a function, returns a generator
+project_final.py
+project_final_v2.py
+project_final_v2_fixed.py
+project_final_v2_fixed_REAL.py
+project_final_v2_fixed_REAL_USE_THIS.py
 ----
 
-=== What is a namespace?
-    * Previously we have talked about scope.
-    * *namespace* = context in which names can exist. 
-        ** Think of namespaces like "rooms" or "spaces" or "scopes"
-        ** In any given namespace, a name can refer to at most one thing
-        ** *Cannot* have two object in the same namespace that have the same name
-        ** *Can* have two objects in different namespaces that have the same name
+*Sound familiar?*
 
-=== Namespace Visual
-image::namespaces.png[namespace, 600,600]
+[.notes]
+--
+This is what happens without version control. You end up with confusing file names and no clear history.
 
-=== Namespace Visual Explained
-    * B = Built-In Namespace
-        ** Contains all built in names , initiated when the python interpreter starts.
-    * G = Global Namespace
-        ** Each module has its own global namespace, contains functions and global variables
-    * E = Enclosed Namespace
-        ** Namespace referring to classes/functions that are enclosed within other classes/functions.
-    * L = Local Namespace
-        ** Names within functions
-        ** Created when the function is called/when a class object is created.
+What if you need to undo a change from three versions ago? What if two people edit the same file?
+--
 
+=== What Is Git?
 
-== Modules and Packages
+*Git* is a version control system that:
 
-=== Definitions
-    * *Modules* = A library of functions, classes, and predefined values (constants)
-        ** Provide a handy way of packaging and organizing code.
-    * *Packages* = Collection of multiple packages and modules.
-        ** Treated as its own namespace.
-        ** Way to organize growing collections of modules.
+* Tracks changes to files over time
+* Allows you to undo changes (go back in history)
+* Enables multiple people to work on the same project
+* Keeps your work safe with remote backups
 
-=== Creating Packages
-    * Top level package name is a folder containing all of the sub-packages/modules within it.
-    * Each package/sub-package must contain an "\__init__.py" file.
-        ** Indicates to python that the folder is a package. 
+*GitHub* is a website that hosts Git repositories online.
 
-[.none]
-=== Example
-image::package.png[package, 900, 600]
+[.notes]
+--
+Git is the tool. GitHub is a service built on top of Git.
 
-=== Where do modules/packages come from?
-    * Questions that python asks:
-        .. Is the module/package being imported a built in module?
-        .. Is the module/package being imported in the same directory as the currently running script?
-        .. Has this module been installed on the machine at all?
-            *** Meaning, it will search sys.path 
+Other services like GitLab and Bitbucket also host Git repositories.
 
-=== So why should we care?
-    * We can use modules/packages that we write ourselves in other scripts in their own namespaces.
-    * We can do so with a lot of flexibility.
-    * Which is why we should thoroughly understand...
+Git was created by Linus Torvalds (creator of Linux) in 2005.
+--
 
+=== The Four Git "Places"
+
+image::git_places.svg[Git Places, 600]
+
+[cols="1,2", frame=none]
+|===
+| *Remote Repository* | "Official" copy on GitHub; accessible to collaborators
+| *Local Repository* | Your personal copy with full edit history
+| *Working Directory* | Where you edit files; no history here
+| *Staging Area* | Where you prepare changes before committing
+|===
+
+[.notes]
+--
+Think of these as four different "zones" your code lives in.
+
+The workflow is: edit in working directory → stage changes → commit to local repo → push to remote repo.
+--
+
+=== The Git Workflow
+
+image::git_workflow.svg[Git Workflow, 700]
+
+[source,bash]
+----
+# 1. Make changes to files in working directory
+# 2. Stage the changes
+git add myfile.py
+
+# 3. Commit to local repository
+git commit -m "Add new feature"
+
+# 4. Push to remote repository
+git push
+----
+
+[.notes]
+--
+This is the basic workflow you'll use constantly.
+
+The staging area lets you choose exactly which changes to include in a commit. You might have edited 5 files but only want to commit 2 of them.
+--
+
+=== Essential Git Commands
+
+[cols="1,2", frame=none]
+|===
+| *Command* | *What it does*
+
+| `git clone <url>`
+| Copy a remote repository to your computer
+
+| `git status`
+| See what files have changed
+
+| `git add <file>`
+| Stage a file for commit
+
+| `git commit -m "message"`
+| Save staged changes to local repository
+
+| `git push`
+| Send commits to remote repository
+
+| `git pull`
+| Get changes from remote repository
+|===
+
+[.notes]
+--
+These six commands cover 90% of what you'll do with Git.
+
+`git status` is your friend—use it constantly to see where you are.
+--
+
+=== `git clone`: Getting Started
+
+[source,bash]
+----
+# Copy a repository from GitHub to your computer
+git clone https://github.com/username/project.git
+
+# This creates a folder called "project" with all the files
+cd project
+ls
+----
+
+*Clone creates:*
+
+* A copy of all files (working directory)
+* The full history (local repository)
+* A link back to the remote (origin)
+
+[.notes]
+--
+You only clone once per project. After that, you use pull to get updates.
+
+"origin" is the default name for the remote repository you cloned from.
+--
+
+=== `git add` and `git commit`: Saving Changes
+
+[source,bash]
+----
+# Edit a file...
+# Then check what changed
+git status
+
+# Stage specific files
+git add myfile.py
+git add another_file.py
+
+# Or stage all changed files
+git add .
+
+# Commit with a message
+git commit -m "Fix bug in data processing"
+----
+
+*Commits are snapshots.* Each commit records exactly what changed and when.
+
+[.notes]
+--
+Think of commits as save points in a video game. You can always go back to any commit.
+
+Write meaningful commit messages! "Fixed stuff" is not helpful. "Fix null pointer error in user login" is helpful.
+--
+
+=== `git push` and `git pull`: Sharing Changes
+
+[source,bash]
+----
+# Send your commits to GitHub
+git push
+
+# Get changes others have pushed
+git pull
+----
+
+*Best practice:* Always `pull` before you start working, and `push` when you're done.
+
+[source,bash]
+----
+# Start of work session
+git pull
+
+# ... do your work, add, commit ...
+
+# End of work session
+git push
+----
+
+[.notes]
+--
+Pulling first helps avoid conflicts. If someone else changed a file and you also changed it, Git needs to merge those changes.
+
+Pushing at the end ensures your work is backed up and available to collaborators.
+--
+
+=== 🔮 Predict: Git Command Sequence
+
+You want to: edit `main.py`, save your changes, and share them with your team.
+
+Which sequence of commands do you need?
+
+[source,bash]
+----
+# Option A
+git push
+git add main.py
+git commit -m "Update main"
+
+# Option B
+git add main.py
+git commit -m "Update main"
+git push
+
+# Option C
+git commit -m "Update main"
+git add main.py
+git push
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+*Option B* — You must add (stage) before commit, and commit before push.
+
+[.notes]
+--
+The order matters!
+- add: "I want to include these changes"
+- commit: "Save these changes to my local history"
+- push: "Send my history to the remote"
+
+Option A pushes before anything is committed. Option C commits before anything is staged.
+--
+
+=== Common Mistake: Forgetting to Add
+
+[source,bash]
+----
+# You edited main.py and utils.py
+git status
+# Shows: modified: main.py, modified: utils.py
+
+# You only add one file
+git add main.py
+git commit -m "Update code"
+
+# Oops! utils.py was NOT included in the commit
+git status
+# Shows: modified: utils.py
+----
+
+*Always check `git status` before committing!*
+
+[.notes]
+--
+This trips up beginners constantly. You think you committed everything, but you only staged some files.
+
+`git status` is your safety check. Use it before every commit.
+--
+
+=== GitHub Desktop: A Visual Alternative
+
+If you prefer a graphical interface:
+
+* Download from: https://desktop.github.com/
+* Shows changed files visually
+* Click to stage, commit, push
+* Great for beginners and visual thinkers
+
+*The concepts are the same*—the interface is just different.
+
+[.notes]
+--
+GitHub Desktop is a perfectly valid way to use Git. Many professionals use it.
+
+The command line is more powerful for advanced operations, but for basic workflows, GitHub Desktop works great.
+--
+
+=== Git: Summary
+
+* Git tracks changes to files over time
+* *Four places:* remote repo, local repo, working directory, staging area
+* *Basic workflow:* `add` → `commit` → `push`
+* *Before working:* `pull` to get latest changes
+* *Always check:* `git status` to see where you are
+
+[.notes]
+--
+Transition: "Now let's talk about organizing Python code with namespaces and modules."
+--
+
+== Part 2: Namespaces
+
+=== What Is a Namespace?
+
+A *namespace* is a context in which names can exist.
+
+Think of namespaces like *rooms in a building*:
+
+* In one room, "Alex" refers to one person
+* In another room, "Alex" refers to a different person
+* No confusion because they're in different rooms
+
+[source,python]
+----
+# In the "math" namespace
+import math
+math.sqrt(16)    # math's sqrt function
+
+# In my script's namespace
+def sqrt(x):
+    return x ** 0.5  # My own sqrt function
+
+sqrt(16)         # Calls MY sqrt, not math's
+----
+
+[.notes]
+--
+Namespaces prevent name collisions. You can have two things with the same name as long as they're in different namespaces.
+
+This is why `math.sqrt` and your own `sqrt` can coexist—they're in different namespaces.
+--
+
+=== The LEGB Rule
+
+Python looks up names in this order:
+
+image::legb_namespaces.svg[LEGB Namespaces, 500]
+
+[cols="1,1,3", frame=none]
+|===
+| *L* | Local | Names inside the current function
+| *E* | Enclosing | Names in enclosing functions (nested functions)
+| *G* | Global | Names at the module level
+| *B* | Built-in | Python's built-in names (`print`, `len`, etc.)
+|===
+
+[.notes]
+--
+When Python sees a name, it searches in this order: Local → Enclosing → Global → Built-in.
+
+The first match wins. This is why a local variable can "shadow" a global variable.
+--
+
+=== 🔮 Predict: Name Resolution
+
+[source,python]
+----
+x = "global"
+
+def outer():
+    x = "enclosing"
+    
+    def inner():
+        x = "local"
+        print(x)
+    
+    inner()
+
+outer()  # What prints?
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`local` — Python finds `x` in the Local namespace first.
+
+[.notes]
+--
+Walk through the LEGB lookup:
+1. Local: Is there an `x` in inner()? Yes! → Use it.
+
+If the local `x` didn't exist, Python would check Enclosing, then Global, then Built-in.
+--
+
+=== Why Namespaces Matter
+
+[source,python]
+----
+# BAD: Accidentally shadowing a built-in
+list = [1, 2, 3]       # Oops! 'list' is now MY variable
+list("hello")          # TypeError! list is now [1, 2, 3], not the function
+
+# BAD: Naming conflicts between modules
+from math import sqrt
+from my_module import sqrt  # Oops! Which sqrt do I have now?
+----
+
+*Understanding namespaces helps you avoid these bugs.*
+
+[.notes]
+--
+These are real bugs that cause confusion.
+
+Shadowing built-ins is especially dangerous because the error message doesn't explain what went wrong.
+--
+
+=== Python Keywords (Reserved Names)
+
+These names are reserved—you *cannot* use them as variable names:
+
+[source,python]
+----
+# Python keywords (35 total)
+False      await      else       import     pass
+None       break      except     in         raise
+True       class      finally    is         return
+and        continue   for        lambda     try
+as         def        from       nonlocal   while
+assert     del        global     not        with
+async      elif       if         or         yield
+----
+
+[source,python]
+----
+# This causes a SyntaxError
+class = "INST326"  # Can't use 'class' as a variable name!
+----
+
+[.notes]
+--
+You'll get a SyntaxError if you try to use these as variable names.
+
+Common mistakes: trying to use `class`, `import`, `from`, or `is` as variable names.
+--
+
+== Part 3: Modules and Packages
+
+=== What Is a Module?
+
+A *module* is a Python file (`.py`) containing code you can import.
+
+[source,python]
+----
+# my_utils.py - This is a module!
+def greet(name):
+    return f"Hello, {name}!"
+
+def add(a, b):
+    return a + b
+
+PI = 3.14159
+----
+
+[source,python]
+----
+# main.py - Using the module
+import my_utils
+
+print(my_utils.greet("Alice"))  # "Hello, Alice!"
+print(my_utils.add(2, 3))       # 5
+print(my_utils.PI)              # 3.14159
+----
+
+*Modules let you organize and reuse code.*
+
+[.notes]
+--
+Any .py file is a module. When you import it, you get access to its functions, classes, and variables.
+
+Modules are how Python's standard library is organized—math, os, json, etc. are all modules.
+--
+
+=== What Is a Package?
+
+A *package* is a folder containing multiple modules, plus a special `__init__.py` file.
+
+image::package_structure.svg[Package Structure, 400]
+
+[source,python]
+----
+# Importing from a package
+import my_package.module_a
+from my_package.subpackage import module_c
+----
+
+[.notes]
+--
+The `__init__.py` file can be empty, but it must exist for Python to recognize the folder as a package.
+
+Packages let you organize large codebases into logical groups.
+--
+
+=== Where Does Python Find Modules?
+
+When you write `import my_module`, Python searches in this order:
+
+1. *Built-in modules* (like `sys`, `os`)
+2. *Current directory* (where your script is)
+3. *Installed packages* (from `pip install`)
+
+[source,python]
+----
+import sys
+print(sys.path)  # Shows all directories Python searches
+----
+
+[.notes]
+--
+This is why putting your module in the same folder as your script works.
+
+If you get "ModuleNotFoundError", the module isn't in any of these locations.
+--
+
+=== Creating Your Own Module
+
+[source,python]
+----
+# calculations.py
+"""Math utilities for our project."""
+
+def square(n):
+    """Return n squared."""
+    return n ** 2
+
+def cube(n):
+    """Return n cubed."""
+    return n ** 3
+
+def average(numbers):
+    """Return the average of a list of numbers."""
+    return sum(numbers) / len(numbers)
+----
+
+[source,python]
+----
+# main.py (in the same folder)
+import calculations
+
+print(calculations.square(5))          # 25
+print(calculations.average([1,2,3,4])) # 2.5
+----
+
+[.notes]
+--
+Creating a module is as simple as creating a .py file.
+
+Good modules have:
+- Clear function names
+- Docstrings
+- Related functionality grouped together
+--
 
 == Importing
 
-=== Importing Examples
+=== Import Styles
 
-[source, python]
-----
-import sound.effects.echo
-----
+There are several ways to import:
 
-[source, python]
+[source,python]
 ----
-import my_module
-----
+# Style 1: Import the module
+import math
+math.sqrt(16)           # Must use module prefix
 
-[source, python]
-----
-from my_module import fun1, fun2
-----
+# Style 2: Import specific items
+from math import sqrt, pi
+sqrt(16)                # No prefix needed
+pi                      # Direct access
 
-=== Importing with Aliasing Examples
+# Style 3: Import with alias
+import pandas as pd
+pd.DataFrame()          # Use the alias
 
-[source, python]
-----
-import sound.effects.echo as echo
-----
-
-[source, python]
-----
-import my_module as mod1
+# Style 4: Import specific item with alias
+from math import sqrt as square_root
+square_root(16)
 ----
 
-[source, python]
+[.notes]
+--
+Each style has its place:
+- Style 1: Clear where things come from, longer to type
+- Style 2: Convenient, but can cause name conflicts
+- Style 3: Common convention for long module names
+- Style 4: Useful when names conflict
+--
+
+=== Which Import Style to Use?
+
+[cols="1,2", frame=none]
+|===
+| *Situation* | *Recommended Style*
+
+| Using many functions from a module
+| `import math` then `math.sqrt()`
+
+| Using one or two functions repeatedly
+| `from math import sqrt, pi`
+
+| Long module names
+| `import pandas as pd`
+
+| Avoiding name conflicts
+| `from module import func as my_func`
+|===
+
+[.notes]
+--
+The goal is readable, maintainable code.
+
+If you see `sqrt(16)` later in the code, is it obvious where `sqrt` came from? If you imported it with `from math import sqrt`, it might not be clear. With `math.sqrt(16)`, it's obvious.
+--
+
+=== Common Mistake: `from module import *`
+
+[source,python]
 ----
-from my_module import fun1 as my_cool_function
+# DON'T DO THIS!
+from math import *
+
+# Now your namespace is polluted with EVERYTHING from math
+# You don't know what names you have
+# You might accidentally shadow your own variables
 ----
 
-=== One other thing you can do...
-* But you should not do this:
-
-[source, python]
+[source,python]
 ----
-from my_module import *
+# DO THIS INSTEAD
+import math
+# or
+from math import sqrt, pi, sin, cos
 ----
 
-* Why?
-    ** Bad practice
-    ** Can import names that you might not want.
-    ** Creates code that is less readable.
+*Why it's bad:*
+
+* You don't know what names you imported
+* Can overwrite your own variables silently
+* Makes code harder to understand
+
+[.notes]
+--
+`import *` is considered bad practice in almost all cases.
+
+The only exception is in interactive sessions for quick exploration.
+
+In production code, always be explicit about what you're importing.
+--
+
+=== 🔮 Predict: Import Behavior
+
+[source,python]
+----
+# my_module.py
+def greet():
+    return "Hello from my_module!"
+
+greeting = "Welcome!"
+----
+
+[source,python]
+----
+# main.py
+from my_module import greet
+
+print(greet())          # Line 1
+print(greeting)         # Line 2
+print(my_module.greet)  # Line 3
+----
+
+Which lines cause errors?
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+*Lines 2 and 3* — We only imported `greet`, not `greeting` or the module itself.
+
+[.notes]
+--
+`from module import X` only imports X. Nothing else is available.
+
+- Line 1: Works, we imported greet
+- Line 2: NameError, greeting was not imported
+- Line 3: NameError, my_module is not defined (we used `from` import)
+--
+
+=== Try It: Create and Import a Module
+
+1. Create a file called `string_utils.py` with these functions:
+   * `shout(text)` — returns text in uppercase with "!"
+   * `whisper(text)` — returns text in lowercase with "..."
+   * `count_words(text)` — returns number of words
+
+2. Create `main.py` and import your module to test the functions
+
+[%step]
+--
+[source,python]
+----
+# string_utils.py
+def shout(text):
+    return text.upper() + "!"
+
+def whisper(text):
+    return text.lower() + "..."
+
+def count_words(text):
+    return len(text.split())
+----
+
+[source,python]
+----
+# main.py
+import string_utils
+
+print(string_utils.shout("hello"))      # "HELLO!"
+print(string_utils.whisper("HELLO"))    # "hello..."
+print(string_utils.count_words("one two three"))  # 3
+----
+--
+
+[.notes]
+--
+Give students 4-5 minutes to try this. Walk around and help.
+
+Make sure both files are in the same folder.
+--
+
+== 📋 Key Takeaways
+
+[cols="1,1", frame=none]
+|===
+| *Git* | Version control for tracking and sharing code
+
+| *Git Workflow* | `add` → `commit` → `push`; always `pull` first
+
+| *Namespaces* | Contexts that prevent name collisions (LEGB rule)
+
+| *Modules* | Python files you can import (`.py`)
+
+| *Packages* | Folders with `__init__.py` containing modules
+
+| *Import Styles* | `import X`, `from X import Y`, `import X as Z`
+
+| *Avoid* | `from X import *` (pollutes namespace)
+|===
+
+== Practice Challenge
+
+Create a *collaborative utility library* using both Git and modules.
+
+*Part 1 — Create a Package:*
+
+[source]
+----
+text_tools/
+├── __init__.py
+├── analysis.py      # word_count(), char_count(), avg_word_length()
+└── transform.py     # to_uppercase(), to_lowercase(), reverse_words()
+----
+
+*Part 2 — Use Git:*
+
+1. Initialize a Git repository
+2. Add your package files
+3. Commit with a meaningful message
+4. (Optional) Push to GitHub
+
+*Part 3 — Use Your Package:*
+
+Create `main.py` that imports from both modules and demonstrates each function.
+
+*Work with a partner. Test thoroughly!*
+
+[.notes]
+--
+This exercise combines:
+- Package structure with __init__.py
+- Multiple modules with related functions
+- Git workflow (init, add, commit)
+- Import statements
+
+Give 10-15 minutes. Walk around and help.
+--
+
+=== Practice Challenge: Package Structure
+
+[source,python]
+----
+# text_tools/__init__.py
+"""Text analysis and transformation utilities."""
+# Can be empty, or import commonly used functions
+----
+
+[source,python]
+----
+# text_tools/analysis.py
+"""Functions for analyzing text."""
+
+def word_count(text):
+    """Return the number of words in text."""
+    return len(text.split())
+
+def char_count(text, include_spaces=True):
+    """Return the number of characters in text."""
+    if include_spaces:
+        return len(text)
+    return len(text.replace(" ", ""))
+
+def avg_word_length(text):
+    """Return the average word length."""
+    words = text.split()
+    if not words:
+        return 0
+    return sum(len(w) for w in words) / len(words)
+----
+
+=== Practice Challenge: Package Structure (continued)
+
+[source,python]
+----
+# text_tools/transform.py
+"""Functions for transforming text."""
+
+def to_uppercase(text):
+    """Return text in uppercase."""
+    return text.upper()
+
+def to_lowercase(text):
+    """Return text in lowercase."""
+    return text.lower()
+
+def reverse_words(text):
+    """Return text with word order reversed."""
+    return " ".join(text.split()[::-1])
+----
+
+=== Practice Challenge: Git Commands
+
+[source,bash]
+----
+# Initialize a new Git repository
+git init
+
+# Check status (see untracked files)
+git status
+
+# Stage all files
+git add .
+
+# Commit with a message
+git commit -m "Create text_tools package with analysis and transform modules"
+
+# Check status again (should be clean)
+git status
+----
+
+[.notes]
+--
+Walk through each command:
+- `git init` creates a new repository in the current folder
+- `git status` shows what files exist and their state
+- `git add .` stages everything
+- `git commit` saves to local history
+--
+
+=== Practice Challenge: Using the Package
+
+[source,python]
+----
+# main.py
+from text_tools import analysis
+from text_tools import transform
+
+# Test text
+sample = "The quick brown fox jumps over the lazy dog"
+
+# Analysis functions
+print(f"Word count: {analysis.word_count(sample)}")
+print(f"Char count: {analysis.char_count(sample)}")
+print(f"Avg word length: {analysis.avg_word_length(sample):.2f}")
+
+# Transform functions
+print(f"Uppercase: {transform.to_uppercase(sample)}")
+print(f"Lowercase: {transform.to_lowercase(sample)}")
+print(f"Reversed: {transform.reverse_words(sample)}")
+----
+
+Output:
+[source]
+----
+Word count: 9
+Char count: 43
+Avg word length: 3.89
+Uppercase: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+Lowercase: the quick brown fox jumps over the lazy dog
+Reversed: dog lazy the over jumps fox brown quick The
+----
+
+== Questions?
+
+🔗 *Resources:*
+
+* Git Documentation: https://git-scm.com/doc
+* GitHub Desktop: https://desktop.github.com/
+* Python Modules Tutorial: https://docs.python.org/3/tutorial/modules.html
+* Real Python - Packages: https://realpython.com/python-modules-packages/

@@ -1,0 +1,36 @@
+<svg width="400" height="320" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="200" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">Package Structure</text>
+  
+  <!-- Folder icon helper -->
+  <!-- my_package folder -->
+  <rect x="50" y="50" width="300" height="250" fill="#fef9e7" stroke="#f39c12" stroke-width="2" rx="5"/>
+  <rect x="50" y="50" width="100" height="20" fill="#f39c12" rx="5 5 0 0"/>
+  <text x="70" y="65" font-family="monospace" font-size="12" fill="white" font-weight="bold">my_package/</text>
+  
+  <!-- __init__.py -->
+  <rect x="70" y="85" width="180" height="25" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" rx="3"/>
+  <text x="80" y="102" font-family="monospace" font-size="11" fill="#2c3e50">📄 __init__.py</text>
+  <text x="270" y="102" font-family="Arial, sans-serif" font-size="10" fill="#e74c3c">← Required!</text>
+  
+  <!-- module_a.py -->
+  <rect x="70" y="120" width="180" height="25" fill="#ebf5fb" stroke="#3498db" stroke-width="1" rx="3"/>
+  <text x="80" y="137" font-family="monospace" font-size="11" fill="#2c3e50">📄 module_a.py</text>
+  
+  <!-- module_b.py -->
+  <rect x="70" y="155" width="180" height="25" fill="#ebf5fb" stroke="#3498db" stroke-width="1" rx="3"/>
+  <text x="80" y="172" font-family="monospace" font-size="11" fill="#2c3e50">📄 module_b.py</text>
+  
+  <!-- subpackage folder -->
+  <rect x="70" y="195" width="260" height="95" fill="#e8f8f5" stroke="#1abc9c" stroke-width="2" rx="5"/>
+  <rect x="70" y="195" width="90" height="18" fill="#1abc9c" rx="5 5 0 0"/>
+  <text x="80" y="208" font-family="monospace" font-size="10" fill="white" font-weight="bold">subpackage/</text>
+  
+  <!-- subpackage __init__.py -->
+  <rect x="90" y="225" width="160" height="22" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" rx="3"/>
+  <text x="100" y="240" font-family="monospace" font-size="10" fill="#2c3e50">📄 __init__.py</text>
+  
+  <!-- subpackage module_c.py -->
+  <rect x="90" y="255" width="160" height="22" fill="#ebf5fb" stroke="#3498db" stroke-width="1" rx="3"/>
+  <text x="100" y="270" font-family="monospace" font-size="10" fill="#2c3e50">📄 module_c.py</text>
+</svg>
