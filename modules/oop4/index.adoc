@@ -1,0 +1,42 @@
+= Operators, Decorators & Dataclasses
+//:stylesdir: ../../css
+//:stylesheet: page.css
+:includedir: ../../includes
+:toc: left
+
+++++
+include::{includedir}/navigation.html[]
+++++
+
+== Overview
+
+This module builds on OOP 3's introduction to magic methods and expands into three areas that are essential for writing clean, Pythonic classes: extended operator overloading, decorators, and dataclasses.
+
+Topics covered:
+
+* Extended operator overloading — arithmetic, reflected, indexing, and unary operators
+* Decorators — `@property`, `@classmethod`, `@staticmethod`, writing custom decorators
+* Dataclasses — `@dataclass`, default values, `field()`, ordering, frozen classes
+
+=== Links
+
+* link:slides.html[Slides]
+
+== Learning Outcomes
+
+After completing this module, students should be able to:
+
+* Implement arithmetic and indexing operators on custom classes.
+* Explain how Python dispatches operators using reflected methods.
+* Describe what a decorator is and how the `@` syntax works.
+* Use `@property` to create computed attributes with optional setters.
+* Use `@classmethod` to define alternate constructors and `@staticmethod` for utility methods.
+* Use `@dataclass` to auto-generate `+++__init__+++`, `+++__repr__+++`, and `+++__eq__+++` from type annotations.
+* Choose between dataclasses and regular classes for a given problem.
+
+== Additional Readings
+
+* The link:https://docs.python.org/3/reference/datamodel.html[Data Model] chapter of the official Python documentation is the definitive reference for all operator magic methods.
+* link:https://docs.python.org/3/library/dataclasses.html[Dataclasses module documentation] covers all options including `field()`, `order`, and `frozen`.
+* link:https://realpython.com/primer-on-python-decorators/[Primer on Python Decorators] from Real Python provides a thorough walkthrough with practical examples.
+* link:https://peps.python.org/pep-0557/[PEP 557] is the original proposal that introduced dataclasses to Python, and explains the design rationale.

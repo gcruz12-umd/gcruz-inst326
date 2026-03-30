@@ -24,6 +24,47 @@ if not shutil.which("asciidoctor"):
     sys.exit("ERROR: asciidoctor is not installed or is not in your PATH")
 
 
+def detect_revealjs_backend():
+    """Detect which reveal.js backend is available.
+
+    Checks Node.js (@asciidoctor/reveal.js) first, then Ruby
+    (asciidoctor-revealjs). Returns the require string to pass to
+    asciidoctor's -r flag, or None if neither is installed.
+    """
+    try:
+        result = subprocess.run(
+            ["node", "-e", "require('@asciidoctor/reveal.js')"],
+            capture_output=True,
+        )
+        if result.returncode == 0:
+            return "@asciidoctor/reveal.js"
+    except FileNotFoundError:
+        pass
+
+    try:
+        result = subprocess.run(
+            ["ruby", "-e", "require 'asciidoctor-revealjs'"],
+            capture_output=True,
+        )
+        if result.returncode == 0:
+            return "asciidoctor-revealjs"
+    except FileNotFoundError:
+        pass
+
+    return None
+
+
+_revealjs_backend = detect_revealjs_backend()
+
+if _revealjs_backend:
+    print(f"Using reveal.js backend: {_revealjs_backend}")
+else:
+    print("WARNING: No reveal.js backend found. Slide files will be skipped.")
+    print("  Install one of:")
+    print("    npm install -g @asciidoctor/core @asciidoctor/reveal.js")
+    print("    gem install asciidoctor-revealjs")
+
+
 def main():
     """
     Walk through the repository directory looking for asciidoc files
@@ -82,8 +123,11 @@ def asciidoc(adoc_file, html_file, quiet=False):
     """
 
     if 'slides' in basename(adoc_file):
-        # Use asciidoctor with reveal.js backend for slides
-        cmd = ["asciidoctor", "-r", "@asciidoctor/reveal.js", "-b", "revealjs", 
+        if _revealjs_backend is None:
+            if not quiet:
+                print(f"SKIPPED (no reveal.js backend): {adoc_file}")
+            return False
+        cmd = ["asciidoctor", "-r", _revealjs_backend, "-b", "revealjs",
                adoc_file, "-o", html_file]
     else:
         cmd = ["asciidoctor", adoc_file, "-o", html_file]

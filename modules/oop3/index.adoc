@@ -1,0 +1,39 @@
+= OOP in Practice
+//:stylesdir: ../../css
+//:stylesheet: page.css
+:includedir: ../../includes
+:toc: left
+
+++++
+include::{includedir}/navigation.html[]
+++++
+
+== Overview
+
+This module builds on the foundations of OOP 1 (classes, objects, attributes, methods) and OOP 2 (inheritance, composition) to explore how to design classes that integrate seamlessly with Python's built-in features and that are flexible enough to handle real-world data analysis tasks.
+
+Topics covered:
+
+* Magic methods (dunder methods) — `+++__repr__+++`, `+++__str__+++`, `+++__eq__+++`, `+++__lt__+++`, `+++__len__+++`, `+++__contains__+++`, `+++__iter__+++`, `+++__add__+++`
+* The Strategy design pattern
+* Designing Pythonic classes for data analysis workflows
+
+=== Links
+
+* link:slides.html[Slides]
+
+== Learning Outcomes
+
+After completing this module, students should be able to:
+
+* Implement magic methods to make custom classes work with Python built-in functions and operators.
+* Distinguish between `+++__repr__+++` and `+++__str__+++` and implement both appropriately.
+* Make custom objects comparable, sortable, and iterable.
+* Apply the Strategy pattern to separate analysis logic from data structures.
+* Design classes that combine composition, magic methods, and strategies to model real-world data problems.
+
+== Additional Readings
+
+* The link:https://docs.python.org/3/reference/datamodel.html[Data Model] chapter of the official Python documentation covers all available magic methods.
+* link:https://rszalski.github.io/magicmethods/[A Guide to Python's Magic Methods] by Rafe Kettler provides a practical walkthrough with examples.
+* The link:https://refactoring.guru/design-patterns/strategy[Strategy Pattern] page on Refactoring Guru explains the pattern with visual diagrams and Python examples.

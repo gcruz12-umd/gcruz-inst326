@@ -1,0 +1,1632 @@
+= Operators, Decorators & Dataclasses
+:imagesdir: images
+:docinfo: shared
+:revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
+:source-highlighter: highlightjs
+:highlightjsdir: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1
+:highlightjs-theme: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/tomorrow-night.min.css
+:customcss: ../../css/default.css
+:revealjs_theme: white
+:revealjs_width: 1400
+:revealjs_height: 800
+:revealjs_slideNumber: true
+:revealjs_transition: slide
+:revealjs_transitionSpeed: default
+
+== Today's Goals
+
+By the end of this session, you'll be able to: 
+
+* Implement arithmetic and indexing operators on custom classes
+* Understand reflected operators and how Python dispatches operations
+* Write and use decorators, including `@property`, `@classmethod`, and `@staticmethod`
+* Use the `@dataclass` decorator to eliminate boilerplate code
+* Combine all three concepts to build clean, Pythonic classes
+
+[.notes]
+--
+This module builds directly on OOP 3, where we learned magic methods like __add__, __eq__, __lt__, and the Strategy Pattern. Today we're going deeper into operators, then learning two powerful Python features—decorators and dataclasses—that will change how you write classes.
+
+By the end, you'll be writing classes in a fraction of the code, with more functionality built in.
+--
+
+== Operator Overloading: Going Deeper
+
+=== Recap: What We Know
+
+In OOP 3, we implemented:
+
+* `+++__add__+++` — the `+` operator
+* `+++__eq__+++` — the `==` operator
+* `+++__lt__+++` — the `<` operator (enables `sorted()`)
+
+Today we'll add:
+
+* `+++__sub__+++`, `+++__mul__+++` — arithmetic operators
+* `+++__rmul__+++` — *reflected* operators
+* `+++__getitem__+++` — indexing with `[]`
+* `@total_ordering` — auto-generate comparison methods
+
+[.notes]
+--
+Quick recap of where we are. Students should be comfortable with __add__, __eq__, and __lt__ from last time.
+
+Today's new operators are natural extensions. We'll use a Vector2D class to make the math intuitive—vectors are a common data structure in data science, physics simulations, and game development.
+--
+
+=== The Vector2D Class
+
+[source,python]
+----
+class Vector2D:
+    """A 2D vector with x and y components."""
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __repr__(self):
+        return f"Vector2D({self.x}, {self.y})"
+----
+
+[source,python]
+----
+v1 = Vector2D(3, 4)
+v2 = Vector2D(1, 2)
+print(v1)
+----
+
+[source,python]
+----
+Vector2D(3, 4)
+----
+
+[.notes]
+--
+We start with a simple Vector2D class. This represents a point or direction in 2D space.
+
+Vectors are used everywhere in data science—word embeddings, coordinates on a map, feature vectors in machine learning. The math operations we'll implement are operations you'd actually perform on real data.
+
+We already have __repr__ from OOP 3. Let's add arithmetic.
+--
+
+=== Arithmetic Operators
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, other):
+        if not isinstance(other, Vector2D):
+            return NotImplemented
+        return Vector2D(self.x + other.x, self.y + other.y)
+    
+    def __sub__(self, other):
+        if not isinstance(other, Vector2D):
+            return NotImplemented
+        return Vector2D(self.x - other.x, self.y - other.y)
+----
+
+[source,python]
+----
+v1 = Vector2D(3, 4)
+v2 = Vector2D(1, 2)
+print(v1 + v2)    # Vector2D(4, 6)
+print(v1 - v2)    # Vector2D(2, 2)
+----
+
+[.notes]
+--
+__add__ maps to +, __sub__ maps to -. The pattern is identical to what we saw in OOP 3.
+
+Each operator:
+1. Checks the type with isinstance
+2. Returns NotImplemented for unsupported types
+3. Creates and returns a NEW object (never modifies the originals)
+
+This maps directly to vector math: (3,4) + (1,2) = (4,6). Each component is added independently.
+--
+
+=== Scalar Multiplication: `+++__mul__+++`
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __mul__(self, scalar):
+        if not isinstance(scalar, (int, float)):
+            return NotImplemented
+        return Vector2D(self.x * scalar, self.y * scalar)
+----
+
+[source,python]
+----
+v = Vector2D(3, 4)
+print(v * 2)       # Vector2D(6, 8)
+print(v * 0.5)     # Vector2D(1.5, 2.0)
+----
+
+[source,python]
+----
+print(2 * v)       # ???
+----
+
+[%step]
+`TypeError: unsupported operand type(s) for *: 'int' and 'Vector2D'`
+
+[.notes]
+--
+__mul__ lets us scale a vector: multiply each component by a number.
+
+But there's a problem. `v * 2` works because Python calls v.__mul__(2). But `2 * v` calls (2).__mul__(v), and Python's int class doesn't know how to multiply by a Vector2D.
+
+In math, 2 * v and v * 2 should be the same thing. How do we fix this?
+--
+
+=== Reflected Operators: `+++__rmul__+++`
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __mul__(self, scalar):
+        if not isinstance(scalar, (int, float)):
+            return NotImplemented
+        return Vector2D(self.x * scalar, self.y * scalar)
+    
+    def __rmul__(self, scalar):
+        return self.__mul__(scalar)
+----
+
+[source,python]
+----
+v = Vector2D(3, 4)
+print(v * 2)       # Vector2D(6, 8)  — calls v.__mul__(2)
+print(2 * v)       # Vector2D(6, 8)  — calls v.__rmul__(2)
+----
+
+Now both directions work!
+
+[.notes]
+--
+When Python sees `2 * v`:
+1. First tries (2).__mul__(v) → int doesn't know about Vector2D → returns NotImplemented
+2. Then tries v.__rmul__(2) → our code handles it!
+
+The "r" in __rmul__ stands for "reflected" or "right." It's the fallback when the left operand can't handle the operation.
+
+For commutative operations (where order doesn't matter), __rmul__ can simply call __mul__. For non-commutative operations (like matrix multiplication), they'd be different.
+
+Every operator has a reflected version: __radd__, __rsub__, __rmul__, __rtruediv__, etc.
+--
+
+=== How Python Resolves Operators
+
+image::operator_dispatch.svg[Operator Dispatch, 500]
+
+[.notes]
+--
+This diagram shows the full dispatch process for a + b:
+
+1. Python first tries a.__add__(b)
+2. If that returns a value, we're done
+3. If it returns NotImplemented, Python tries b.__radd__(a)
+4. If that also returns NotImplemented, Python raises TypeError
+
+This is why we always return NotImplemented (not False, not None) for unsupported types. It gives the OTHER object a chance to handle the operation.
+
+The same pattern applies to all binary operators: -, *, /, //, %, **, etc.
+--
+
+=== Indexing: `+++__getitem__+++`
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __getitem__(self, index):
+        if index == 0:
+            return self.x
+        elif index == 1:
+            return self.y
+        else:
+            raise IndexError("Vector2D only has 2 components")
+----
+
+[source,python]
+----
+v = Vector2D(3, 4)
+print(v[0])        # 3
+print(v[1])        # 4
+print(v[2])        # IndexError: Vector2D only has 2 components
+----
+
+[.notes]
+--
+__getitem__ maps to the square bracket operator []. It makes your object indexable, like a list.
+
+This is especially useful for data objects. Instead of remembering whether to use .x or .y, users can treat the vector like a sequence.
+
+It also enables unpacking:
+```python
+x, y = v[0], v[1]
+```
+
+For data analysis, __getitem__ is how pandas DataFrames support df["column_name"] and df[0:5].
+--
+
+=== More Useful Operators
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __abs__(self):
+        """Magnitude (length) of the vector."""
+        return (self.x ** 2 + self.y ** 2) ** 0.5
+    
+    def __neg__(self):
+        """Negate the vector."""
+        return Vector2D(-self.x, -self.y)
+    
+    def __bool__(self):
+        """A zero vector is falsy, all others truthy."""
+        return self.x != 0 or self.y != 0
+----
+
+[source,python]
+----
+v = Vector2D(3, 4)
+print(abs(v))      # 5.0 (the 3-4-5 right triangle!)
+print(-v)          # Vector2D(-3, -4)
+print(bool(v))     # True
+----
+
+[.notes]
+--
+A few more operators that are useful to know:
+
+__abs__ maps to abs(). For vectors, the "absolute value" is the magnitude (length).
+
+__neg__ maps to the unary minus: -v. Creates a new vector pointing the opposite direction.
+
+__bool__ maps to bool(). It determines how your object behaves in if statements. A zero vector (0,0) is "falsy" because it has no magnitude.
+
+These make your class feel completely native to Python. Users can use abs(), negation, and if statements without thinking about it.
+--
+
+=== The Comparison Boilerplate Problem
+
+Implementing all six comparison operators manually:
+
+[source,python]
+----
+def __eq__(self, other): ...  # ==
+def __ne__(self, other): ...  # !=
+def __lt__(self, other): ...  # <
+def __le__(self, other): ...  # <=
+def __gt__(self, other): ...  # >
+def __ge__(self, other): ...  # >=
+----
+
+That's *six methods* with mostly repetitive logic!
+
+[.notes]
+--
+In OOP 3, we implemented __eq__ and __lt__. But there are actually six comparison operators, and if you want your class to support all of them, you'd have to implement all six.
+
+Most of them are trivially derivable from the others:
+- __ne__ is just not __eq__
+- __gt__ is __lt__ with swapped arguments
+- __le__ is __lt__ or __eq__
+- __ge__ is __gt__ or __eq__
+
+Writing all six is tedious and error-prone. There has to be a better way.
+
+There is—and it uses a Python feature called a DECORATOR. Consider this a sneak preview.
+--
+
+=== `@total_ordering` to the Rescue
+
+[source,python]
+----
+from functools import total_ordering
+
+@total_ordering
+class Student:
+    def __init__(self, name, gpa):
+        self.name = name
+        self.gpa = gpa
+    
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.gpa == other.gpa
+    
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.gpa < other.gpa
+----
+
+Define *just* `+++__eq__+++` and `+++__lt__+++`, and `@total_ordering` generates the rest!
+
+[source,python]
+----
+s1 = Student("Alice", 3.8)
+s2 = Student("Bob", 3.5)
+print(s1 > s2)     # True  — auto-generated!
+print(s1 >= s2)    # True  — auto-generated!
+print(s1 <= s2)    # False — auto-generated!
+----
+
+[.notes]
+--
+@total_ordering is from the functools module. It's a DECORATOR—a function that modifies a class (or function) by adding behavior.
+
+You provide __eq__ and one ordering method (__lt__, __le__, __gt__, or __ge__), and @total_ordering automatically generates the rest.
+
+This is the first decorator we've used. Notice the @ syntax—the decorator goes on the line above the class definition. We'll learn exactly how this works in the next section.
+
+For now, just appreciate what it does: saves you from writing four boilerplate methods.
+--
+
+=== 🔮 Predict: Operator Overloading
+
+[source,python]
+----
+class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def __repr__(self):
+        return f"Vector2D({self.x}, {self.y})"
+    def __add__(self, other):
+        return Vector2D(self.x + other.x, self.y + other.y)
+    def __mul__(self, scalar):
+        return Vector2D(self.x * scalar, self.y * scalar)
+    def __rmul__(self, scalar):
+        return self.__mul__(scalar)
+
+v1 = Vector2D(1, 2)
+v2 = Vector2D(3, 4)
+print(v1 + v2)
+print(3 * v1)
+print(v1 + v2 * 2)
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`Vector2D(4, 6)` — component-wise addition
+
+[%step]
+`Vector2D(3, 6)` — scalar multiplication via __rmul__
+
+[%step]
+`Vector2D(7, 10)` — `v2 * 2` evaluates first → `Vector2D(6, 8)`, then `v1 + Vector2D(6, 8)` → `Vector2D(7, 10)`
+
+[.notes]
+--
+Walk through each:
+
+1. v1 + v2: (1+3, 2+4) = (4, 6)
+2. 3 * v1: int doesn't know Vector2D → tries v1.__rmul__(3) → (1*3, 2*3) = (3, 6)
+3. v1 + v2 * 2: Python follows normal operator precedence. * before +, so v2 * 2 = (6, 8), then v1 + (6, 8) = (7, 10)
+
+The third one is a great teaching moment—operator precedence works exactly as expected because we're using Python's built-in operator dispatch.
+--
+
+=== Operators: Summary
+
+|===
+| Method | Operator | Reflected Version
+
+| `+++__add__+++`
+| `+`
+| `+++__radd__+++`
+
+| `+++__sub__+++`
+| `-`
+| `+++__rsub__+++`
+
+| `+++__mul__+++`
+| `*`
+| `+++__rmul__+++`
+
+| `+++__truediv__+++`
+| `/`
+| `+++__rtruediv__+++`
+
+| `+++__getitem__+++`
+| `obj[key]`
+|
+
+| `+++__abs__+++`
+| `abs(obj)`
+|
+
+| `+++__neg__+++`
+| `-obj`
+|
+
+| `+++__bool__+++`
+| `bool(obj)`, `if obj:`
+|
+|===
+
+[.notes]
+--
+Reference slide. The reflected versions (__radd__, __rmul__, etc.) are called when the LEFT operand doesn't support the operation.
+
+Not every operator needs a reflected version. Unary operators like __neg__ and __abs__ only operate on one object. Indexing (__getitem__) uses the object being indexed.
+
+Transition: "We used @total_ordering to auto-generate methods. That @ thing is called a decorator—let's learn how decorators work."
+--
+
+== Decorators
+
+=== What's That `@` Thing?
+
+We just used `@total_ordering` to auto-generate comparison methods.
+
+[source,python]
+----
+@total_ordering
+class Student:
+    ...
+----
+
+The `@` symbol marks a *decorator*—a function that modifies another function or class.
+
+Before we can understand decorators, we need to understand one key fact about Python.
+
+[.notes]
+--
+Students have seen the @ syntax twice now: @total_ordering in this module and @property briefly in OOP 3's practice challenge. Now we're going to understand what's actually happening under the hood.
+
+Decorators are one of the most powerful features in Python. Once you understand them, you'll see them everywhere—in web frameworks (Flask, Django), testing libraries, data validation, and of course in dataclasses.
+--
+
+=== Functions Are Objects
+
+[source,python]
+----
+def greet(name):
+    return f"Hello, {name}!"
+
+# Functions can be assigned to variables
+say_hi = greet
+print(say_hi("Alice"))     # "Hello, Alice!"
+
+# Functions can be passed as arguments
+def apply(func, value):
+    return func(value)
+
+print(apply(greet, "Bob"))  # "Hello, Bob!"
+----
+
+*You've already used this—the Strategy Pattern passes functions as arguments!*
+
+[.notes]
+--
+This is not new to students. They used the Strategy Pattern in OOP 3, passing functions like total_by_category to the analyze() method.
+
+The key insight: functions in Python are objects, just like strings, integers, and lists. They can be:
+- Assigned to variables
+- Passed as arguments
+- Returned from other functions
+
+This last point—returning functions—is the key to understanding decorators.
+--
+
+=== Functions Inside Functions
+
+[source,python]
+----
+def make_greeter(greeting):
+    """Create a greeting function with a custom greeting."""
+    
+    def greeter(name):
+        return f"{greeting}, {name}!"
+    
+    return greeter
+
+hello = make_greeter("Hello")
+howdy = make_greeter("Howdy")
+
+print(hello("Alice"))   # "Hello, Alice!"
+print(howdy("Bob"))     # "Howdy, Bob!"
+----
+
+`make_greeter` returns a *new function* each time it's called.
+
+[.notes]
+--
+A function can define another function inside it and return it. The inner function "remembers" the variables from the outer function—this is called a CLOSURE.
+
+hello remembers that greeting = "Hello". howdy remembers that greeting = "Howdy". Each returned function carries its own copy of the outer variables.
+
+This is the mechanism behind decorators: a decorator is a function that takes a function, creates a new function that wraps it, and returns the wrapper.
+
+Let's see how that works.
+--
+
+=== Building a Decorator
+
+[source,python]
+----
+import time
+
+def timer(func):
+    """A decorator that times how long a function takes."""
+    
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    
+    return wrapper
+----
+
+`timer` takes a function and returns a *wrapped* version that measures execution time.
+
+[.notes]
+--
+Let's break this down:
+
+1. timer takes a function (func) as its argument
+2. Inside, it defines wrapper—a NEW function that:
+   a. Records the start time
+   b. Calls the original function
+   c. Calculates how long it took
+   d. Prints the timing
+   e. Returns the original result
+3. timer returns the wrapper
+
+The wrapper function uses *args and **kwargs. These are Python's way of saying "accept ANY arguments":
+- *args captures all positional arguments as a tuple
+- **kwargs captures all keyword arguments as a dictionary
+
+This way, the wrapper can wrap ANY function, regardless of how many arguments it takes.
+--
+
+=== Using Our Decorator
+
+[source,python]
+----
+import time
+
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - start
+        print(f"{func.__name__} took {elapsed:.4f}s")
+        return result
+    return wrapper
+
+def slow_sort(data):
+    time.sleep(1)
+    return sorted(data)
+
+timed_sort = timer(slow_sort)
+timed_sort([3, 1, 4, 1, 5])
+----
+
+[source,python]
+----
+slow_sort took 1.0012s
+----
+
+[.notes]
+--
+Here's the manual way to use a decorator:
+1. Define the function (slow_sort)
+2. Pass it to the decorator: timer(slow_sort)
+3. The decorator returns a new function (timed_sort) that wraps the original
+4. When we call timed_sort, it runs slow_sort but also times it
+
+This works, but it's clunky. We have to create a new variable name and remember to use it. Python has syntactic sugar that makes this much cleaner.
+--
+
+=== The `@` Syntax
+
+image::decorator_wrapping.svg[Decorator Wrapping, 500]
+
+[source,python]
+----
+@timer
+def slow_sort(data):
+    time.sleep(1)
+    return sorted(data)
+
+slow_sort([3, 1, 4, 1, 5])
+----
+
+[source,python]
+----
+slow_sort took 1.0012s
+----
+
+*`@timer` above a function is the same as `slow_sort = timer(slow_sort)`.*
+
+[.notes]
+--
+The @ syntax is purely syntactic sugar. It means:
+1. Define the function
+2. Immediately pass it to the decorator
+3. Replace the function name with the result
+
+@timer before def slow_sort is identical to:
+def slow_sort(data): ...
+slow_sort = timer(slow_sort)
+
+It's shorter, cleaner, and makes it obvious that the function is decorated. The decorator is always visible right above the function definition.
+--
+
+=== `@property`: Computed Attributes
+
+[source,python]
+----
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    
+    @property
+    def area(self):
+        return 3.14159 * self.radius ** 2
+    
+    @property
+    def diameter(self):
+        return self.radius * 2
+----
+
+[source,python]
+----
+c = Circle(5)
+print(c.area)       # 78.53975
+print(c.diameter)   # 10
+print(c.radius)     # 5
+----
+
+*`@property` lets you access a method like an attribute—no parentheses needed.*
+
+[.notes]
+--
+@property is one of Python's most useful built-in decorators. It turns a method into something that looks like an attribute.
+
+Without @property, you'd write c.area() with parentheses. With it, you write c.area—no parentheses. It looks and feels like accessing stored data, but it's actually computed on the fly.
+
+This is useful when:
+- A value depends on other attributes (area depends on radius)
+- You want a clean interface (c.area reads better than c.area())
+- You might want to add validation later (see next slide)
+
+Students saw @property briefly in the OOP 3 practice challenge. Now they understand what it actually does—it's a decorator!
+--
+
+=== `@property` with Setters
+
+[source,python]
+----
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    
+    @property
+    def diameter(self):
+        return self.radius * 2
+    
+    @diameter.setter
+    def diameter(self, value):
+        self.radius = value / 2
+----
+
+[source,python]
+----
+c = Circle(5)
+print(c.diameter)    # 10
+c.diameter = 14      # Sets radius to 7
+print(c.radius)      # 7
+----
+
+*The setter lets you assign to a property while running custom logic.*
+
+[.notes]
+--
+@property creates a read-only property by default. The setter decorator lets you also define what happens when someone assigns to the property.
+
+When you write c.diameter = 14, Python doesn't just store 14 somewhere. It calls the setter method, which computes the new radius (14 / 2 = 7) and stores that instead.
+
+This keeps your data consistent. The diameter is always exactly 2x the radius, whether you set the radius or the diameter.
+
+This is a powerful pattern for data validation:
+```python
+@radius.setter
+def radius(self, value):
+    if value < 0:
+        raise ValueError("Radius cannot be negative")
+    self._radius = value
+```
+--
+
+=== `@classmethod`: Alternate Constructors
+
+[source,python]
+----
+class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+    
+    @classmethod
+    def from_fahrenheit(cls, fahrenheit):
+        celsius = (fahrenheit - 32) * 5 / 9
+        return cls(celsius)
+    
+    def __repr__(self):
+        return f"Temperature({self.celsius:.1f}°C)"
+----
+
+[source,python]
+----
+t1 = Temperature(100)
+t2 = Temperature.from_fahrenheit(212)
+
+print(t1)    # Temperature(100.0°C)
+print(t2)    # Temperature(100.0°C)
+----
+
+*`@classmethod` receives the class itself (`cls`) instead of an instance (`self`).*
+
+[.notes]
+--
+@classmethod is another built-in decorator. A class method receives the CLASS as its first argument (cls by convention), not an instance.
+
+This is perfect for "alternate constructors"—different ways to create an object. Temperature normally takes Celsius, but from_fahrenheit lets you create one from Fahrenheit.
+
+The cls parameter is the class itself. cls(celsius) is the same as Temperature(celsius). Using cls instead of hardcoding the class name makes the method work correctly with inheritance.
+
+You'll see this pattern in many Python libraries:
+- datetime.datetime.now()
+- dict.fromkeys()
+- pathlib.Path.home()
+--
+
+=== `@staticmethod`: Utility Methods
+
+[source,python]
+----
+class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+    
+    @classmethod
+    def from_fahrenheit(cls, fahrenheit):
+        celsius = (fahrenheit - 32) * 5 / 9
+        return cls(celsius)
+    
+    @staticmethod
+    def is_boiling(celsius):
+        return celsius >= 100
+----
+
+[source,python]
+----
+print(Temperature.is_boiling(100))    # True
+print(Temperature.is_boiling(50))     # False
+
+t = Temperature(100)
+print(t.is_boiling(t.celsius))       # True
+----
+
+*`@staticmethod` doesn't receive `self` or `cls`—it's just a function that lives inside the class.*
+
+[.notes]
+--
+@staticmethod is simpler than @classmethod. A static method doesn't receive the instance (self) or the class (cls). It's a regular function that happens to live inside the class namespace.
+
+Use @staticmethod when:
+- The method doesn't need access to the instance or the class
+- The method is logically related to the class
+- You want to organize utility functions under the class name
+
+Static methods are less common than regular methods or class methods. If in doubt, use a regular method.
+
+Summary of the three method types:
+- Regular method: receives self (the instance)
+- @classmethod: receives cls (the class)
+- @staticmethod: receives nothing special
+--
+
+=== 🔮 Predict: Decorator Behavior
+
+[source,python]
+----
+def double_result(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result * 2
+    return wrapper
+
+@double_result
+def add(a, b):
+    return a + b
+
+@double_result
+def greet(name):
+    return f"Hello, {name}!"
+
+print(add(3, 4))
+print(greet("Alice"))
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`14` — add returns 7, decorator doubles it to 14
+
+[%step]
+`Hello, Alice!Hello, Alice!` — greet returns the string, `*` 2 duplicates it!
+
+[.notes]
+--
+Walk through each:
+
+1. add(3, 4): The original add returns 7. The wrapper takes that result and returns 7 * 2 = 14.
+2. greet("Alice"): The original greet returns "Hello, Alice!". The wrapper returns "Hello, Alice!" * 2, which in Python is string repetition: "Hello, Alice!Hello, Alice!"
+
+The second one is surprising and a good reminder that * on strings means repetition, not multiplication. The decorator blindly doubles whatever the function returns.
+
+This shows that decorators are generic—they work with ANY function, which can lead to unexpected behavior if you're not careful.
+--
+
+=== Decorators: Summary
+
+* A *decorator* is a function that takes a function and returns a modified version
+* The `@` syntax is shorthand for `func = decorator(func)`
+* Built-in decorators:
+** `@property` — access methods like attributes
+** `@classmethod` — alternate constructors (receives `cls`)
+** `@staticmethod` — utility functions (no `self` or `cls`)
+** `@total_ordering` — auto-generate comparison methods
+
+[.notes]
+--
+Decorators are everywhere in Python. You'll encounter them in:
+- Flask/Django: @app.route("/")
+- pytest: @pytest.fixture
+- functools: @lru_cache, @total_ordering
+- dataclasses: @dataclass (coming up next!)
+
+The core idea: decorators add behavior to functions or classes without changing their source code. This is a form of the "Open/Closed Principle" from OOP 2.
+
+Transition: "Now let's see the most powerful decorator for OOP—@dataclass."
+--
+
+== Dataclasses
+
+=== The Boilerplate Problem
+
+Remember our `Expense` class from OOP 3?
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __repr__(self):
+        return (f"Expense('{self.description}', "
+                f"{self.amount}, '{self.category}')")
+    
+    def __eq__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return (self.description == other.description
+                and self.amount == other.amount
+                and self.category == other.category)
+----
+
+*17 lines just to store three values and make them printable and comparable.*
+
+[.notes]
+--
+Look at how much code we wrote just to:
+1. Store three attributes (__init__)
+2. Print them (__repr__)
+3. Compare them (__eq__)
+
+Every attribute name appears FIVE times: once in the parameter list, once in self.x = x, once in __repr__, and twice in __eq__.
+
+This is boilerplate—code that follows a predictable pattern but still has to be written by hand. It's tedious, error-prone, and makes the class harder to read.
+
+What if Python could generate all of this for us?
+--
+
+=== `@dataclass` to the Rescue
+
+[source,python]
+----
+from dataclasses import dataclass
+
+@dataclass
+class Expense:
+    description: str
+    amount: float
+    category: str
+----
+
+That's it! *7 lines instead of 17.*
+
+[source,python]
+----
+e1 = Expense("Coffee", 4.50, "Food")
+e2 = Expense("Coffee", 4.50, "Food")
+
+print(e1)           # Expense(description='Coffee', amount=4.5, category='Food')
+print(e1 == e2)     # True
+----
+
+[.notes]
+--
+The @dataclass decorator looks at the type annotations (description: str, amount: float, category: str) and auto-generates:
+- __init__ that takes description, amount, and category as parameters
+- __repr__ that shows all fields
+- __eq__ that compares all fields
+
+This is the same functionality as our hand-written class, but in a fraction of the code.
+
+The type annotations (: str, : float) tell Python what type each field is. They're used by @dataclass to know which fields to include. Python doesn't enforce these types at runtime—they're documentation and tooling hints.
+--
+
+=== What Gets Generated
+
+image::dataclass_autogen.svg[Dataclass Auto-generation, 500]
+
+[.notes]
+--
+This diagram shows the transformation. You write the fields with type annotations, and @dataclass generates the methods.
+
+The generated __init__ creates self.field = field for each field, in order. The generated __repr__ includes all fields with their values. The generated __eq__ compares all fields.
+
+You can add order=True to also get __lt__, __le__, __gt__, __ge__—all auto-generated from the field order.
+
+This is a decorator in action. @dataclass is just a function that takes your class, inspects it, adds methods to it, and returns the modified class.
+--
+
+=== Type Annotations
+
+A quick note: the `: str`, `: float` syntax is called a *type annotation*.
+
+[source,python]
+----
+name: str             # This variable should hold a string
+age: int              # This variable should hold an integer
+scores: list          # This variable should hold a list
+----
+
+*Python does NOT enforce types at runtime.*
+
+[source,python]
+----
+@dataclass
+class Point:
+    x: float
+    y: float
+
+p = Point("hello", "world")   # No error! Python doesn't check.
+print(p)                       # Point(x='hello', y='world')
+----
+
+Type annotations are *documentation*—they help readers and tools, not the interpreter.
+
+[.notes]
+--
+Students may not have seen type annotations before. The key points:
+
+1. The colon syntax (x: float) annotates a variable with a type
+2. Python does NOT check or enforce these at runtime
+3. They're used by tools like mypy, IDE autocomplete, and @dataclass
+4. @dataclass REQUIRES annotations to know which fields to create
+
+Think of type annotations like docstrings—they communicate intent but don't change behavior.
+
+For @dataclass, annotations serve a dual purpose: they tell @dataclass which fields to create AND document what types those fields should hold.
+--
+
+=== Default Values
+
+[source,python]
+----
+from dataclasses import dataclass
+
+@dataclass
+class Expense:
+    description: str
+    amount: float
+    category: str = "Uncategorized"
+----
+
+[source,python]
+----
+e1 = Expense("Coffee", 4.50)
+e2 = Expense("Coffee", 4.50, "Food")
+
+print(e1)    # Expense(description='Coffee', amount=4.5, category='Uncategorized')
+print(e2)    # Expense(description='Coffee', amount=4.5, category='Food')
+----
+
+*Fields with defaults must come after fields without defaults—just like function parameters.*
+
+[.notes]
+--
+Default values work just like default arguments in functions. If you don't provide a value, the default is used.
+
+The rule about ordering is important: fields without defaults must come first, fields with defaults come last. This is the same rule as function parameters—you can't have def f(a=1, b) because Python wouldn't know which argument is which.
+
+So this is WRONG:
+```python
+@dataclass
+class Bad:
+    category: str = "Food"
+    description: str    # Error! Non-default after default
+    amount: float
+```
+--
+
+=== Mutable Defaults: `field()`
+
+[source,python]
+----
+from dataclasses import dataclass, field
+
+@dataclass
+class ShoppingList:
+    store: str
+    items: list = field(default_factory=list)
+----
+
+[source,python]
+----
+a = ShoppingList("Costco")
+b = ShoppingList("Trader Joe's")
+
+a.items.append("milk")
+print(a.items)    # ['milk']
+print(b.items)    # []  — each instance gets its own list!
+----
+
+*Never use a mutable default like `items: list = []` — use `field(default_factory=list)` instead.*
+
+[.notes]
+--
+This is a critical gotcha. In Python, mutable defaults (lists, dicts, sets) are shared between all instances if you write items: list = []. This is the "mutable default argument" problem.
+
+@dataclass actually PREVENTS this mistake—it raises a TypeError if you try items: list = [].
+
+The solution is field(default_factory=list). The default_factory is a function (no parentheses on list!) that gets called for each new instance, creating a fresh empty list every time.
+
+Common patterns:
+- field(default_factory=list) for empty lists
+- field(default_factory=dict) for empty dicts
+- field(default_factory=set) for empty sets
+--
+
+=== Adding Ordering: `order=True`
+
+[source,python]
+----
+@dataclass(order=True)
+class Student:
+    gpa: float
+    name: str
+----
+
+[source,python]
+----
+students = [
+    Student(3.5, "Alice"),
+    Student(3.8, "Bob"),
+    Student(3.2, "Carol"),
+]
+for s in sorted(students):
+    print(s)
+----
+
+[source,python]
+----
+Student(gpa=3.2, name='Carol')
+Student(gpa=3.5, name='Alice')
+Student(gpa=3.8, name='Bob')
+----
+
+*`order=True` auto-generates `+++__lt__+++`, `+++__le__+++`, `+++__gt__+++`, `+++__ge__+++` using field order.*
+
+[.notes]
+--
+order=True generates all four comparison operators. Objects are compared field-by-field in the order they're defined.
+
+Since gpa is the FIRST field, students are sorted by GPA first. If two students have the same GPA, they'd be sorted by name (the second field).
+
+This is why field order matters in dataclasses! Put the field you most often want to sort by FIRST.
+
+This is similar to @total_ordering, but @dataclass(order=True) handles it automatically without you writing any comparison methods at all.
+--
+
+=== Frozen Dataclasses
+
+[source,python]
+----
+@dataclass(frozen=True)
+class Coordinate:
+    latitude: float
+    longitude: float
+----
+
+[source,python]
+----
+home = Coordinate(38.9897, -76.9378)
+print(home)    # Coordinate(latitude=38.9897, longitude=-76.9378)
+----
+
+[source,python]
+----
+home.latitude = 0
+----
+
+[source,python]
+----
+FrozenInstanceError: cannot assign to field 'latitude'
+----
+
+*Frozen dataclasses are immutable—their fields cannot be changed after creation.*
+
+[.notes]
+--
+frozen=True makes the dataclass immutable. Once created, you can't modify any fields.
+
+Why is this useful?
+1. SAFETY: Prevents accidental modification of data that shouldn't change
+2. HASHABILITY: Frozen dataclasses can be used as dictionary keys or set members
+3. THREAD SAFETY: Immutable objects are inherently safe to share between threads
+
+Use frozen=True for data that represents a fixed value—coordinates, dates, configuration settings, database keys.
+
+Frozen dataclasses also get a __hash__ method, so you can use them in sets:
+```python
+locations = {Coordinate(38.9, -76.9), Coordinate(40.7, -74.0)}
+```
+--
+
+=== When to Use Dataclasses
+
+[cols="1,1", frame=none]
+|===
+| *Use `@dataclass`* | *Use regular classes*
+
+| Class primarily stores data
+| Class primarily defines behavior
+
+| You want auto-generated methods
+| You need full control over __init__
+
+| Fields are straightforward
+| Complex initialization logic
+
+| Many similar data-holding classes
+| Few specialized classes
+|===
+
+*Rule of thumb:* If your class is mostly `self.x = x` in `+++__init__+++`, it's a dataclass.
+
+[.notes]
+--
+Dataclasses aren't always the right choice. They're optimized for "data holders"—classes whose main purpose is to store data with some computed properties.
+
+For classes with complex behavior (like our ExpenseReport with its analyze method), a regular class gives you more control.
+
+The good news: you can mix! A @dataclass can still have regular methods:
+```python
+@dataclass
+class Expense:
+    description: str
+    amount: float
+    category: str
+    
+    def is_large(self):
+        return self.amount > 100
+```
+
+The @dataclass generates the boring parts, and you write the interesting parts.
+--
+
+=== 🔮 Predict: Dataclass Behavior
+
+[source,python]
+----
+from dataclasses import dataclass
+
+@dataclass(order=True)
+class Task:
+    priority: int
+    title: str
+
+tasks = [
+    Task(3, "Write report"),
+    Task(1, "Fix bug"),
+    Task(2, "Code review"),
+    Task(1, "Update docs"),
+]
+for t in sorted(tasks):
+    print(t)
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+Tasks sort by `priority` first (field order!), then by `title` for ties.
+
+[%step]
+`Task(priority=1, title='Fix bug')` then `Task(priority=1, title='Update docs')` — 'F' < 'U' alphabetically
+
+[%step]
+`Task(priority=2, title='Code review')` then `Task(priority=3, title='Write report')`
+
+[.notes]
+--
+Walk through the sort:
+
+1. priority is the first field, so tasks sort by priority first: 1, 1, 2, 3
+2. Two tasks have priority 1: "Fix bug" and "Update docs"
+3. Since priorities are tied, Python compares the second field (title): "Fix bug" < "Update docs" alphabetically
+
+The result:
+1. Task(1, 'Fix bug')
+2. Task(1, 'Update docs')
+3. Task(2, 'Code review')
+4. Task(3, 'Write report')
+
+This is why field order matters. Put the primary sort key first!
+--
+
+== Putting It All Together
+
+=== Refactoring Expense
+
+OOP 3 version: *17 lines* of boilerplate
+
+[source,python]
+----
+from dataclasses import dataclass
+from functools import total_ordering
+
+@dataclass
+class Expense:
+    description: str
+    amount: float
+    category: str
+    
+    def __lt__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return self.amount < other.amount
+    
+    @property
+    def is_large(self):
+        return self.amount > 100
+----
+
+*Dataclass handles `+++__init__+++`, `+++__repr__+++`, `+++__eq__+++`. We add custom sorting and a property.*
+
+[.notes]
+--
+Compare this to the OOP 3 version. @dataclass generates __init__, __repr__, and __eq__ automatically.
+
+We keep our custom __lt__ because we want to sort by amount specifically (not by all fields in order). If we used order=True instead, it would sort by description first (alphabetically), which isn't what we want.
+
+We add @property for is_large—a computed attribute that reads naturally: expense.is_large instead of expense.is_large().
+
+This class uses THREE concepts from today:
+1. Custom operator: __lt__ for sorting
+2. Decorator: @property for computed attributes
+3. Dataclass: @dataclass for auto-generated boilerplate
+
+Each concept solves a different problem. Together they create a clean, Pythonic class.
+--
+
+=== Refactored ExpenseReport
+
+[source,python]
+----
+from dataclasses import dataclass, field
+
+@dataclass
+class ExpenseReport:
+    title: str
+    expenses: list = field(default_factory=list)
+    
+    def add(self, expense):
+        self.expenses.append(expense)
+    
+    @property
+    def total(self):
+        return sum(e.amount for e in self.expenses)
+    
+    def analyze(self, strategy):
+        return strategy(self.expenses)
+    
+    def __len__(self):
+        return len(self.expenses)
+    
+    def __iter__(self):
+        return iter(self.expenses)
+    
+    def __add__(self, other):
+        if not isinstance(other, ExpenseReport):
+            return NotImplemented
+        combined = ExpenseReport(f"{self.title} + {other.title}")
+        combined.expenses = self.expenses + other.expenses
+        return combined
+----
+
+[.notes]
+--
+The ExpenseReport uses @dataclass to generate __init__, __repr__, and __eq__, then adds custom methods for everything else.
+
+Notice how total is now a @property instead of a method. In OOP 3 it was report.total(), now it's report.total—cleaner to read.
+
+The field(default_factory=list) ensures each report gets its own expense list.
+
+Custom operators (__len__, __iter__, __add__) and the Strategy Pattern (analyze) still work exactly as before. @dataclass doesn't interfere with hand-written methods.
+--
+
+=== Using It
+
+[source,python]
+----
+march = ExpenseReport("March 2026")
+march.add(Expense("Coffee", 4.50, "Food"))
+march.add(Expense("Rent", 1200.00, "Housing"))
+march.add(Expense("Groceries", 85.00, "Food"))
+march.add(Expense("Gas", 45.00, "Transport"))
+
+print(f"Total: ${march.total:.2f}")
+print(f"Count: {len(march)}")
+print(f"Sorted by amount:")
+for e in sorted(march):
+    print(f"  {e}")
+----
+
+[source,python]
+----
+Total: $1334.50
+Count: 4
+Sorted by amount:
+  Expense(description='Coffee', amount=4.5, category='Food')
+  Expense(description='Gas', amount=45.0, category='Transport')
+  Expense(description='Groceries', amount=85.0, category='Food')
+  Expense(description='Rent', amount=1200.0, category='Housing')
+----
+
+[.notes]
+--
+Everything works the same as in OOP 3, but with significantly less code.
+
+The key insight: @dataclass didn't replace our OOP knowledge—it eliminated the tedious parts so we can focus on the interesting parts (custom operators, properties, strategies).
+
+Students should think of @dataclass as a productivity tool. You still need to understand __init__, __repr__, and __eq__—that's why we learned them manually first. But now that you understand them, let Python generate them for you.
+--
+
+=== Three Concepts, One Design
+
+[cols="1,2", frame=none]
+|===
+| *Concept* | *What It Solved*
+
+| Operator Overloading
+| Custom objects work with `+`, `sorted()`, `[]`, `abs()`
+
+| Decorators
+| Add behavior without boilerplate (`@property`, `@classmethod`)
+
+| Dataclasses
+| Auto-generate `+++__init__+++`, `+++__repr__+++`, `+++__eq__+++` from field definitions
+|===
+
+*Learn the manual way first. Then use the tools that automate it.*
+
+[.notes]
+--
+This is the pedagogical arc of the OOP modules:
+
+OOP 1: Learn to write classes from scratch
+OOP 2: Learn to structure classes (inheritance, composition)
+OOP 3: Learn to make classes Pythonic (magic methods, strategy)
+OOP 4: Learn to write less code while doing more (operators, decorators, dataclasses)
+
+Each module builds on the previous one. You can't appreciate @dataclass until you've written the boilerplate by hand. You can't appreciate @property until you understand methods and attributes.
+
+The mark of a skilled Python developer: knowing both how to do things manually AND when to let the tools do it for you.
+--
+
+== 📋 Key Takeaways
+
+* *Reflected operators* (`+++__radd__+++`, `+++__rmul__+++`) handle `3 * obj` when `int` can't
+* *`+++__getitem__+++`* enables indexing with `[]`
+* A *decorator* wraps a function to add behavior: `@decorator` = `func = decorator(func)`
+* `@property` turns methods into attribute-like access
+* `@classmethod` creates alternate constructors; `@staticmethod` creates utility methods
+* `@dataclass` auto-generates `+++__init__+++`, `+++__repr__+++`, `+++__eq__+++` from type annotations
+* Use `order=True` for sorting, `frozen=True` for immutability, `field()` for mutable defaults
+
+[.notes]
+--
+This module covered a lot of ground. The common thread is REDUCING BOILERPLATE while INCREASING FUNCTIONALITY.
+
+Operators: Make your classes work with Python's syntax instead of custom method names.
+Decorators: Add behavior to functions and classes without changing their core code.
+Dataclasses: Let Python generate the repetitive parts so you can focus on the unique parts.
+
+These tools are used extensively in professional Python development. Understanding them prepares students for real-world codebases.
+--
+
+== Practice Challenge
+
+Build a *music playlist system* using operators, decorators, and dataclasses.
+
+*Part 1 — `Song` dataclass:*
+
+* Fields: `title` (str), `artist` (str), `duration_secs` (int)
+* `@property` for `duration_formatted` — returns `"M:SS"` format
+* Use `order=True` so songs sort by duration
+
+*Part 2 — `Playlist` class:*
+
+* Uses `@dataclass` with `field(default_factory=list)` for `songs`
+* Operators: `+++__len__+++`, `+++__iter__+++`, `+++__getitem__+++`, `+++__add__+++` (merge playlists)
+* `@property` for `total_duration` — sum of all song durations
+
+*Part 3 — Test your system.*
+
+[.notes]
+--
+This exercise combines all three major topics:
+- Dataclasses: Song and Playlist use @dataclass
+- Decorators: @property for computed attributes, order=True for sorting
+- Operators: __len__, __iter__, __getitem__, __add__
+
+Students should work in pairs. Give 15-20 minutes.
+
+The duration_formatted property should convert seconds to "M:SS" format:
+- 210 seconds → "3:30"
+- 65 seconds → "1:05"
+--
+
+=== Practice Challenge: Starter Code
+
+[source,python]
+----
+from dataclasses import dataclass, field
+
+@dataclass(order=True)
+class Song:
+    duration_secs: int
+    title: str
+    artist: str
+    
+    @property
+    def duration_formatted(self):
+        minutes = self.duration_secs // 60
+        seconds = self.duration_secs % 60
+        return f"{minutes}:{seconds:02d}"
+    
+    def __str__(self):
+        return f"{self.title} by {self.artist} ({self.duration_formatted})"
+
+@dataclass
+class Playlist:
+    name: str
+    songs: list = field(default_factory=list)
+    
+    def add(self, song):
+        self.songs.append(song)
+    
+    # TODO: Add __len__, __iter__, __getitem__, __add__
+    # TODO: Add @property total_duration
+----
+
+*Hint:* `duration_secs` is the first field so `order=True` sorts by duration.
+
+[.notes]
+--
+Give students this starter code. Key things to point out:
+
+1. Song's field order is intentional: duration_secs comes first so that order=True sorts songs by length. This is a design choice—the field order affects both the constructor signature AND sorting behavior.
+
+2. Song has a custom __str__ for prettier printing. @dataclass auto-generates __repr__, but __str__ can be customized.
+
+3. The duration_formatted property handles the M:SS conversion. The :02d format specifier pads seconds with a leading zero (e.g., 5 becomes "05").
+
+4. Playlist needs the operators and a total_duration property that students implement.
+--
+
+=== Practice Challenge: Sample Test
+
+[source,python]
+----
+playlist = Playlist("Road Trip")
+playlist.add(Song(210, "Bohemian Rhapsody", "Queen"))
+playlist.add(Song(180, "Yesterday", "The Beatles"))
+playlist.add(Song(240, "Stairway to Heaven", "Led Zeppelin"))
+playlist.add(Song(195, "Imagine", "John Lennon"))
+
+print(len(playlist))              # 4
+print(playlist[0])                # Bohemian Rhapsody by Queen (3:30)
+print(f"Total: {playlist.total_duration // 60}m {playlist.total_duration % 60}s")
+                                  # Total: 13m 45s
+
+chill = Playlist("Chill")
+chill.add(Song(240, "Weightless", "Marconi Union"))
+
+combined = playlist + chill
+print(f"{combined.name}: {len(combined)} songs")
+                                  # Road Trip + Chill: 5 songs
+
+print("Sorted by duration:")
+for song in sorted(playlist):
+    print(f"  {song}")
+# Yesterday by The Beatles (3:00)
+# Imagine by John Lennon (3:15)
+# Bohemian Rhapsody by Queen (3:30)
+# Stairway to Heaven by Led Zeppelin (4:00)
+----
+
+*Work with a partner. Test thoroughly!*
+
+[.notes]
+--
+Walk through the expected output:
+
+1. len(playlist) uses __len__ → 4 songs
+2. playlist[0] uses __getitem__ and Song's __str__ → formatted output
+3. total_duration sums all duration_secs → 210 + 180 + 240 + 195 = 825 seconds = 13m 45s
+4. playlist + chill uses __add__ → merges songs lists, combines names
+5. sorted(playlist) uses Song's __lt__ (from order=True) → sorts by duration_secs
+
+If students finish early, challenge them to:
+- Add a __contains__ method (check if a song is in the playlist)
+- Add a @property for average_duration
+- Create a @classmethod on Playlist that builds a playlist from a list of tuples
+--
+
+== Questions?
+
+🔗 *Resources:*
+
+* Python Data Model: https://docs.python.org/3/reference/datamodel.html
+* Dataclasses Documentation: https://docs.python.org/3/library/dataclasses.html
+* PEP 557 — Data Classes: https://peps.python.org/pep-0557/
+* Real Python — Decorators: https://realpython.com/primer-on-python-decorators/

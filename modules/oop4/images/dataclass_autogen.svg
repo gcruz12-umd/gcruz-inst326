@@ -1,0 +1,43 @@
+<svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="25" font-family="Arial, sans-serif" font-size="18" fill="#2c3e50" text-anchor="middle" font-weight="bold">What @dataclass Generates</text>
+
+  <!-- Left box: What you write -->
+  <rect x="15" y="50" width="185" height="130" fill="#27ae60" stroke="#1e8449" stroke-width="2" rx="5"/>
+  <text x="107" y="72" font-family="Arial, sans-serif" font-size="13" fill="white" text-anchor="middle" font-weight="bold">What You Write</text>
+  <line x1="25" y1="80" x2="190" y2="80" stroke="#d5f5e3" stroke-width="1"/>
+  <text x="107" y="100" font-family="monospace" font-size="11" fill="#d5f5e3" text-anchor="middle">@dataclass</text>
+  <text x="107" y="117" font-family="monospace" font-size="11" fill="#d5f5e3" text-anchor="middle">class Point:</text>
+  <text x="107" y="134" font-family="monospace" font-size="11" fill="#d5f5e3" text-anchor="middle">    x: float</text>
+  <text x="107" y="151" font-family="monospace" font-size="11" fill="#d5f5e3" text-anchor="middle">    y: float</text>
+  <text x="107" y="172" font-family="Arial, sans-serif" font-size="11" fill="#1e8449" text-anchor="middle">4 lines of code</text>
+
+  <!-- Arrow -->
+  <line x1="200" y1="115" x2="265" y2="115" stroke="#9b59b6" stroke-width="3"/>
+  <polygon points="265,115 255,109 255,121" fill="#9b59b6"/>
+  <text x="232" y="104" font-family="Arial, sans-serif" font-size="11" fill="#9b59b6" text-anchor="middle" font-weight="bold">generates</text>
+
+  <!-- Right box: What Python generates -->
+  <rect x="275" y="42" width="210" height="195" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+  <text x="380" y="64" font-family="Arial, sans-serif" font-size="13" fill="white" text-anchor="middle" font-weight="bold">What Python Generates</text>
+  <line x1="285" y1="72" x2="475" y2="72" stroke="#ebf5fb" stroke-width="1"/>
+
+  <text x="380" y="94" font-family="monospace" font-size="12" fill="#ebf5fb" text-anchor="middle" font-weight="bold">__init__(self, x, y)</text>
+  <text x="380" y="112" font-family="Arial, sans-serif" font-size="10" fill="#a9cce3" text-anchor="middle">self.x = x; self.y = y</text>
+
+  <line x1="295" y1="122" x2="465" y2="122" stroke="#ebf5fb" stroke-width="0.5"/>
+
+  <text x="380" y="142" font-family="monospace" font-size="12" fill="#ebf5fb" text-anchor="middle" font-weight="bold">__repr__(self)</text>
+  <text x="380" y="160" font-family="Arial, sans-serif" font-size="10" fill="#a9cce3" text-anchor="middle">"Point(x=1.0, y=2.0)"</text>
+
+  <line x1="295" y1="170" x2="465" y2="170" stroke="#ebf5fb" stroke-width="0.5"/>
+
+  <text x="380" y="190" font-family="monospace" font-size="12" fill="#ebf5fb" text-anchor="middle" font-weight="bold">__eq__(self, other)</text>
+  <text x="380" y="208" font-family="Arial, sans-serif" font-size="10" fill="#a9cce3" text-anchor="middle">compares all fields</text>
+
+  <text x="380" y="230" font-family="Arial, sans-serif" font-size="11" fill="#2980b9" text-anchor="middle">~20 lines auto-generated</text>
+
+  <!-- Bottom note -->
+  <rect x="75" y="258" width="350" height="30" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="1" rx="5"/>
+  <text x="250" y="278" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50" text-anchor="middle">Add order=True to also generate __lt__, __le__, __gt__, __ge__</text>
+</svg>

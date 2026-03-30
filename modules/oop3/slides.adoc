@@ -1,0 +1,1403 @@
+= OOP in Practice: Magic Methods & Design Patterns
+:imagesdir: images
+:docinfo: shared
+:revealjsdir: https://cdn.jsdelivr.net/npm/reveal.js
+:source-highlighter: highlightjs
+:highlightjsdir: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1
+:highlightjs-theme: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/tomorrow-night.min.css
+:customcss: ../../css/default.css
+:revealjs_theme: white
+:revealjs_width: 1400
+:revealjs_height: 800
+:revealjs_slideNumber: true
+:revealjs_transition: slide
+:revealjs_transitionSpeed: default
+
+== Today's Goals
+
+By the end of this session, you'll be able to:  
+
+* Implement magic methods to make custom classes work with Python built-ins
+* Distinguish between `+++__str__+++` and `+++__repr__+++`
+* Make objects sortable, comparable, and iterable
+* Apply the Strategy pattern to solve data analysis problems
+* Design classes that are flexible and reusable
+
+[.notes]
+--
+We've learned how to create classes, use inheritance, and apply composition. Now we're going to learn how to make our classes feel like native Python types and how to design them for flexibility.
+
+By the end, you'll be able to build classes that work seamlessly with print(), sorted(), for loops, the == operator, and more. And you'll learn a powerful design pattern for making your code adaptable to changing requirements.
+--
+
+== The Problem with Custom Objects
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+
+rent = Expense("March Rent", 1200.00, "Housing")
+print(rent)
+----
+
+[source,python]
+----
+<__main__.Expense object at 0x104a8b6d0>
+----
+
+That's not helpful.
+
+[.notes]
+--
+When you print a custom object, Python doesn't know how to display it in a useful way. It just shows the class name and memory address.
+
+This is a real problem. Imagine you have a list of 100 expense records and you're trying to debug your code. You can't inspect anything!
+
+Built-in types don't have this problem—printing a string or a list shows the actual content. How do they do it? Magic methods.
+--
+
+=== More Problems
+
+[source,python]
+----
+rent1 = Expense("March Rent", 1200.00, "Housing")
+rent2 = Expense("March Rent", 1200.00, "Housing")
+
+print(rent1 == rent2)
+----
+
+[source,python]
+----
+False
+----
+
+[source,python]
+----
+expenses = [
+    Expense("Coffee", 4.50, "Food"),
+    Expense("Rent", 1200.00, "Housing"),
+    Expense("Gas", 45.00, "Transport"),
+]
+sorted(expenses)
+----
+
+[source,python]
+----
+TypeError: '<' not supported between instances of 'Expense'
+----
+
+[.notes]
+--
+Two more problems with our basic class:
+
+1. Two expenses with identical data aren't considered equal. By default, Python checks if they're the same object in memory, not if they have the same values.
+
+2. We can't sort a list of expenses. Python doesn't know how to compare them.
+
+These are common frustrations when working with data. We're constantly comparing records, sorting them, checking for duplicates.
+
+The solution: magic methods.
+--
+
+== Magic Methods (Dunder Methods)
+
+Methods with double underscores that let your class work with Python built-ins
+
+[cols="1,1", frame=none]
+|===
+| *Magic Method* | *Python Feature*
+
+| `+++__init__(self, ...)+++`
+| `MyClass(...)`
+
+| `+++__str__(self)+++`
+| `print(obj)`, `str(obj)`
+
+| `+++__repr__(self)+++`
+| REPL display, debugging
+
+| `+++__eq__(self, other)+++`
+| `obj1 == obj2`
+
+| `+++__lt__(self, other)+++`
+| `obj1 < obj2`, `sorted(...)`
+
+| `+++__len__(self)+++`
+| `len(obj)`
+
+| `+++__contains__(self, item)+++`
+| `item in obj`
+|===
+
+[.notes]
+--
+You've already used one magic method: __init__. It's called automatically when you create an object.
+
+There are dozens of magic methods. They're called "magic" because Python calls them behind the scenes. They're also called "dunder methods" (double-underscore methods).
+
+Each one hooks into a specific Python feature. When you call print(), Python looks for __str__. When you use ==, Python looks for __eq__. And so on.
+
+Today we'll implement the most important ones. By the end, your custom classes will feel like built-in types.
+--
+
+=== You've Already Used Magic Methods
+
+[source,python]
+----
+"hello".__len__()          # Same as len("hello") → 5
+[1, 2, 3].__contains__(2)  # Same as 2 in [1, 2, 3] → True
+(42).__add__(8)            # Same as 42 + 8 → 50
+"hello".__eq__("world")    # Same as "hello" == "world" → False
+----
+
+Every Python operator and built-in function calls a magic method
+
+[.notes]
+--
+This is the key insight: operators and built-in functions in Python are just syntactic sugar for calling magic methods.
+
+When you write `len("hello")`, Python actually calls `"hello".__len__()`.
+When you write `42 + 8`, Python actually calls `(42).__add__(8)`.
+
+The str, int, and list classes already have these methods implemented. That's why they "just work."
+
+When we implement these methods on our own classes, our objects will "just work" too.
+--
+
+=== `+++__repr__+++`: The Developer's View
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __repr__(self):
+        return (f"Expense('{self.description}', "
+                f"{self.amount}, '{self.category}')")
+----
+
+[source,python]
+----
+rent = Expense("March Rent", 1200.00, "Housing")
+rent
+----
+
+[source,python]
+----
+Expense('March Rent', 1200.0, 'Housing')
+----
+
+[.notes]
+--
+__repr__ returns an "official" string representation of the object. The goal is a string that could recreate the object.
+
+Rule of thumb: __repr__ output should look like a valid Python expression. If someone copies the output and pastes it into Python, it should ideally create an identical object.
+
+This is invaluable for debugging. Instead of `<Expense object at 0x104a8b6d0>`, you see the actual data.
+
+__repr__ is used:
+- When you type an expression in the REPL
+- When you inspect objects in a debugger
+- As a fallback when __str__ isn't defined
+--
+
+=== `+++__str__+++`: The User's View
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __repr__(self):
+        return (f"Expense('{self.description}', "
+                f"{self.amount}, '{self.category}')")
+    
+    def __str__(self):
+        return f"{self.description}: ${self.amount:.2f} [{self.category}]"
+----
+
+[source,python]
+----
+rent = Expense("March Rent", 1200.00, "Housing")
+print(rent)
+----
+
+[source,python]
+----
+March Rent: $1200.00 [Housing]
+----
+
+[.notes]
+--
+__str__ returns a "nice" string representation for end users. It should be readable and informative.
+
+The difference:
+- __repr__ is for developers (debugging, inspection)
+- __str__ is for users (print, display)
+
+When you call print(), Python uses __str__. If __str__ isn't defined, it falls back to __repr__.
+
+In practice:
+- Always implement __repr__. It's your debugging lifeline.
+- Implement __str__ when you want a cleaner display for end users.
+
+Example:
+```python
+rent = Expense("March Rent", 1200.00, "Housing")
+repr(rent)  # "Expense('March Rent', 1200.0, 'Housing')"
+str(rent)   # "March Rent: $1200.00 [Housing]"
+print(rent) # Uses __str__: "March Rent: $1200.00 [Housing]"
+```
+--
+
+=== When Does Python Use Which?
+
+image::magic_method_dispatch.svg[Magic Method Dispatch, 500]
+
+[cols="1,1", frame=none]
+|===
+| *Uses `+++__str__+++`* | *Uses `+++__repr__+++`*
+
+| `print(obj)`
+| Typing `obj` in the REPL
+
+| `str(obj)`
+| `repr(obj)`
+
+| f-strings: `f"{obj}"`
+| Inside containers: `print([obj])`
+
+|
+| Debugger displays
+|===
+
+[source,python]
+----
+expenses = [Expense("Coffee", 4.50, "Food"), Expense("Gas", 45.00, "Transport")]
+print(expenses)
+----
+
+[source,python]
+----
+[Expense('Coffee', 4.5, 'Food'), Expense('Gas', 45.0, 'Transport')]
+----
+
+*Objects inside lists, dicts, and sets always use `+++__repr__+++`.*
+
+[.notes]
+--
+This is a subtle but important distinction. When you print an object directly, Python uses __str__. But when you print a list of objects, Python uses __repr__ on each element.
+
+This is why __repr__ is the more important method. It's used in more contexts.
+
+A common mistake: students implement __str__ but not __repr__, then wonder why their objects look ugly inside lists.
+
+Rule: Always implement __repr__. Add __str__ when you want a prettier output for direct printing.
+--
+
+=== `+++__eq__+++`: Equality Comparison
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __eq__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return (self.description == other.description
+                and self.amount == other.amount
+                and self.category == other.category)
+----
+
+[source,python]
+----
+rent1 = Expense("March Rent", 1200.00, "Housing")
+rent2 = Expense("March Rent", 1200.00, "Housing")
+print(rent1 == rent2)
+----
+
+[source,python]
+----
+True
+----
+
+[.notes]
+--
+__eq__ defines what it means for two objects to be "equal." Without it, == checks if they're the same object in memory (identity), not if they have the same values.
+
+For data analysis, this is critical. You need to detect duplicate records, compare results, and test your code.
+
+Notice the isinstance check: if `other` isn't an Expense, we return NotImplemented. This tells Python "I don't know how to compare myself to that type," and Python will try the other object's __eq__ instead.
+
+Comparing each attribute ensures that two Expenses are equal only when ALL their data matches.
+--
+
+=== Why `isinstance()` Matters in `+++__eq__+++`
+
+[source,python]
+----
+def __eq__(self, other):
+    if not isinstance(other, Expense):
+        return NotImplemented
+    return (self.description == other.description
+            and self.amount == other.amount
+            and self.category == other.category)
+----
+
+[source,python]
+----
+rent = Expense("Rent", 1200.00, "Housing")
+print(rent == "Rent")       # False (not an error!)
+print(rent == 42)           # False (not an error!)
+print(rent == rent)         # True
+----
+
+*`NotImplemented` lets Python handle the comparison gracefully.*
+
+[.notes]
+--
+Without the isinstance check, comparing an Expense to a string would crash with an AttributeError (because strings don't have .description, .amount, etc.).
+
+Returning NotImplemented is different from returning False. NotImplemented tells Python to try the other object's __eq__. If neither object can handle the comparison, Python falls back to identity comparison (returns False).
+
+This is a best practice: always check the type in __eq__.
+--
+
+=== `+++__lt__+++`: Less-Than and Sorting
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __lt__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return self.amount < other.amount
+----
+
+[source,python]
+----
+expenses = [
+    Expense("Coffee", 4.50, "Food"),
+    Expense("Rent", 1200.00, "Housing"),
+    Expense("Gas", 45.00, "Transport"),
+]
+for e in sorted(expenses):
+    print(f"{e.description}: ${e.amount}")
+----
+
+[source,python]
+----
+Coffee: $4.5
+Gas: $45.0
+Rent: $1200.0
+----
+
+[.notes]
+--
+__lt__ defines the "less than" comparison. Python's sorted() function uses __lt__ to determine order.
+
+By defining __lt__ to compare amounts, we can sort expenses from smallest to largest.
+
+You only need to implement __lt__ for sorted() to work. Python can derive > from < by swapping the arguments.
+
+This is a real data analysis superpower. Instead of writing custom sort keys every time, your objects know how to sort themselves.
+
+If you want to sort by something else (like date or category), you can still use the `key` parameter in sorted(). But __lt__ gives you a sensible default.
+--
+
+=== 🔮 Predict: Magic Method Behavior
+
+[source,python]
+----
+class Expense:
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    def __repr__(self):
+        return f"Expense('{self.description}', {self.amount}, '{self.category}')"
+    def __eq__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return (self.description == other.description
+                and self.amount == other.amount
+                and self.category == other.category)
+
+a = Expense("Coffee", 4.50, "Food")
+b = Expense("Coffee", 4.50, "Food")
+c = Expense("Tea", 3.00, "Food")
+print(a == b)
+print(a == c)
+print([a, c])
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`True` — same data in `a` and `b`
+
+[%step]
+`False` — different description and amount
+
+[%step]
+`[Expense('Coffee', 4.5, 'Food'), Expense('Tea', 3.0, 'Food')]` — lists use `+++__repr__+++`
+
+[.notes]
+--
+Walk through each:
+
+1. a == b: True, because all attributes match
+2. a == c: False, because description and amount differ
+3. Printing a list uses __repr__ on each element, not __str__
+
+The third one is subtle and important. When objects are inside a container (list, dict, set), Python uses __repr__, not __str__. This is why __repr__ is the more important method to implement.
+--
+
+=== Magic Methods for Collections
+
+When your class represents a group of things:
+
+[source,python]
+----
+class ExpenseReport:
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def add(self, expense):
+        self.expenses.append(expense)
+    
+    def __len__(self):
+        return len(self.expenses)
+    
+    def __contains__(self, expense):
+        return expense in self.expenses
+----
+
+[source,python]
+----
+report = ExpenseReport("March 2026")
+report.add(Expense("Coffee", 4.50, "Food"))
+report.add(Expense("Rent", 1200.00, "Housing"))
+
+print(len(report))                              # 2
+print(Expense("Coffee", 4.50, "Food") in report)  # True
+----
+
+[.notes]
+--
+When your class contains a collection of things, you can implement collection-like magic methods.
+
+__len__ makes len() work. Instead of writing len(report.expenses), users can simply write len(report).
+
+__contains__ makes the `in` operator work. This relies on __eq__—Python uses == to check if any item in the list matches.
+
+Notice how __contains__ in ExpenseReport depends on __eq__ in Expense. The magic methods work together! Without __eq__, the `in` check would only find the exact same object in memory, not objects with matching data.
+--
+
+=== Making Objects Iterable: `+++__iter__+++`
+
+[source,python]
+----
+class ExpenseReport:
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def add(self, expense):
+        self.expenses.append(expense)
+    
+    def __iter__(self):
+        return iter(self.expenses)
+----
+
+[source,python]
+----
+report = ExpenseReport("March 2026")
+report.add(Expense("Coffee", 4.50, "Food"))
+report.add(Expense("Rent", 1200.00, "Housing"))
+
+for expense in report:
+    print(expense)
+----
+
+[source,python]
+----
+Coffee: $4.50 [Food]
+Rent: $1200.00 [Housing]
+----
+
+[.notes]
+--
+__iter__ makes your object work with for loops. Instead of `for expense in report.expenses`, users can write `for expense in report`.
+
+This hides the internal structure. Users don't need to know that expenses are stored in a list. They just iterate.
+
+`iter(self.expenses)` returns the list's own iterator. We're delegating to the list's built-in iteration behavior.
+
+This is a pattern called ENCAPSULATION—hiding implementation details behind a clean interface. If you later change from a list to a database query, the for loop still works.
+--
+
+=== Combining Objects: `+++__add__+++`
+
+[source,python]
+----
+class ExpenseReport:
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def add(self, expense):
+        self.expenses.append(expense)
+    
+    def __add__(self, other):
+        if not isinstance(other, ExpenseReport):
+            return NotImplemented
+        combined = ExpenseReport(f"{self.title} + {other.title}")
+        combined.expenses = self.expenses + other.expenses
+        return combined
+----
+
+[source,python]
+----
+march = ExpenseReport("March")
+april = ExpenseReport("April")
+q1 = march + april
+----
+
+*`+++__add__+++` creates a new object—it does not modify the originals.*
+
+[.notes]
+--
+__add__ defines the + operator. Here, adding two ExpenseReports creates a new report containing all expenses from both.
+
+Notice we create a NEW ExpenseReport instead of modifying either original. This is best practice—operators should not have surprising side effects on their operands.
+
+This is a natural, readable syntax for data analysis. Instead of manually merging lists, you combine reports with +.
+--
+
+=== Magic Methods: Summary
+
+|===
+| Method | Enables | Example
+
+| `+++__repr__+++`
+| Developer display
+| REPL, debugging, `repr()`
+
+| `+++__str__+++`
+| User display
+| `print()`, `str()`
+
+| `+++__eq__+++`
+| Equality
+| `==`, `in`, deduplication
+
+| `+++__lt__+++`
+| Ordering
+| `<`, `sorted()`, `min()`, `max()`
+
+| `+++__len__+++`
+| Length
+| `len()`
+
+| `+++__contains__+++`
+| Membership
+| `in`
+
+| `+++__iter__+++`
+| Iteration
+| `for x in obj`
+
+| `+++__add__+++`
+| Addition
+| `+`
+|===
+
+[.notes]
+--
+This is a reference slide. Students should keep it handy.
+
+The pattern is consistent: implement a magic method, and the corresponding Python feature "just works" with your class.
+
+There are many more magic methods (for subtraction, multiplication, indexing, context managers, etc.), but these are the most commonly needed ones for data work.
+
+Transition: "Now let's learn a design pattern that makes our classes even more flexible."
+--
+
+== The Strategy Pattern
+
+=== A Design Problem
+
+[source,python]
+----
+class ExpenseReport:
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def summarize_by_category(self):
+        totals = {}
+        for expense in self.expenses:
+            cat = expense.category
+            totals[cat] = totals.get(cat, 0) + expense.amount
+        return totals
+    
+    def summarize_top_expenses(self, n=3):
+        return sorted(self.expenses, reverse=True)[:n]
+    
+    def summarize_average(self):
+        if not self.expenses:
+            return 0
+        total = sum(e.amount for e in self.expenses)
+        return total / len(self.expenses)
+----
+
+*Problem:* Every new analysis means modifying the class.
+
+[.notes]
+--
+This class has a method for every kind of analysis. What happens when someone needs a new kind of summary?
+
+You add another method. And another. And another.
+
+The class grows and grows. Every new analysis requires changing the class itself. This violates a principle called the "Open/Closed Principle"—classes should be open for extension but closed for modification.
+
+What if different users need different analyses? What if you can't predict all the analyses in advance?
+
+We need a way to plug in new analyses without changing the class.
+--
+
+=== The Strategy Pattern
+
+*Separate the algorithm from the class that uses it.*
+
+image::strategy_pattern.svg[Strategy Pattern, 500]
+
+Instead of hardcoding every analysis, *pass the analysis as a parameter.*
+
+[source,python]
+----
+class ExpenseReport:
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def add(self, expense):
+        self.expenses.append(expense)
+    
+    def analyze(self, strategy):
+        """Run the given analysis strategy on expenses."""
+        return strategy(self.expenses)
+----
+
+The `analyze` method doesn't know *which* analysis to run—it delegates to `strategy`.
+
+[.notes]
+--
+This is the Strategy Pattern. The key idea: the class defines WHAT to do (analyze expenses), but a separate function defines HOW to do it.
+
+The `analyze` method takes a function (the strategy) and calls it with the expenses. The strategy function does the actual computation.
+
+This means:
+- The class doesn't need to know about every possible analysis
+- New analyses can be created without modifying the class
+- Different analyses can be swapped at runtime
+
+This is one of the most practical design patterns you'll encounter. In fact, you've already seen it—Python's built-in sorted() function takes a `key` parameter, which is the Strategy Pattern in action.
+--
+
+=== Defining Strategies
+
+[source,python]
+----
+def total_by_category(expenses):
+    """Group expenses by category and sum amounts."""
+    totals = {}
+    for expense in expenses:
+        cat = expense.category
+        totals[cat] = totals.get(cat, 0) + expense.amount
+    return totals
+
+def average_expense(expenses):
+    """Calculate the average expense amount."""
+    if not expenses:
+        return 0
+    return sum(e.amount for e in expenses) / len(expenses)
+----
+
+Each strategy is just a function that takes a list of expenses and returns a result.
+
+[.notes]
+--
+Strategies are just regular functions. Nothing magical about them.
+
+Each function:
+1. Takes a list of expenses as input
+2. Does some computation
+3. Returns a result
+
+They follow a common interface: accept expenses, return a result. This consistency is what makes the pattern work.
+
+Notice these functions don't know anything about ExpenseReport. They just work with a list of Expense objects. This makes them reusable in other contexts too.
+--
+
+=== Using Strategies
+
+[source,python]
+----
+report = ExpenseReport("March 2026")
+report.add(Expense("Coffee", 4.50, "Food"))
+report.add(Expense("Rent", 1200.00, "Housing"))
+report.add(Expense("Groceries", 85.00, "Food"))
+report.add(Expense("Gas", 45.00, "Transport"))
+report.add(Expense("Electricity", 120.00, "Utilities"))
+----
+
+[source,python]
+----
+print(report.analyze(total_by_category))
+----
+
+[source,python]
+----
+{'Food': 89.5, 'Housing': 1200.0, 'Transport': 45.0, 'Utilities': 120.0}
+----
+
+[source,python]
+----
+print(report.analyze(average_expense))
+----
+
+[source,python]
+----
+290.9
+----
+
+*Same data, different analyses—without changing the class.*
+
+[.notes]
+--
+This is the power of the Strategy Pattern. The ExpenseReport class didn't need a separate method for each analysis. We just pass different functions to analyze().
+
+The class is "open for extension" (add new strategies anytime) but "closed for modification" (never need to change the class itself).
+
+In a real data analysis workflow, this is incredibly useful. Different stakeholders want different views of the same data. With the Strategy Pattern, you write the analysis function and plug it in.
+--
+
+=== Writing New Strategies
+
+Anyone can add new analyses without touching `ExpenseReport`:
+
+[source,python]
+----
+def spending_over(expenses, threshold=100):
+    """Find expenses above a threshold."""
+    return [e for e in expenses if e.amount > threshold]
+
+def category_count(expenses):
+    """Count expenses per category."""
+    counts = {}
+    for expense in expenses:
+        cat = expense.category
+        counts[cat] = counts.get(cat, 0) + 1
+    return counts
+----
+
+[source,python]
+----
+report.analyze(spending_over)              # Uses default threshold=100
+report.analyze(lambda exps: spending_over(exps, 50))  # Custom threshold
+----
+
+[.notes]
+--
+New analyses can be created at any time, by anyone, without modifying ExpenseReport.
+
+spending_over has a default threshold of 100. When passed directly to analyze(), it receives just the expenses list and uses the default.
+
+For a custom threshold, we wrap the call in a lambda. The lambda takes one argument (the expenses list, which analyze passes) and calls spending_over with both the expenses and the custom threshold.
+
+This shows the flexibility of the pattern:
+- Create new analyses any time
+- Use lambdas for quick parameterized analyses
+- Share strategies across different reports
+
+The Strategy Pattern is one of the most practical design patterns for data analysis. pandas' apply() method is essentially this same pattern.
+--
+
+=== Strategies You've Already Seen
+
+Python uses the Strategy Pattern in its built-in functions:
+
+[source,python]
+----
+# sorted() uses a key strategy
+sorted(expenses, key=lambda e: e.category)
+
+# max() and min() use a key strategy
+max(expenses, key=lambda e: e.amount)
+
+# filter() takes a strategy function
+list(filter(lambda e: e.amount > 100, expenses))
+----
+
+*When you pass a function as an argument, you're using the Strategy Pattern.*
+
+[.notes]
+--
+This is not a new idea to students—they've been using it without knowing its name.
+
+sorted(key=...) is the Strategy Pattern: sorted handles the sorting algorithm, and the key function is the pluggable strategy for HOW to compare elements.
+
+max(key=...) is the same pattern. filter() is the same pattern.
+
+The difference is that now we know how to BUILD this pattern into our own classes. Our analyze() method works the same way that sorted()'s key parameter does.
+
+This is what makes it a "design pattern"—a reusable solution to a common problem.
+--
+
+=== 🔮 Predict: Strategy Pattern
+
+[source,python]
+----
+def most_common_category(expenses):
+    counts = {}
+    for e in expenses:
+        counts[e.category] = counts.get(e.category, 0) + 1
+    return max(counts, key=counts.get)
+
+report = ExpenseReport("March")
+report.add(Expense("Coffee", 4.50, "Food"))
+report.add(Expense("Lunch", 12.00, "Food"))
+report.add(Expense("Rent", 1200.00, "Housing"))
+report.add(Expense("Bus", 2.50, "Transport"))
+
+print(report.analyze(most_common_category))
+----
+
+[%step]
+*Turn to a neighbor and discuss for 60 seconds.*
+
+[%step]
+`Food` — appears twice, more than any other category.
+
+[%step]
+*The strategy function can return anything—a dict, a list, a string, a number.*
+
+[.notes]
+--
+Walk through the logic:
+1. most_common_category counts occurrences: Food=2, Housing=1, Transport=1
+2. max with key=counts.get returns the key with the highest value
+3. That's "Food"
+
+The point: strategies can return any type. total_by_category returns a dict, average_expense returns a float, most_common_category returns a string. The analyze method doesn't care—it just passes the expenses and returns whatever the strategy returns.
+--
+
+=== Strategy Pattern: Summary
+
+* *Separate what changes from what stays the same*
+* The class handles data storage and structure
+* Strategy functions handle analysis logic
+* New analyses require zero changes to existing code
+* Python functions are first-class objects—pass them like any other value
+
+[.notes]
+--
+The Strategy Pattern is an example of a broader principle: separate concerns. The data container (ExpenseReport) handles one thing. The analysis logic (strategy functions) handles another.
+
+This maps directly to data analysis workflows:
+- Your dataset class handles loading, storing, and accessing data
+- Your analysis functions handle computation
+- You mix and match as needed
+
+Remember: in Python, functions are objects. You can pass them as arguments, store them in variables, put them in lists. This makes the Strategy Pattern particularly elegant in Python compared to languages like Java, where you'd need to define whole classes just to pass behavior around.
+
+Transition: "Let's put everything together in a complete example."
+--
+
+== Putting It All Together
+
+=== The Complete Expense Class
+
+[source,python]
+----
+class Expense:
+    """A single expense record.
+    
+    Attributes:
+        description (str): what the expense was for.
+        amount (float): dollar amount.
+        category (str): spending category.
+    """
+    
+    def __init__(self, description, amount, category):
+        self.description = description
+        self.amount = amount
+        self.category = category
+    
+    def __repr__(self):
+        return f"Expense('{self.description}', {self.amount}, '{self.category}')"
+    
+    def __str__(self):
+        return f"{self.description}: ${self.amount:.2f} [{self.category}]"
+    
+    def __eq__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return (self.description == other.description
+                and self.amount == other.amount
+                and self.category == other.category)
+    
+    def __lt__(self, other):
+        if not isinstance(other, Expense):
+            return NotImplemented
+        return self.amount < other.amount
+----
+
+[.notes]
+--
+This is the complete Expense class with all the magic methods we discussed.
+
+Notice how it's still relatively short—each magic method is just a few lines. But these few lines unlock a huge amount of functionality.
+
+This Expense can be printed, compared, sorted, deduplicated, and used in collections. It works with Python's built-in functions naturally.
+--
+
+=== The Complete ExpenseReport Class
+
+[source,python]
+----
+class ExpenseReport:
+    """A collection of expenses with analysis capabilities.
+    
+    Attributes:
+        title (str): name of the report.
+        expenses (list): list of Expense objects.
+    """
+    
+    def __init__(self, title):
+        self.title = title
+        self.expenses = []
+    
+    def add(self, expense):
+        """Add an expense to the report."""
+        self.expenses.append(expense)
+    
+    def total(self):
+        """Calculate total spending."""
+        return sum(e.amount for e in self.expenses)
+    
+    def analyze(self, strategy):
+        """Run an analysis strategy on the expenses."""
+        return strategy(self.expenses)
+----
+
+[.notes]
+--
+The first half of ExpenseReport handles core functionality: adding expenses, computing totals, and running strategy-based analyses.
+
+This is composition from OOP 2—ExpenseReport HAS a list of Expenses.
+
+The analyze method is our Strategy Pattern entry point.
+--
+
+=== The Complete ExpenseReport (continued)
+
+[source,python]
+----
+    def __len__(self):
+        return len(self.expenses)
+    
+    def __contains__(self, expense):
+        return expense in self.expenses
+    
+    def __iter__(self):
+        return iter(self.expenses)
+    
+    def __add__(self, other):
+        if not isinstance(other, ExpenseReport):
+            return NotImplemented
+        combined = ExpenseReport(f"{self.title} + {other.title}")
+        combined.expenses = self.expenses + other.expenses
+        return combined
+    
+    def __repr__(self):
+        return f"ExpenseReport('{self.title}', {len(self)} expenses)"
+    
+    def __str__(self):
+        header = f"=== {self.title} ({len(self)} expenses) ==="
+        lines = [str(e) for e in self]
+        footer = f"Total: ${self.total():.2f}"
+        return "\n".join([header] + lines + [footer])
+----
+
+[.notes]
+--
+The second half adds magic methods that make ExpenseReport work like a built-in collection.
+
+Notice how __str__ uses other magic methods internally:
+- len(self) calls __len__
+- `for e in self` uses __iter__
+- str(e) uses Expense's __str__
+
+The magic methods compose with each other. Each small piece enables larger functionality.
+--
+
+=== A Complete Data Analysis Workflow
+
+[source,python]
+----
+march = ExpenseReport("March 2026")
+march.add(Expense("Coffee", 4.50, "Food"))
+march.add(Expense("Rent", 1200.00, "Housing"))
+march.add(Expense("Groceries", 85.00, "Food"))
+march.add(Expense("Gas", 45.00, "Transport"))
+march.add(Expense("Electricity", 120.00, "Utilities"))
+march.add(Expense("Dining Out", 32.00, "Food"))
+
+print(march)
+----
+
+[source,python]
+----
+=== March 2026 (6 expenses) ===
+Coffee: $4.50 [Food]
+Rent: $1200.00 [Housing]
+Groceries: $85.00 [Food]
+Gas: $45.00 [Transport]
+Electricity: $120.00 [Utilities]
+Dining Out: $32.00 [Food]
+Total: $1486.50
+----
+
+[.notes]
+--
+With just print(march), we get a nicely formatted report. No need for a custom print_report() method—__str__ handles it.
+
+This is what it means to make your class "Pythonic." Users of your class interact with it using familiar Python patterns—print, len, for loops, sorting—rather than learning custom method names.
+--
+
+=== Analysis with Strategies
+
+[source,python]
+----
+print(march.analyze(total_by_category))
+----
+
+[source,python]
+----
+{'Food': 121.5, 'Housing': 1200.0, 'Transport': 45.0, 'Utilities': 120.0}
+----
+
+[source,python]
+----
+print(f"Average: ${march.analyze(average_expense):.2f}")
+----
+
+[source,python]
+----
+Average: $247.75
+----
+
+[source,python]
+----
+for expense in sorted(march):
+    print(expense)
+----
+
+[source,python]
+----
+Coffee: $4.50 [Food]
+Dining Out: $32.00 [Food]
+Gas: $45.00 [Transport]
+Groceries: $85.00 [Food]
+Electricity: $120.00 [Utilities]
+Rent: $1200.00 [Housing]
+----
+
+[.notes]
+--
+All of this works because of the magic methods and Strategy Pattern we implemented.
+
+sorted(march) works because:
+1. ExpenseReport has __iter__, so sorted() can iterate over it
+2. Expense has __lt__, so sorted() knows how to compare them
+
+march.analyze(total_by_category) works because:
+1. analyze passes the expenses list to the strategy function
+2. The strategy function does its computation and returns the result
+
+Each piece is simple on its own. Together, they create a powerful, flexible system.
+--
+
+=== Combining Reports
+
+[source,python]
+----
+april = ExpenseReport("April 2026")
+april.add(Expense("Coffee", 4.50, "Food"))
+april.add(Expense("Rent", 1200.00, "Housing"))
+april.add(Expense("Internet", 65.00, "Utilities"))
+
+q1 = march + april
+
+print(f"Q1 has {len(q1)} expenses")
+print(f"Q1 total: ${q1.total():.2f}")
+print(q1.analyze(total_by_category))
+----
+
+[source,python]
+----
+Q1 has 9 expenses
+Q1 total: $2756.00
+{'Food': 126.0, 'Housing': 2400.0, 'Transport': 45.0, 'Utilities': 185.0}
+----
+
+[.notes]
+--
+This is where the design really shines. We combined two monthly reports into a quarterly report using +, then ran the same analysis strategies on the combined data.
+
+The same strategies work regardless of how many expenses are in the report. That's the benefit of the Strategy Pattern—the analysis logic is independent of the data structure.
+
+This kind of composability is essential for real data analysis. You often need to slice, combine, and re-analyze data in different groupings.
+--
+
+=== Why This Design Works
+
+We used *three patterns together*:
+
+[cols="1,2", frame=none]
+|===
+| *Pattern* | *What It Gave Us*
+
+| Magic Methods
+| Classes that work with Python's built-in features
+
+| Composition
+| ExpenseReport contains Expense objects (has-a)
+
+| Strategy
+| Pluggable analysis without modifying the class
+|===
+
+*Each pattern solves a different problem. Together they create a flexible, Pythonic system.*
+
+[.notes]
+--
+This is the key takeaway: good OOP design isn't about using one pattern—it's about combining patterns to solve different aspects of a problem.
+
+Magic Methods make your classes feel native to Python.
+Composition structures your data naturally.
+Strategy makes your analysis code flexible and extensible.
+
+When you encounter a new problem, ask:
+1. What are the "things" (nouns)? → Classes
+2. How should they relate? → Composition or Inheritance
+3. How should they work with Python? → Magic Methods
+4. What behavior might change? → Strategy Pattern
+--
+
+== 📋 Key Takeaways
+
+* *Magic methods* let your classes work with `print()`, `==`, `sorted()`, `for`, `len()`, `in`, and `+`
+* *`+++__repr__+++`* is for debugging; *`+++__str__+++`* is for display
+* *`+++__eq__+++`* and *`+++__lt__+++`* enable comparison and sorting
+* The *Strategy Pattern* separates algorithms from the classes that use them
+* Pass functions as arguments to make code flexible and extensible
+* Combine patterns—composition, magic methods, strategy—for real-world designs
+
+[.notes]
+--
+Final summary.
+
+Magic methods are the bridge between "a class that works" and "a class that works well." They integrate your classes into Python's ecosystem.
+
+The Strategy Pattern is one of the most useful design patterns for data analysis. Whenever you find yourself adding method after method for different analyses, consider using strategies instead.
+
+These aren't just academic concepts—every serious Python library uses these patterns. Pandas DataFrames have magic methods. scikit-learn uses the Strategy Pattern for different estimators. Learning these patterns prepares students for real-world Python development.
+--
+
+== Practice Challenge
+
+Build a *student grade tracking system* using magic methods and the Strategy pattern.
+
+*Part 1 — The `Assignment` class:*
+
+* Attributes: `name`, `score`, `max_score`, `category` (e.g., "homework", "exam")
+* `+++__repr__+++`: `Assignment('HW1', 85, 100, 'homework')`
+* `+++__str__+++`: `HW1: 85/100 [homework]`
+* `+++__eq__+++`: Compare by name, score, max_score, and category
+* `+++__lt__+++`: Compare by percentage (score / max_score)
+
+*Part 2 — The `GradeBook` class:*
+
+* Attributes: `student_name`, `assignments` (list)
+* Methods: `add(assignment)`, `analyze(strategy)`
+* Magic methods: `+++__len__+++`, `+++__iter__+++`, `+++__contains__+++`, `+++__repr__+++`
+
+*Part 3 — Write at least two strategy functions.*
+
+[.notes]
+--
+This exercise brings together everything from today:
+- Magic methods on Assignment (individual records)
+- Magic methods on GradeBook (a collection)
+- Strategy Pattern for different grade analyses
+
+Students should work in pairs. Give 15-20 minutes.
+
+Suggested strategies:
+- overall_average(assignments): compute average percentage
+- by_category(assignments): average percentage per category
+- lowest_scores(assignments, n=3): find the weakest assignments
+--
+
+=== Practice Challenge: Starter Code
+
+[source,python]
+----
+class Assignment:
+    def __init__(self, name, score, max_score, category):
+        self.name = name
+        self.score = score
+        self.max_score = max_score
+        self.category = category
+    
+    @property
+    def percentage(self):
+        return (self.score / self.max_score) * 100
+    
+    # TODO: Add __repr__, __str__, __eq__, __lt__
+
+
+class GradeBook:
+    def __init__(self, student_name):
+        self.student_name = student_name
+        self.assignments = []
+    
+    def add(self, assignment):
+        self.assignments.append(assignment)
+    
+    # TODO: Add analyze(), __len__, __iter__, __contains__, __repr__
+----
+
+*Hint:* The `percentage` property makes `+++__lt__+++` easy to implement.
+
+[.notes]
+--
+Give students this starter code. The @property decorator lets them access percentage like an attribute (assignment.percentage) instead of calling it as a method (assignment.percentage()).
+
+This is a preview of a Python feature we haven't formally covered, but it's intuitive enough to use here. Explain: "the @property decorator makes a method act like an attribute—you'll learn more about decorators later."
+
+For __lt__, they can compare self.percentage to other.percentage.
+--
+
+=== Practice Challenge: Example Strategies
+
+[source,python]
+----
+def overall_average(assignments):
+    """Calculate the overall average percentage."""
+    if not assignments:
+        return 0
+    total = sum(a.percentage for a in assignments)
+    return total / len(assignments)
+
+def by_category(assignments):
+    """Calculate average percentage per category."""
+    categories = {}
+    counts = {}
+    for a in assignments:
+        cat = a.category
+        categories[cat] = categories.get(cat, 0) + a.percentage
+        counts[cat] = counts.get(cat, 0) + 1
+    return {cat: categories[cat] / counts[cat] for cat in categories}
+----
+
+[.notes]
+--
+These are example strategies students can reference.
+
+overall_average sums all percentages and divides by count. Simple but useful.
+
+by_category groups by the assignment category and computes averages per group. This is similar to a pandas groupby operation, but implemented from scratch using pure Python.
+
+Challenge students to write their own strategies:
+- highest_scores: find the best n assignments
+- needs_improvement: find assignments below a threshold
+- weighted_average: weight different categories differently
+--
+
+=== Practice Challenge: Sample Test
+
+[source,python]
+----
+gb = GradeBook("Alice")
+gb.add(Assignment("HW1", 85, 100, "homework"))
+gb.add(Assignment("HW2", 92, 100, "homework"))
+gb.add(Assignment("Midterm", 78, 100, "exam"))
+gb.add(Assignment("Quiz 1", 9, 10, "quiz"))
+gb.add(Assignment("HW3", 88, 100, "homework"))
+
+print(len(gb))                       # 5
+print(gb.analyze(overall_average))   # 88.4
+print(gb.analyze(by_category))
+# {'homework': 88.33, 'exam': 78.0, 'quiz': 90.0}
+
+for a in sorted(gb):
+    print(a)
+# Midterm: 78/100 [exam]
+# HW1: 85/100 [homework]
+# HW3: 88/100 [homework]
+# Quiz 1: 9/10 [quiz]
+# HW2: 92/100 [homework]
+----
+
+*Work with a partner. Test thoroughly!*
+
+[.notes]
+--
+Walk through the expected output:
+
+1. len(gb) returns 5 (five assignments)
+2. overall_average: (85 + 92 + 78 + 90 + 88) / 5 = 86.6 average percentages
+3. by_category groups: homework (85+92+88)/3 = 88.33, exam 78/1 = 78.0, quiz 90/1 = 90.0
+4. sorted(gb) uses __iter__ from GradeBook and __lt__ from Assignment, sorting by percentage
+
+This test case covers magic methods from both classes and both strategy functions.
+
+If students finish early, challenge them to:
+- Implement __add__ to combine two GradeBooks
+- Write a strategy that drops the lowest n scores before averaging
+- Add a __str__ to GradeBook that displays a formatted transcript
+--
+
+== Questions?
+
+🔗 *Resources:*
+
+* Python Data Model: https://docs.python.org/3/reference/datamodel.html
+* Magic Method Guide: https://rszalski.github.io/magicmethods/
+* Strategy Pattern: https://refactoring.guru/design-patterns/strategy/python/example
